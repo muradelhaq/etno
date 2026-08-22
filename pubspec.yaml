@@ -1,0 +1,52 @@
+name: e_modul_etnosains
+description: "Aplikasi E-Modul Etnosains Makanan Tradisional Berbasis Fermentasi"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # State Management
+  flutter_riverpod: ^2.5.1
+
+  # Routing
+  go_router: ^14.2.7
+
+  # UI & Styling
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.0.10+1
+  flutter_animate: ^4.5.0
+  intl: ^0.19.0
+
+  # Audio & Media
+  audioplayers: ^6.0.0
+
+  # Data Visualizations & Charts
+  fl_chart: ^0.68.0
+
+  # Local Storage & Persistence
+  shared_preferences: ^2.3.2
+
+  # Exporting & Certificates
+  pdf: ^3.11.1
+  printing: ^5.13.2
+  screenshot: ^3.0.0
+  path_provider: ^2.1.4
+  share_plus: ^10.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+
