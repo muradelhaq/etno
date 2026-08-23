@@ -374,7 +374,7 @@ class AppDrawer extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'v1.0.0 (Etnosains)',
+                  'v1.0.1 (Etnosains)',
                   style: AppTextStyles.bodySmall.copyWith(
                     fontSize: 11,
                     color: AppColors.textLight,
