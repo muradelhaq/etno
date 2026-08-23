@@ -105,24 +105,28 @@ class ConceptTreeMapWidget extends StatelessWidget {
 
               // Bottom hint
               Padding(
-                padding: const EdgeInsets.only(bottom: 8, top: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(
-                      Icons.touch_app_rounded,
-                      size: 13,
+                      Icons.swipe_rounded,
+                      size: 14,
                       color: AppColors.primaryGreen,
                     ),
-                    const SizedBox(width: 4),
-                    Text(
-                      isScrollable
-                          ? 'Geser ke samping untuk melihat seluruh cabang • Ketuk kartu untuk detail'
-                          : 'Ketuk kartu untuk melihat detail materi',
-                      style: AppTextStyles.tagText.copyWith(
-                        color: AppColors.primaryDark,
-                        fontSize: 9.5,
-                        fontWeight: FontWeight.w600,
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Text(
+                        isScrollable
+                            ? 'Geser ke samping untuk melihat seluruh cabang • Ketuk untuk detail'
+                            : 'Ketuk kartu untuk melihat detail materi',
+                        style: AppTextStyles.tagText.copyWith(
+                          color: AppColors.primaryDark,
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
                       ),
                     ),
                   ],
