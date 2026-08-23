@@ -10,6 +10,8 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/app_drawer.dart';
 import '../../../../shared/services/local_storage_service.dart';
+import '../../../../shared/services/app_update_service.dart';
+import '../../../../shared/widgets/app_update_dialog.dart';
 
 class CoverScreen extends ConsumerStatefulWidget {
   const CoverScreen({super.key});
@@ -26,7 +28,20 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(userProgressProvider.notifier).markModuleCompleted('cover', xpBonus: 20);
+      _checkAutoUpdate();
     });
+  }
+
+  Future<void> _checkAutoUpdate() async {
+    try {
+      final updateService = ref.read(appUpdateServiceProvider);
+      final updateInfo = await updateService.checkForUpdate();
+      if (updateInfo != null && updateInfo.hasUpdate && mounted) {
+        AppUpdateDialog.show(context, updateInfo);
+      }
+    } catch (e) {
+      debugPrint('Error auto checking update: $e');
+    }
   }
 
   @override

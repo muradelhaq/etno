@@ -182,16 +182,17 @@ class GlucoseLabEngine {
 
   static GlucoseExperimentPoint simulate(double yeast, int day, {bool isBananaLeaf = true}) {
     // normalize yeast to 0.5, 1.0, 1.5
-    double normYeast = 1.0;
+    String yeastStr = '1.0';
     if (yeast <= 0.75) {
-      normYeast = 0.5;
+      yeastStr = '0.5';
     } else if (yeast >= 1.25) {
-      normYeast = 1.5;
+      yeastStr = '1.5';
     }
 
     int normDay = day.clamp(1, 5);
-    final key = '${normYeast}_$normDay';
-    final base = _database[key] ?? _database['1.0_2']!;
+    final key = '${yeastStr}_$normDay';
+    final fallback = _database['1.0_2'] ?? _database.values.first;
+    final base = _database[key] ?? fallback;
 
     if (!isBananaLeaf) {
       // If plastic or open container, efficiency slightly decreases
@@ -211,12 +212,14 @@ class GlucoseLabEngine {
   }
 
   static List<Map<String, dynamic>> getDayComparisonData(double yeast) {
-    double normYeast = 1.0;
-    if (yeast <= 0.75) normYeast = 0.5;
-    if (yeast >= 1.25) normYeast = 1.5;
+    String yeastStr = '1.0';
+    if (yeast <= 0.75) yeastStr = '0.5';
+    if (yeast >= 1.25) yeastStr = '1.5';
+
+    final fallback = _database['1.0_2'] ?? _database.values.first;
 
     return [1, 2, 3, 4, 5].map((d) {
-      final pt = _database['${normYeast}_$d']!;
+      final pt = _database['${yeastStr}_$d'] ?? fallback;
       return {
         'day': d,
         'glucose': pt.glucoseLevel,
@@ -224,4 +227,5 @@ class GlucoseLabEngine {
       };
     }).toList();
   }
+
 }

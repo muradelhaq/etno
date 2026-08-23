@@ -61,7 +61,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
           ),
           if (subtitle != null) ...[
             Text(
-              subtitle!,
+              subtitle ?? '',
               style: AppTextStyles.bodySmall.copyWith(
                 fontSize: 11,
                 color: AppColors.textSecondary,

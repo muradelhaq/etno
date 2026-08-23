@@ -48,7 +48,9 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen>
       final savedAns = ref.read(userProgressProvider).caseStudyAnswers[widget.foodId] ?? '';
       _caseStudyController.text = savedAns;
       _showHypothesisGuide = false;
-      ref.read(userProgressProvider.notifier).markModuleCompleted(widget.foodId, xpBonus: 40);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(userProgressProvider.notifier).markModuleCompleted(widget.foodId, xpBonus: 40);
+      });
     }
   }
 
