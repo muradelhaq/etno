@@ -7,8 +7,7 @@ import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
-import '../../../../core/widgets/app_drawer.dart';
+import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
 import '../../../../shared/services/app_update_service.dart';
 import '../../../../shared/widgets/app_update_dialog.dart';
@@ -46,13 +45,10 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const AppDrawer(),
-      appBar: const CustomAppBar(
-        title: AppStrings.appName,
-        subtitle: 'Slide 1 / 12 • Beranda Utama',
-        showBackButton: false,
-      ),
+    return EthnoScaffold(
+      title: AppStrings.appName,
+      subtitle: 'Slide 1 / 12 • Beranda Utama',
+      showBackButton: false,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(

@@ -4,10 +4,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/ethno_card.dart';
-import '../../../../core/widgets/module_nav_bar.dart';
-import '../../../../core/widgets/app_drawer.dart';
+import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/models/user_progress_model.dart';
 import '../../../../shared/services/local_storage_service.dart';
 
@@ -118,18 +116,13 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
   Widget build(BuildContext context) {
     final userIdeas = ref.watch(userProgressProvider).innovationIdeas;
 
-    return Scaffold(
-      drawer: const AppDrawer(),
-      appBar: const CustomAppBar(
-        title: 'Galeri Inovasi Pangan',
-        subtitle: 'Slide Tambahan • Food Innovation Pad',
-      ),
-      bottomNavigationBar: const ModuleNavBar(
-        currentSlide: 12,
-        totalSlides: 12,
-        prevRoute: '/evaluasi-kearifan',
-        nextRoute: '/literasi-sains-quiz',
-      ),
+    return EthnoScaffold(
+      title: 'Galeri Inovasi Pangan',
+      subtitle: 'Slide Tambahan • Food Innovation Pad',
+      currentSlide: 12,
+      totalSlides: 12,
+      prevRoute: '/evaluasi-kearifan',
+      nextRoute: '/literasi-sains-quiz',
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),

@@ -5,10 +5,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/ethno_card.dart';
-import '../../../../core/widgets/module_nav_bar.dart';
-import '../../../../core/widgets/app_drawer.dart';
+import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
 import '../../data/models/pisa_questions_data.dart';
 
@@ -142,18 +140,13 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
     final selectedOption = _userSelectedAnswers[currentQ.id];
     final isAnswered = selectedOption != null;
 
-    return Scaffold(
-      drawer: const AppDrawer(),
-      appBar: const CustomAppBar(
-        title: 'Evaluasi Literasi Sains (PISA)',
-        subtitle: 'Slide 12 / 12 • 10 Soal HOTS Berbasis Data',
-      ),
-      bottomNavigationBar: const ModuleNavBar(
-        currentSlide: 12,
-        totalSlides: 12,
-        prevRoute: '/evaluasi-kearifan',
-        nextRoute: '/sertifikat',
-      ),
+    return EthnoScaffold(
+      title: 'Evaluasi Literasi Sains (PISA)',
+      subtitle: 'Slide 12 / 12 • 10 Soal HOTS Berbasis Data',
+      currentSlide: 12,
+      totalSlides: 12,
+      prevRoute: '/evaluasi-kearifan',
+      nextRoute: '/sertifikat',
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),

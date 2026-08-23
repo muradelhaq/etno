@@ -7,8 +7,7 @@ import '../../../../core/theme/text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/ethno_card.dart';
-import '../../../../core/widgets/module_nav_bar.dart';
-import '../../../../core/widgets/app_drawer.dart';
+import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
 import '../../data/models/glucose_experiment_model.dart';
 
@@ -65,9 +64,8 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
 
     final trendData = GlucoseLabEngine.getDayComparisonData(_yeastPercent);
 
-    return Scaffold(
-      drawer: const AppDrawer(),
-      appBar: CustomAppBar(
+    return EthnoScaffold(
+      customAppBar: CustomAppBar(
         title: 'Virtual Lab & Game Interaktif',
         subtitle: 'Slide 9 / 12 • Simulasi Glukosa & Tantangan Misi',
         bottom: TabBar(
@@ -81,12 +79,10 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
           ],
         ),
       ),
-      bottomNavigationBar: const ModuleNavBar(
-        currentSlide: 9,
-        totalSlides: 12,
-        prevRoute: '/jelajah-budaya',
-        nextRoute: '/challenge-proyek',
-      ),
+      currentSlide: 9,
+      totalSlides: 12,
+      prevRoute: '/jelajah-budaya',
+      nextRoute: '/challenge-proyek',
       body: TabBarView(
         controller: _tabController,
         children: [

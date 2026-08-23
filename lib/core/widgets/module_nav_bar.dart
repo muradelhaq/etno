@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/app_colors.dart';
 import '../theme/text_styles.dart';
+import '../providers/landscape_nav_provider.dart';
 
-class ModuleNavBar extends StatelessWidget {
+class ModuleNavBar extends ConsumerWidget {
   final int currentSlide;
   final int totalSlides;
   final String? prevRoute;
@@ -22,7 +24,10 @@ class ModuleNavBar extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -37,7 +42,10 @@ class ModuleNavBar extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: isLandscape ? 6 : 10,
+      ),
       child: SafeArea(
         top: false,
         child: Row(
@@ -135,20 +143,43 @@ class ModuleNavBar extends StatelessWidget {
               ],
             ),
 
-            // Menu Drawer toggle
-            Builder(
-              builder: (ctx) => IconButton(
-                tooltip: 'Daftar Modul',
-                style: IconButton.styleFrom(
-                  backgroundColor: AppColors.warmCream,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+            // Right side buttons (Menu Drawer and in landscape also a hide button)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (isLandscape) ...[
+                  IconButton(
+                    tooltip: 'Sembunyikan Navigasi',
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.grey.shade100,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    icon: const Icon(Icons.fullscreen_rounded,
+                        color: AppColors.textSecondary),
+                    onPressed: () {
+                      ref.read(landscapeNavVisibleProvider.notifier).state =
+                          false;
+                    },
+                  ),
+                  const SizedBox(width: 6),
+                ],
+                Builder(
+                  builder: (ctx) => IconButton(
+                    tooltip: 'Daftar Modul',
+                    style: IconButton.styleFrom(
+                      backgroundColor: AppColors.warmCream,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    icon: const Icon(Icons.menu_book_rounded,
+                        color: AppColors.warmTerracotta),
+                    onPressed: () => Scaffold.of(ctx).openDrawer(),
                   ),
                 ),
-                icon: const Icon(Icons.menu_book_rounded,
-                    color: AppColors.warmTerracotta),
-                onPressed: () => Scaffold.of(ctx).openDrawer(),
-              ),
+              ],
             ),
           ],
         ),

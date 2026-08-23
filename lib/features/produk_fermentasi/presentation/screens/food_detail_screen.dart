@@ -5,8 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/widgets/ethno_card.dart';
-import '../../../../core/widgets/module_nav_bar.dart';
-import '../../../../core/widgets/app_drawer.dart';
+import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
 import '../../domain/entities/fermented_food_entity.dart';
 import '../../data/models/fermented_foods_data.dart';
@@ -122,14 +121,11 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen>
     final prevRoute = _getPrevRoute(food.id);
     final nextRoute = _getNextRoute(food.id);
 
-    return Scaffold(
-      drawer: const AppDrawer(),
-      bottomNavigationBar: ModuleNavBar(
-        currentSlide: slideNum,
-        totalSlides: 12,
-        prevRoute: prevRoute,
-        nextRoute: nextRoute,
-      ),
+    return EthnoScaffold(
+      currentSlide: slideNum,
+      totalSlides: 12,
+      prevRoute: prevRoute,
+      nextRoute: nextRoute,
       body: NestedScrollView(
         headerSliverBuilder: (ctx, innerBoxIsScrolled) {
           return [

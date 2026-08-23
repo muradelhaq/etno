@@ -5,10 +5,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/ethno_card.dart';
-import '../../../../core/widgets/module_nav_bar.dart';
-import '../../../../core/widgets/app_drawer.dart';
+import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
 import '../../data/models/region_culture_model.dart';
 
@@ -37,18 +35,13 @@ class _JelajahBudayaScreenState extends ConsumerState<JelajahBudayaScreen> {
       orElse: () => JelajahBudayaData.regions.first,
     );
 
-    return Scaffold(
-      drawer: const AppDrawer(),
-      appBar: const CustomAppBar(
-        title: 'Jelajah Budaya Nusantara',
-        subtitle: 'Slide 8 / 12 • Kearifan & Peta Kuliner Tradisional',
-      ),
-      bottomNavigationBar: const ModuleNavBar(
-        currentSlide: 8,
-        totalSlides: 12,
-        prevRoute: '/produk/kecap',
-        nextRoute: '/virtual-lab',
-      ),
+    return EthnoScaffold(
+      title: 'Jelajah Budaya Nusantara',
+      subtitle: 'Slide 8 / 12 • Kearifan & Peta Kuliner Tradisional',
+      currentSlide: 8,
+      totalSlides: 12,
+      prevRoute: '/produk/kecap',
+      nextRoute: '/virtual-lab',
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),

@@ -5,10 +5,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/ethno_card.dart';
-import '../../../../core/widgets/module_nav_bar.dart';
-import '../../../../core/widgets/app_drawer.dart';
+import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
 import '../../data/models/food_comparison_model.dart';
 
@@ -108,18 +106,13 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const AppDrawer(),
-      appBar: const CustomAppBar(
-        title: 'Apersepsi & Brainstorming',
-        subtitle: 'Slide 2 / 12 • Mengaktifkan Pemikiran Awal',
-      ),
-      bottomNavigationBar: const ModuleNavBar(
-        currentSlide: 2,
-        totalSlides: 12,
-        prevRoute: '/',
-        nextRoute: '/peta-konsep',
-      ),
+    return EthnoScaffold(
+      title: 'Apersepsi & Brainstorming',
+      subtitle: 'Slide 2 / 12 • Mengaktifkan Pemikiran Awal',
+      currentSlide: 2,
+      totalSlides: 12,
+      prevRoute: '/',
+      nextRoute: '/peta-konsep',
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),

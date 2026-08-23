@@ -5,10 +5,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/ethno_card.dart';
-import '../../../../core/widgets/module_nav_bar.dart';
-import '../../../../core/widgets/app_drawer.dart';
+import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
 import '../../data/models/likert_question_model.dart';
 
@@ -119,18 +117,13 @@ class _CulturalAssessmentScreenState
   Widget build(BuildContext context) {
     final userProgress = ref.watch(userProgressProvider);
 
-    return Scaffold(
-      drawer: const AppDrawer(),
-      appBar: const CustomAppBar(
-        title: 'Asesmen Kesadaran Budaya',
-        subtitle: 'Slide 11 / 12 • Skala Sikap & Kearifan Etnosains',
-      ),
-      bottomNavigationBar: const ModuleNavBar(
-        currentSlide: 11,
-        totalSlides: 12,
-        prevRoute: '/challenge-proyek',
-        nextRoute: '/literasi-sains-quiz',
-      ),
+    return EthnoScaffold(
+      title: 'Asesmen Kesadaran Budaya',
+      subtitle: 'Slide 11 / 12 • Skala Sikap & Kearifan Etnosains',
+      currentSlide: 11,
+      totalSlides: 12,
+      prevRoute: '/challenge-proyek',
+      nextRoute: '/literasi-sains-quiz',
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
