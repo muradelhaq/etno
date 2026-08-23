@@ -52,104 +52,173 @@ class EthnoScaffold extends ConsumerWidget {
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
     final isNavVisible = ref.watch(landscapeNavVisibleProvider);
+    final hideBars = isLandscape && !isNavVisible;
 
-    // Determine if AppBar & BottomBar should be visible
-    final showBars = !isLandscape || isNavVisible;
-
+    // Resolve AppBar widget
     PreferredSizeWidget? effectiveAppBar;
-    if (showBars) {
-      if (customAppBar != null) {
-        effectiveAppBar = customAppBar;
-      } else if (title != null) {
-        effectiveAppBar = CustomAppBar(
-          title: title!,
-          subtitle: subtitle,
-          showBackButton: showBackButton,
-          actions: actions,
-        );
-      }
+    if (customAppBar != null) {
+      effectiveAppBar = customAppBar;
+    } else if (title != null) {
+      effectiveAppBar = CustomAppBar(
+        title: title!,
+        subtitle: subtitle,
+        showBackButton: showBackButton,
+        actions: actions,
+      );
     }
 
+    // Resolve BottomBar widget
     Widget? effectiveBottomBar;
-    if (showBars) {
-      if (customBottomBar != null) {
-        effectiveBottomBar = customBottomBar;
-      } else if (currentSlide != null) {
-        effectiveBottomBar = ModuleNavBar(
-          currentSlide: currentSlide!,
-          totalSlides: totalSlides,
-          prevRoute: prevRoute,
-          nextRoute: nextRoute,
-          onNext: onNext,
-          onPrev: onPrev,
-        );
-      }
+    if (customBottomBar != null) {
+      effectiveBottomBar = customBottomBar;
+    } else if (currentSlide != null) {
+      effectiveBottomBar = ModuleNavBar(
+        currentSlide: currentSlide!,
+        totalSlides: totalSlides,
+        prevRoute: prevRoute,
+        nextRoute: nextRoute,
+        onNext: onNext,
+        onPrev: onPrev,
+      );
     }
 
+    // In Portrait mode: standard Scaffold layout
+    if (!isLandscape) {
+      return Scaffold(
+        backgroundColor: backgroundColor ?? AppColors.background,
+        drawer: drawer,
+        appBar: effectiveAppBar,
+        bottomNavigationBar: effectiveBottomBar,
+        floatingActionButton: floatingActionButton,
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+        body: body,
+      );
+    }
+
+    // In Landscape mode: full-bleed body with smoothly animated top & bottom bars
     return Scaffold(
       backgroundColor: backgroundColor ?? AppColors.background,
       drawer: drawer,
-      appBar: effectiveAppBar,
-      bottomNavigationBar: effectiveBottomBar,
       floatingActionButton: floatingActionButton,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: isLandscape
-            ? () {
-                ref.read(landscapeNavVisibleProvider.notifier).state =
-                    !isNavVisible;
-              }
-            : null,
+        onTap: () {
+          ref.read(landscapeNavVisibleProvider.notifier).state = !isNavVisible;
+        },
         child: Stack(
           children: [
+            // Full-screen content
             Positioned.fill(child: body),
 
+            // Top Header: Smooth Slide Up/Down & Fade
+            if (effectiveAppBar != null)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: AnimatedSlide(
+                  offset: hideBars ? const Offset(0, -1.15) : Offset.zero,
+                  duration: const Duration(milliseconds: 320),
+                  curve: Curves.easeInOutCubic,
+                  child: AnimatedOpacity(
+                    opacity: hideBars ? 0.0 : 1.0,
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeInOut,
+                    child: IgnorePointer(
+                      ignoring: hideBars,
+                      child: Material(
+                        color: Colors.transparent,
+                        elevation: 0.5,
+                        child: effectiveAppBar,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+            // Bottom Navigation Bar: Smooth Slide Down/Up & Fade
+            if (effectiveBottomBar != null)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: AnimatedSlide(
+                  offset: hideBars ? const Offset(0, 1.15) : Offset.zero,
+                  duration: const Duration(milliseconds: 320),
+                  curve: Curves.easeInOutCubic,
+                  child: AnimatedOpacity(
+                    opacity: hideBars ? 0.0 : 1.0,
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeInOut,
+                    child: IgnorePointer(
+                      ignoring: hideBars,
+                      child: effectiveBottomBar,
+                    ),
+                  ),
+                ),
+              ),
+
             // Floating Navigation Cue in Landscape when hidden
-            if (isLandscape && !isNavVisible && currentSlide != null)
+            if (currentSlide != null)
               Positioned(
                 bottom: 12,
                 right: 16,
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      ref.read(landscapeNavVisibleProvider.notifier).state =
-                          true;
-                    },
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryDark.withValues(alpha: 0.85),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.2),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.touch_app_rounded,
-                            color: AppColors.goldenYellow,
-                            size: 14,
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'Slide $currentSlide/$totalSlides • Ketuk Navigasi',
-                            style: AppTextStyles.tagText.copyWith(
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
+                child: AnimatedSlide(
+                  offset: hideBars ? Offset.zero : const Offset(0, 1.6),
+                  duration: const Duration(milliseconds: 320),
+                  curve: Curves.easeInOutCubic,
+                  child: AnimatedOpacity(
+                    opacity: hideBars ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeInOut,
+                    child: IgnorePointer(
+                      ignoring: !hideBars,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            ref
+                                .read(landscapeNavVisibleProvider.notifier)
+                                .state = true;
+                          },
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color:
+                                  AppColors.primaryDark.withValues(alpha: 0.88),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.25),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.touch_app_rounded,
+                                  color: AppColors.goldenYellow,
+                                  size: 14,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  'Slide $currentSlide/$totalSlides • Ketuk Navigasi',
+                                  style: AppTextStyles.tagText.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),

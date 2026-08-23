@@ -9,6 +9,7 @@ import '../../../../core/widgets/ethno_card.dart';
 import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
 import '../../data/models/microorganism_model.dart';
+import '../widgets/concept_tree_map_widget.dart';
 
 class PetaKonsepScreen extends ConsumerStatefulWidget {
   const PetaKonsepScreen({super.key});
@@ -63,15 +64,17 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
                     children: [
                       const Icon(Icons.account_tree_rounded, color: AppColors.goldenYellow, size: 24),
                       const SizedBox(width: 10),
-                      Text(
-                        'Pohon Konsep Fermentasi Tradisional',
-                        style: AppTextStyles.h3.copyWith(color: Colors.white, fontSize: 16),
+                      Expanded(
+                        child: Text(
+                          'Pohon Konsep Fermentasi Tradisional',
+                          style: AppTextStyles.h3.copyWith(color: Colors.white, fontSize: 16),
+                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Hubungan antara 5 Produk Induk Fermentasi, Mikroba Agens, dan Kuliner Turunan Nusantara:',
+                    'Bagan struktur pohon hubungan antara 4 Produk Induk Fermentasi dan Kuliner Olahan Tradisional Nusantara:',
                     style: AppTextStyles.bodySmall.copyWith(color: AppColors.sageLight),
                   ),
                 ],
@@ -80,8 +83,8 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
 
             const SizedBox(height: 16),
 
-            // Concept tree visual chips
-            _buildConceptTreeCards(),
+            // Concept tree hierarchical map (Peta Pohon Konsep)
+            const ConceptTreeMapWidget().animate().fadeIn(duration: 500.ms),
 
             const SizedBox(height: 24),
             const Divider(color: AppColors.borderSubtle),
@@ -357,97 +360,6 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildConceptTreeCards() {
-    final List<Map<String, dynamic>> conceptItems = [
-      {
-        'product': 'Tempe Kedelai',
-        'microbe': 'Rhizopus oligosporus',
-        'dishes': 'Mendoan, Orek Tempe, Keripik',
-        'color': AppColors.primaryGreen,
-        'icon': Icons.grass_rounded,
-        'route': '/produk/tempe',
-      },
-      {
-        'product': 'Tape Singkong',
-        'microbe': 'Saccharomyces cerevisiae & Aspergillus',
-        'dishes': 'Colenak, Peuyeum, Es Goyobod',
-        'color': AppColors.warmTerracotta,
-        'icon': Icons.bakery_dining_rounded,
-        'route': '/produk/tape',
-      },
-      {
-        'product': 'Tape Ketan',
-        'microbe': 'Amylomyces & Saccharomyces',
-        'dishes': 'Es Tape Ketan, Martabak Ketan',
-        'color': AppColors.goldenYellow,
-        'icon': Icons.rice_bowl_rounded,
-        'route': '/produk/tape-ketan',
-      },
-      {
-        'product': 'Tauco Cianjur',
-        'microbe': 'Aspergillus oryzae & Tetragenococcus',
-        'dishes': 'Sayur Ikan Tauco, Tumis Kangkung',
-        'color': AppColors.terracottaDark,
-        'icon': Icons.soup_kitchen_rounded,
-        'route': '/produk/tauco',
-      },
-      {
-        'product': 'Kecap & Oncom',
-        'microbe': 'Neurospora sitophila & A. oryzae',
-        'dishes': 'Tutug Oncom, Combro, Sate Maranggi',
-        'color': AppColors.primaryDark,
-        'icon': Icons.restaurant_menu_rounded,
-        'route': '/produk/kecap',
-      },
-    ];
-
-    return Column(
-      children: conceptItems.map((item) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: EthnoCard(
-            padding: const EdgeInsets.all(12),
-            onTap: () => context.go(item['route']),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: (item['color'] as Color).withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(item['icon'] as IconData, color: item['color'] as Color, size: 24),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(item['product'] as String, style: AppTextStyles.bodyBold.copyWith(fontSize: 13)),
-                      Text(
-                        '🔬 ${item['microbe']}',
-                        style: AppTextStyles.bodySmall.copyWith(fontStyle: FontStyle.italic, fontSize: 11),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        '🍲 ${item['dishes']}',
-                        style: AppTextStyles.tagText.copyWith(color: AppColors.warmTerracotta, fontSize: 10),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppColors.textLight),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
     );
   }
 
