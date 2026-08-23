@@ -103,4 +103,6 @@ Jika Anda tidak ingin menggunakan GitHub Actions atau ingin mengunggah file APK 
 | [`lib/shared/widgets/app_update_dialog.dart`](lib/shared/widgets/app_update_dialog.dart) | Dialog antarmuka pengguna untuk notifikasi update dan progress download. |
 | [`lib/shared/models/app_update_info.dart`](lib/shared/models/app_update_info.dart) | Model data informasi rilis GitHub. |
 | [`android/app/src/main/AndroidManifest.xml`](android/app/src/main/AndroidManifest.xml) | Izin Android `INTERNET` dan `REQUEST_INSTALL_PACKAGES`. |
+| [`android/app/etnosains_keystore.jks`](android/app/etnosains_keystore.jks) | Keystore sertifikat permanen agar semua rilis APK memiliki signature yang konsisten. |
 | [`.github/workflows/release.yml`](.github/workflows/release.yml) | Workflow GitHub Actions untuk build & upload APK otomatis saat ada tag baru. |
+

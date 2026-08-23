@@ -187,6 +187,10 @@ class AppUpdateService {
 
         if (result.type != ResultType.done) {
           debugPrint('OpenFilex error: ${result.message}');
+          if (result.type == ResultType.permissionDenied) {
+            onError('Izin instalasi diperlukan. Buka pengaturan aplikasi untuk mengizinkan "Instal aplikasi tidak dikenal".');
+            return;
+          }
         }
       } else {
         // Fallback on desktop / iOS
@@ -201,6 +205,21 @@ class AppUpdateService {
     } catch (e) {
       debugPrint('Error downloading APK: $e');
       onError('Gagal mengunduh file update: $e');
+    }
+  }
+
+  /// Membuka kembali installer untuk file APK yang sudah diunduh
+  Future<void> openDownloadedApk(String filePath) async {
+    try {
+      final file = File(filePath);
+      if (await file.exists()) {
+        await OpenFilex.open(
+          filePath,
+          type: 'application/vnd.android.package-archive',
+        );
+      }
+    } catch (e) {
+      debugPrint('Error opening APK installer: $e');
     }
   }
 }

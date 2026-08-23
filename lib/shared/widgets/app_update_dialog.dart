@@ -42,12 +42,15 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
     return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
 
+  String? _downloadedFilePath;
+
   Future<void> _startUpdate() async {
     setState(() {
       _isDownloading = true;
       _errorMessage = null;
       _progress = 0.0;
       _downloadFinished = false;
+      _downloadedFilePath = null;
     });
 
     final updateService = ref.read(appUpdateServiceProvider);
@@ -70,6 +73,7 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
         setState(() {
           _isDownloading = false;
           _downloadFinished = true;
+          _downloadedFilePath = filePath;
         });
       },
       onError: (error) {
@@ -259,7 +263,15 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
                 // Action buttons
                 if (!_isDownloading) ...[
                   ElevatedButton.icon(
-                    onPressed: _startUpdate,
+                    onPressed: () {
+                      if (_downloadFinished && _downloadedFilePath != null) {
+                        ref
+                            .read(appUpdateServiceProvider)
+                            .openDownloadedApk(_downloadedFilePath!);
+                      } else {
+                        _startUpdate();
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryGreen,
                       foregroundColor: Colors.white,
@@ -268,9 +280,17 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    icon: const Icon(Icons.download_rounded),
+                    icon: Icon(
+                      _downloadFinished
+                          ? Icons.install_mobile_rounded
+                          : Icons.download_rounded,
+                    ),
                     label: Text(
-                      _errorMessage != null ? 'Coba Unduh Lagi' : 'Update Sekarang',
+                      _downloadFinished
+                          ? 'Pasang Pembaruan (Buka Installer)'
+                          : (_errorMessage != null
+                              ? 'Coba Unduh Lagi'
+                              : 'Update Sekarang'),
                       style: AppTextStyles.buttonText.copyWith(fontSize: 14),
                     ),
                   ),
