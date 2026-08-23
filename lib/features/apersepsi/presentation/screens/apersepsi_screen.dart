@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -481,28 +482,27 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
         );
       },
       child: SizedBox(
-        width: 140,
+        width: 145,
+        height: 155,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+          child: Stack(
+            fit: StackFit.expand,
             children: [
+              // Full-bleed Image
               Image.asset(
                 item.imageAsset,
-                height: 85,
-                width: 140,
+                width: double.infinity,
+                height: double.infinity,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
-                  height: 85,
-                  width: 140,
                   color: AppColors.warmCream,
                   child: Center(
                     child: Icon(
                       isModern
                           ? Icons.fastfood_rounded
                           : Icons.rice_bowl_rounded,
-                      size: 28,
+                      size: 36,
                       color: isModern
                           ? AppColors.warmTerracotta
                           : AppColors.primaryGreen,
@@ -510,28 +510,88 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.name,
-                      style: AppTextStyles.bodyBold.copyWith(fontSize: 12),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+
+              // Gradient shade overlay for contrast
+              Positioned.fill(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withValues(alpha: 0.1),
+                        Colors.black.withValues(alpha: 0.6),
+                      ],
+                      stops: const [0.35, 0.65, 1.0],
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      item.baseFermentationProduct,
-                      style: AppTextStyles.bodySmall.copyWith(
-                        fontSize: 10,
-                        color: AppColors.textSecondary,
+                  ),
+                ),
+              ),
+
+              // Semi-transparent badge for text
+              Positioned(
+                left: 6,
+                right: 6,
+                bottom: 6,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.55),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.25),
+                          width: 0.8,
+                        ),
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            item.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11.5,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black54,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 1),
+                                ),
+                              ],
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 1),
+                          Text(
+                            item.baseFermentationProduct,
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.9),
+                              fontSize: 9.5,
+                              fontWeight: FontWeight.w400,
+                              shadows: const [
+                                Shadow(
+                                  color: Colors.black54,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 1),
+                                ),
+                              ],
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ],
