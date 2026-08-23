@@ -163,7 +163,7 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
             Text('Makanan Cepat Saji Modern (Global):', style: AppTextStyles.bodyBold.copyWith(color: AppColors.warmTerracotta)),
             const SizedBox(height: 8),
             SizedBox(
-              height: 120,
+              height: 155,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
@@ -182,7 +182,7 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
             Text('Makanan Tradisional Nusantara (Lokal):', style: AppTextStyles.bodyBold.copyWith(color: AppColors.primaryGreen)),
             const SizedBox(height: 8),
             SizedBox(
-              height: 120,
+              height: 155,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
@@ -367,32 +367,109 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
 
   Widget _buildFoodChipCard(FoodItemModel item, {required bool isModern}) {
     return EthnoCard(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.zero,
       backgroundColor: Colors.white,
-      borderColor: isModern ? AppColors.warmTerracotta.withValues(alpha: 0.3) : AppColors.primaryGreen.withValues(alpha: 0.3),
+      borderColor: isModern
+          ? AppColors.warmTerracotta.withValues(alpha: 0.3)
+          : AppColors.primaryGreen.withValues(alpha: 0.3),
       onTap: () {
         showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text(item.name, style: AppTextStyles.h3),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Kategori: ${item.category}',
-                  style: AppTextStyles.tagText.copyWith(
-                    color: isModern ? AppColors.warmTerracotta : AppColors.primaryGreen,
-                  ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            contentPadding: EdgeInsets.zero,
+            content: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset(
+                      item.imageAsset,
+                      height: 160,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        height: 140,
+                        color: AppColors.warmCream,
+                        child: Center(
+                          child: Icon(
+                            isModern
+                                ? Icons.fastfood_rounded
+                                : Icons.rice_bowl_rounded,
+                            size: 48,
+                            color: isModern
+                                ? AppColors.warmTerracotta
+                                : AppColors.primaryGreen,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child:
+                                    Text(item.name, style: AppTextStyles.h3),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: isModern
+                                      ? AppColors.warmCream
+                                      : AppColors.sageLight,
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: isModern
+                                        ? AppColors.goldenYellow
+                                        : AppColors.primaryGreen,
+                                  ),
+                                ),
+                                child: Text(
+                                  item.category,
+                                  style: AppTextStyles.tagText.copyWith(
+                                    color: isModern
+                                        ? AppColors.terracottaDark
+                                        : AppColors.primaryDark,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Basis Mikroba / Fermentasi:',
+                            style: AppTextStyles.tagText.copyWith(
+                              color: AppColors.textSecondary,
+                              fontSize: 11,
+                            ),
+                          ),
+                          Text(
+                            item.baseFermentationProduct,
+                            style: AppTextStyles.bodyBold.copyWith(
+                              fontSize: 13,
+                              color: isModern
+                                  ? AppColors.terracottaDark
+                                  : AppColors.primaryGreen,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(item.description, style: AppTextStyles.bodyMedium),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 6),
-                Text(
-                  'Basis Mikroba / Fermentasi:\n${item.baseFermentationProduct}',
-                  style: AppTextStyles.bodyBold.copyWith(fontSize: 13),
-                ),
-                const SizedBox(height: 10),
-                Text(item.description, style: AppTextStyles.bodyMedium),
-              ],
+              ),
             ),
             actions: [
               TextButton(
@@ -405,39 +482,60 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
       },
       child: SizedBox(
         width: 140,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  isModern ? Icons.fastfood_rounded : Icons.rice_bowl_rounded,
-                  color: isModern ? AppColors.warmTerracotta : AppColors.primaryGreen,
-                  size: 20,
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    item.name,
-                    style: AppTextStyles.bodyBold.copyWith(fontSize: 12),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                item.imageAsset,
+                height: 85,
+                width: 140,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  height: 85,
+                  width: 140,
+                  color: AppColors.warmCream,
+                  child: Center(
+                    child: Icon(
+                      isModern
+                          ? Icons.fastfood_rounded
+                          : Icons.rice_bowl_rounded,
+                      size: 28,
+                      color: isModern
+                          ? AppColors.warmTerracotta
+                          : AppColors.primaryGreen,
+                    ),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            Text(
-              item.baseFermentationProduct,
-              style: AppTextStyles.bodySmall.copyWith(
-                fontSize: 10,
-                color: AppColors.textSecondary,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.name,
+                      style: AppTextStyles.bodyBold.copyWith(fontSize: 12),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      item.baseFermentationProduct,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        fontSize: 10,
+                        color: AppColors.textSecondary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
