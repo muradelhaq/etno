@@ -6,6 +6,7 @@ import '../theme/text_styles.dart';
 import '../../shared/services/local_storage_service.dart';
 import '../../shared/services/app_update_service.dart';
 import '../../shared/widgets/app_update_dialog.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
@@ -373,12 +374,18 @@ class AppDrawer extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'v1.0.1 (Etnosains)',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    fontSize: 11,
-                    color: AppColors.textLight,
-                  ),
+                FutureBuilder<PackageInfo>(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, snapshot) {
+                    final version = snapshot.data?.version ?? '1.0.3';
+                    return Text(
+                      'v$version (Etnosains)',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        fontSize: 11,
+                        color: AppColors.textLight,
+                      ),
+                    );
+                  },
                 ),
                 InkWell(
                   onTap: () => _handleManualUpdateCheck(context, ref),

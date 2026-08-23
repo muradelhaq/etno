@@ -9,19 +9,15 @@ class ConceptTreeMapWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: (context, constraints) {
-        final availableWidth = constraints.maxWidth;
-
-        // The concept tree has a natural minimum width of 540px for comfortable reading
-        const minTreeWidth = 540.0;
-        final isScrollable = availableWidth < minTreeWidth;
-        final treeWidth = isScrollable ? minTreeWidth : availableWidth;
+      builder: (context, outerConstraints) {
+        final isLandscape =
+            MediaQuery.of(context).orientation == Orientation.landscape;
 
         return Container(
           width: double.infinity,
           decoration: BoxDecoration(
             color: const Color(0xFFFAF7EE),
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: AppColors.primaryGreen.withValues(alpha: 0.25),
               width: 1.2,
@@ -34,156 +30,156 @@ class ConceptTreeMapWidget extends StatelessWidget {
               ),
             ],
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 10, left: 12, right: 12),
-                child: Column(
-                  children: [
-                    // Top instruction
-                    Text(
+          child: LayoutBuilder(
+            builder: (ctx, innerConstraints) {
+              final innerWidth = innerConstraints.maxWidth;
+
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: isLandscape ? 10 : 7),
+
+                  // Top instruction
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    child: Text(
                       'Klik setiap produk untuk melihat informasi!',
                       style: AppTextStyles.tagText.copyWith(
                         color: AppColors.textSecondary,
-                        fontSize: 10.5,
+                        fontSize: isLandscape ? 11 : 9.5,
                         fontWeight: FontWeight.w600,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 6),
+                  ),
+                  SizedBox(height: isLandscape ? 8 : 5),
 
-                    // Root Badge: PRODUK FERMENTASI
-                    GestureDetector(
-                      onTap: () => _showRootInfoDialog(context),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 18,
-                          vertical: 6,
+                  // Root Badge: PRODUK FERMENTASI
+                  GestureDetector(
+                    onTap: () => _showRootInfoDialog(context),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isLandscape ? 18 : 12,
+                        vertical: isLandscape ? 6 : 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2D5A3C),
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                const Color(0xFF2D5A3C).withValues(alpha: 0.3),
+                            blurRadius: 5,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        'PRODUK FERMENTASI',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: isLandscape ? 12.5 : 10.5,
+                          letterSpacing: 0.6,
                         ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2D5A3C),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF2D5A3C)
-                                  .withValues(alpha: 0.3),
-                              blurRadius: 6,
-                              offset: const Offset(0, 2),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 2),
+
+                  // Full-Width Tree Hierarchy Diagram (Calculated from innerWidth)
+                  _buildTreeHierarchy(context, innerWidth, isLandscape),
+
+                  SizedBox(height: isLandscape ? 8 : 5),
+
+                  // Bottom hint
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.touch_app_rounded,
+                          size: isLandscape ? 13 : 11,
+                          color: AppColors.primaryGreen,
+                        ),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            'Ketuk kartu untuk melihat detail materi & mikroba',
+                            style: AppTextStyles.tagText.copyWith(
+                              color: AppColors.primaryDark,
+                              fontSize: isLandscape ? 10 : 8.5,
+                              fontWeight: FontWeight.w600,
                             ),
-                          ],
-                        ),
-                        child: const Text(
-                          'PRODUK FERMENTASI',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 12,
-                            letterSpacing: 0.8,
+                            textAlign: TextAlign.center,
+                            softWrap: true,
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 4),
-
-              // Tree Hierarchy Diagram (Scrollable horizontally in portrait mode)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(14),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  child: SizedBox(
-                    width: treeWidth,
-                    child: _buildTreeHierarchy(context, treeWidth),
                   ),
-                ),
-              ),
-
-              // Bottom hint
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.swipe_rounded,
-                      size: 14,
-                      color: AppColors.primaryGreen,
-                    ),
-                    const SizedBox(width: 6),
-                    Flexible(
-                      child: Text(
-                        isScrollable
-                            ? 'Geser ke samping untuk melihat seluruh cabang • Ketuk untuk detail'
-                            : 'Ketuk kartu untuk melihat detail materi',
-                        style: AppTextStyles.tagText.copyWith(
-                          color: AppColors.primaryDark,
-                          fontSize: 9.5,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.center,
-                        softWrap: true,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+                  SizedBox(height: isLandscape ? 10 : 7),
+                ],
+              );
+            },
           ),
         );
       },
     );
   }
 
-  Widget _buildTreeHierarchy(BuildContext context, double totalWidth) {
-    const horizontalPadding = 12.0;
-    final usableWidth = totalWidth - (horizontalPadding * 2);
+  Widget _buildTreeHierarchy(
+      BuildContext context, double totalWidth, bool isLandscape) {
+    const horizontalMargin = 4.0;
+    final usableWidth = totalWidth - (horizontalMargin * 2);
     final branchWidth = usableWidth / 4;
 
     final branches = _getTreeData();
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Connector from Root to 4 Parent Columns
-        SizedBox(
-          height: 22,
-          width: totalWidth,
-          child: CustomPaint(
-            painter: _RootToParentsConnectorPainter(
-              branchCount: 4,
-              totalWidth: totalWidth,
-              paddingLeft: horizontalPadding,
-              branchWidth: branchWidth,
+    return SizedBox(
+      width: totalWidth,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Connector from Root to 4 Parent Columns
+          SizedBox(
+            height: isLandscape ? 20 : 15,
+            width: totalWidth,
+            child: CustomPaint(
+              painter: _RootToParentsConnectorPainter(
+                branchCount: 4,
+                totalWidth: totalWidth,
+                paddingLeft: horizontalMargin,
+                branchWidth: branchWidth,
+              ),
             ),
           ),
-        ),
 
-        // 4 Columns Row
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: branches.map((branch) {
-              return SizedBox(
-                width: branchWidth,
-                child: _buildBranchColumn(context, branch, branchWidth),
-              );
-            }).toList(),
+          // 4 Columns Row
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: horizontalMargin),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: branches.map((branch) {
+                return SizedBox(
+                  width: branchWidth,
+                  child: _buildBranchColumn(
+                      context, branch, branchWidth, isLandscape),
+                );
+              }).toList(),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildBranchColumn(
-      BuildContext context, _TreeBranch branch, double branchWidth) {
-    final parentCardWidth = (branchWidth * 0.85).clamp(84.0, 135.0);
+  Widget _buildBranchColumn(BuildContext context, _TreeBranch branch,
+      double branchWidth, bool isLandscape) {
+    final parentCardWidth = (branchWidth - 3).clamp(58.0, 140.0);
     final childCount = branch.children.length;
 
     return SizedBox(
@@ -193,11 +189,11 @@ class ConceptTreeMapWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Parent Card (Top Tier)
-          _buildParentCard(context, branch, parentCardWidth),
+          _buildParentCard(context, branch, parentCardWidth, isLandscape),
 
           // Branch connector lines to children
           SizedBox(
-            height: 22,
+            height: isLandscape ? 18 : 14,
             width: branchWidth,
             child: CustomPaint(
               painter: _BranchToChildrenConnectorPainter(
@@ -213,12 +209,13 @@ class ConceptTreeMapWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: branch.children.map((child) {
               final childWidth = childCount == 2
-                  ? ((branchWidth - 14) / 2).clamp(48.0, 78.0)
-                  : (branchWidth * 0.70).clamp(65.0, 105.0);
+                  ? ((branchWidth - 4) / 2).clamp(26.0, 68.0)
+                  : (branchWidth - 6).clamp(46.0, 95.0);
 
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2.5),
-                child: _buildChildCard(context, child, childWidth),
+                padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                child: _buildChildCard(
+                    context, child, childWidth, childCount, isLandscape),
               );
             }).toList(),
           ),
@@ -227,8 +224,8 @@ class ConceptTreeMapWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildParentCard(
-      BuildContext context, _TreeBranch branch, double width) {
+  Widget _buildParentCard(BuildContext context, _TreeBranch branch,
+      double width, bool isLandscape) {
     return GestureDetector(
       onTap: () => _showDetailDialog(
         context: context,
@@ -243,55 +240,55 @@ class ConceptTreeMapWidget extends StatelessWidget {
         width: width,
         decoration: BoxDecoration(
           color: const Color(0xFFFFFDF7),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(isLandscape ? 10 : 7),
           border: Border.all(
             color: const Color(0xFF2D5A3C).withValues(alpha: 0.45),
-            width: 1.2,
+            width: 1.0,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 3,
+              offset: const Offset(0, 1),
             ),
           ],
         ),
-        padding: const EdgeInsets.all(4),
+        padding: EdgeInsets.all(isLandscape ? 3.0 : 1.8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             // Title
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              padding: const EdgeInsets.symmetric(vertical: 1.0),
               child: Text(
                 branch.title.toUpperCase(),
-                style: const TextStyle(
-                  color: Color(0xFF1E3A2B),
+                style: TextStyle(
+                  color: const Color(0xFF1E3A2B),
                   fontWeight: FontWeight.w900,
-                  fontSize: 10,
-                  letterSpacing: 0.3,
-                  height: 1.1,
+                  fontSize: isLandscape ? 10.5 : 8.0,
+                  letterSpacing: 0.2,
+                  height: 1.05,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 1),
             // Image
             ClipRRect(
-              borderRadius: BorderRadius.circular(7),
+              borderRadius: BorderRadius.circular(isLandscape ? 6 : 4),
               child: Image.asset(
                 branch.imageAsset,
-                height: 52,
+                height: isLandscape ? 52 : 36,
                 width: double.infinity,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
-                  height: 52,
+                  height: isLandscape ? 52 : 36,
                   color: AppColors.warmCream,
                   child: const Center(
                     child: Icon(Icons.rice_bowl_rounded,
-                        color: AppColors.primaryGreen, size: 20),
+                        color: AppColors.primaryGreen, size: 18),
                   ),
                 ),
               ),
@@ -302,8 +299,8 @@ class ConceptTreeMapWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildChildCard(
-      BuildContext context, _TreeChild child, double width) {
+  Widget _buildChildCard(BuildContext context, _TreeChild child, double width,
+      int totalSiblings, bool isLandscape) {
     return GestureDetector(
       onTap: () => _showDetailDialog(
         context: context,
@@ -318,50 +315,54 @@ class ConceptTreeMapWidget extends StatelessWidget {
         width: width,
         decoration: BoxDecoration(
           color: const Color(0xFFFFFDF7),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(isLandscape ? 8 : 5),
           border: Border.all(
             color: const Color(0xFF2D5A3C).withValues(alpha: 0.35),
-            width: 1.0,
+            width: 0.8,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 3,
+              color: Colors.black.withValues(alpha: 0.03),
+              blurRadius: 2,
               offset: const Offset(0, 1),
             ),
           ],
         ),
-        padding: const EdgeInsets.all(3),
+        padding: EdgeInsets.all(isLandscape ? 2.5 : 1.2),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             // Image
             ClipRRect(
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(isLandscape ? 5 : 3),
               child: Image.asset(
                 child.imageAsset,
-                height: 36,
+                height: isLandscape
+                    ? 36
+                    : (totalSiblings == 2 ? 23 : 25),
                 width: double.infinity,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
-                  height: 36,
+                  height: isLandscape ? 36 : 23,
                   color: AppColors.warmCream,
                   child: const Center(
                     child: Icon(Icons.fastfood_rounded,
-                        color: AppColors.warmTerracotta, size: 14),
+                        color: AppColors.warmTerracotta, size: 12),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 1),
             // Title
             Text(
               child.title,
-              style: const TextStyle(
-                color: Color(0xFF2C3E50),
+              style: TextStyle(
+                color: const Color(0xFF2C3E50),
                 fontWeight: FontWeight.w700,
-                fontSize: 8.5,
-                height: 1.1,
+                fontSize: isLandscape
+                    ? 8.5
+                    : (totalSiblings == 2 ? 6.2 : 6.8),
+                height: 1.05,
               ),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -674,7 +675,7 @@ class _RootToParentsConnectorPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final linePaint = Paint()
       ..color = const Color(0xFF2C3E50)
-      ..strokeWidth = 1.6
+      ..strokeWidth = 1.4
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
@@ -683,7 +684,7 @@ class _RootToParentsConnectorPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final rootCenterX = size.width / 2;
-    final midY = size.height * 0.52;
+    final midY = size.height * 0.50;
 
     // Line from root bottom to mid horizontal bar
     canvas.drawLine(
@@ -711,8 +712,8 @@ class _RootToParentsConnectorPainter extends CustomPainter {
 
       // Downward arrow
       final arrow = Path()
-        ..moveTo(cx - 3.0, size.height - 4.5)
-        ..lineTo(cx + 3.0, size.height - 4.5)
+        ..moveTo(cx - 2.5, size.height - 4.0)
+        ..lineTo(cx + 2.5, size.height - 4.0)
         ..lineTo(cx, size.height)
         ..close();
       canvas.drawPath(arrow, arrowPaint);
@@ -739,7 +740,7 @@ class _BranchToChildrenConnectorPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final linePaint = Paint()
       ..color = const Color(0xFF2C3E50)
-      ..strokeWidth = 1.6
+      ..strokeWidth = 1.4
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
@@ -754,16 +755,16 @@ class _BranchToChildrenConnectorPainter extends CustomPainter {
       canvas.drawLine(Offset(cx, 0), Offset(cx, size.height), linePaint);
 
       final arrow = Path()
-        ..moveTo(cx - 3.0, size.height - 4.5)
-        ..lineTo(cx + 3.0, size.height - 4.5)
+        ..moveTo(cx - 2.5, size.height - 4.0)
+        ..lineTo(cx + 2.5, size.height - 4.0)
         ..lineTo(cx, size.height)
         ..close();
       canvas.drawPath(arrow, arrowPaint);
     } else {
       // Split into 2 children
-      final midY = size.height * 0.50;
-      final childWidth = ((branchWidth - 14) / 2).clamp(48.0, 78.0);
-      const spacing = 5.0; // padding horizontal 2.5 * 2
+      final midY = size.height * 0.48;
+      final childWidth = ((branchWidth - 4) / 2).clamp(26.0, 68.0);
+      const spacing = 2.0; // padding horizontal 1.0 * 2
       final halfDistance = (childWidth + spacing) / 2;
 
       final leftChildX = cx - halfDistance;
@@ -783,8 +784,8 @@ class _BranchToChildrenConnectorPainter extends CustomPainter {
       canvas.drawLine(
           Offset(leftChildX, midY), Offset(leftChildX, size.height), linePaint);
       final leftArrow = Path()
-        ..moveTo(leftChildX - 3.0, size.height - 4.5)
-        ..lineTo(leftChildX + 3.0, size.height - 4.5)
+        ..moveTo(leftChildX - 2.5, size.height - 4.0)
+        ..lineTo(leftChildX + 2.5, size.height - 4.0)
         ..lineTo(leftChildX, size.height)
         ..close();
       canvas.drawPath(leftArrow, arrowPaint);
@@ -793,8 +794,8 @@ class _BranchToChildrenConnectorPainter extends CustomPainter {
       canvas.drawLine(Offset(rightChildX, midY),
           Offset(rightChildX, size.height), linePaint);
       final rightArrow = Path()
-        ..moveTo(rightChildX - 3.0, size.height - 4.5)
-        ..lineTo(rightChildX + 3.0, size.height - 4.5)
+        ..moveTo(rightChildX - 2.5, size.height - 4.0)
+        ..lineTo(rightChildX + 2.5, size.height - 4.0)
         ..lineTo(rightChildX, size.height)
         ..close();
       canvas.drawPath(rightArrow, arrowPaint);
