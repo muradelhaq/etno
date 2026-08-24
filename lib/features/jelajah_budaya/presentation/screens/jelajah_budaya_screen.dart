@@ -9,6 +9,7 @@ import '../../../../core/widgets/ethno_card.dart';
 import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
 import '../../data/models/region_culture_model.dart';
+import '../widgets/indonesia_map_widget.dart';
 
 class JelajahBudayaScreen extends ConsumerStatefulWidget {
   const JelajahBudayaScreen({super.key});
@@ -78,59 +79,23 @@ class _JelajahBudayaScreenState extends ConsumerState<JelajahBudayaScreen> {
 
             const SizedBox(height: 16),
 
-            // Interactive Map Visual & Pins Container
+            // Interactive Map Visual & Pins Container (Map of Indonesia & Java)
             EthnoCard(
               padding: const EdgeInsets.all(16),
-              backgroundColor: const Color(0xFFE3F2FD),
+              backgroundColor: const Color(0xFFF4F9FB),
               borderColor: AppColors.primaryLight,
               child: Column(
                 children: [
-                  // Map header
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Pulau Jawa & Tatar Pasundan', style: AppTextStyles.bodyBold.copyWith(color: AppColors.primaryDark)),
-                      const Icon(Icons.map_outlined, color: AppColors.primaryGreen, size: 20),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Map representation with pins
-                  Container(
-                    height: 160,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFD4E6B5),
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.3)),
-                    ),
-                    child: Stack(
-                      children: [
-                        // Decorative water & island contours
-                        Positioned(
-                          left: 20,
-                          top: 50,
-                          right: 20,
-                          height: 60,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF81C784),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                        ),
-
-                        // Region Pins
-                        _buildMapPin('banyumas', 'Banyumas (Mendoan)', top: 60, right: 40),
-                        _buildMapPin('tasikmalaya', 'Tasik (Nasi TO)', top: 75, left: 140),
-                        _buildMapPin('cianjur', 'Cianjur (Tauco)', top: 50, left: 75),
-                        _buildMapPin('purwakarta', 'Purwakarta (Maranggi)', top: 35, left: 95),
-                        _buildMapPin('bandung', 'Bandung (Peuyeum)', top: 65, left: 100),
-                      ],
-                    ),
+                  IndonesiaMapWidget(
+                    selectedRegionId: _selectedRegionId,
+                    onRegionSelected: (id) {
+                      setState(() {
+                        _selectedRegionId = id;
+                      });
+                    },
                   ),
 
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 14),
 
                   // Horizontal selector chips
                   SingleChildScrollView(
@@ -142,9 +107,23 @@ class _JelajahBudayaScreenState extends ConsumerState<JelajahBudayaScreen> {
                         return Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: ChoiceChip(
+                            avatar: Icon(
+                              isSelected ? Icons.check_circle_rounded : Icons.location_on_outlined,
+                              size: 14,
+                              color: isSelected ? Colors.white : AppColors.primaryGreen,
+                            ),
                             label: Text(r.regionName),
                             selected: isSelected,
                             selectedColor: AppColors.primaryGreen,
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                color: isSelected
+                                    ? AppColors.primaryGreen
+                                    : AppColors.borderSubtle,
+                              ),
+                            ),
                             labelStyle: TextStyle(
                               color: isSelected ? Colors.white : AppColors.textPrimary,
                               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
@@ -213,6 +192,56 @@ class _JelajahBudayaScreenState extends ConsumerState<JelajahBudayaScreen> {
                   ),
 
                   const SizedBox(height: 14),
+
+                  // Culinary Photo Banner
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          activeItem.imageAsset,
+                          height: 140,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            height: 120,
+                            color: AppColors.warmCream,
+                            child: const Center(
+                              child: Icon(Icons.restaurant_rounded, size: 36, color: AppColors.primaryGreen),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withValues(alpha: 0.75),
+                                ],
+                              ),
+                            ),
+                            child: Text(
+                              'Kuliner Tradisional: ${activeItem.foodTitle}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 14),
                   const Divider(color: AppColors.borderSubtle),
                   const SizedBox(height: 10),
 
@@ -267,55 +296,6 @@ class _JelajahBudayaScreenState extends ConsumerState<JelajahBudayaScreen> {
             ),
 
             const SizedBox(height: 24),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMapPin(String regionId, String label, {double? top, double? bottom, double? left, double? right}) {
-    final isSelected = _selectedRegionId == regionId;
-
-    return Positioned(
-      top: top,
-      bottom: bottom,
-      left: left,
-      right: right,
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            _selectedRegionId = regionId;
-          });
-        },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: isSelected ? AppColors.errorRed : AppColors.primaryDark,
-                shape: BoxShape.circle,
-                boxShadow: const [
-                  BoxShadow(color: Colors.black26, blurRadius: 4),
-                ],
-              ),
-              child: const Icon(Icons.place, color: Colors.white, size: 16),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.9),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Text(
-                label.split(' ').first,
-                style: TextStyle(
-                  fontSize: 9,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  color: isSelected ? AppColors.errorRed : AppColors.primaryDark,
-                ),
-              ),
-            ),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../../features/cover/presentation/screens/cover_screen.dart';
 import '../../features/apersepsi/presentation/screens/apersepsi_screen.dart';
 import '../../features/peta_konsep/presentation/screens/peta_konsep_screen.dart';
@@ -13,10 +14,18 @@ import '../../features/literasi_sains/presentation/screens/pisa_quiz_screen.dart
 import '../../features/sertifikat/presentation/screens/certificate_view_screen.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/splash',
   routes: [
     GoRoute(
+      path: '/splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
       path: '/',
+      builder: (context, state) => const CoverScreen(),
+    ),
+    GoRoute(
+      path: '/cover',
       builder: (context, state) => const CoverScreen(),
     ),
     GoRoute(

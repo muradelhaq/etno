@@ -358,8 +358,20 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
         ),
         child: Row(
           children: [
-            // Step Icon / Visual
-            _buildStepIcon(step.iconType),
+            // Step Illustration (Image or Fallback Icon)
+            if (step.imageAsset != null)
+              Container(
+                width: 44,
+                height: 44,
+                padding: const EdgeInsets.all(2),
+                child: Image.asset(
+                  step.imageAsset!,
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) => _buildStepIcon(step.iconType),
+                ),
+              )
+            else
+              _buildStepIcon(step.iconType),
             const SizedBox(width: 12),
 
             // Step Label
@@ -540,13 +552,14 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
                       ),
                       const SizedBox(height: 8),
 
-                      // Microbe Circular Vector Diagram
+                      // Microbe Circular Diagram from Infographic
                       Center(
                         child: Column(
                           children: [
                             Container(
-                              width: 60,
-                              height: 60,
+                              width: 68,
+                              height: 68,
+                              padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: const Color(0xFFF3F8F2),
@@ -555,41 +568,14 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
                                   width: 1.5,
                                 ),
                               ),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  // Hyphae lines
-                                  Transform.rotate(
-                                    angle: 0.6,
-                                    child: Container(
-                                      width: 44,
-                                      height: 2.5,
-                                      color: const Color(0xFF708D81),
-                                    ),
+                              child: ClipOval(
+                                child: Image.asset(
+                                  'assets/images/tempe_rhizopus_diagram.png',
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (_, __, ___) => const Center(
+                                    child: Icon(Icons.biotech, color: AppColors.primaryGreen),
                                   ),
-                                  Transform.rotate(
-                                    angle: -0.6,
-                                    child: Container(
-                                      width: 44,
-                                      height: 2.5,
-                                      color: const Color(0xFF708D81),
-                                    ),
-                                  ),
-                                  // Sporangium head
-                                  Container(
-                                    width: 18,
-                                    height: 18,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF4A2810),
-                                    ),
-                                    child: const Center(
-                                      child: Icon(Icons.grain,
-                                          color: AppColors.goldenYellow,
-                                          size: 11),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -597,7 +583,7 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
                               'Rhizopus oligosporus',
                               style: TextStyle(
                                 color: Color(0xFF1E3A2B),
-                                fontSize: 9.5,
+                                fontSize: 10.0,
                                 fontWeight: FontWeight.bold,
                                 fontStyle: FontStyle.italic,
                               ),
@@ -652,7 +638,7 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
                 child: _buildFoodProductCard(
                   context: context,
                   title: 'OREK TEMPE',
-                  imageAsset: 'assets/images/food_tempe.jpg',
+                  imageAsset: 'assets/images/food_orek_tempe_slide.png',
                   description:
                       'Potongan tempe yang ditumis gurih manis dengan kecap dan bumbu rempah aromatik Nusantara.',
                   culinaryScience:
@@ -666,7 +652,7 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
                 child: _buildFoodProductCard(
                   context: context,
                   title: 'MENDOAN',
-                  imageAsset: 'assets/images/food_tempe.jpg',
+                  imageAsset: 'assets/images/food_mendoan_slide.png',
                   description:
                       'Tempe tipis khas Banyumas dibalut adonan tepung beras berbumbu dan digoreng mendo (setengah matang).',
                   culinaryScience:
@@ -1086,7 +1072,19 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Row(
           children: [
-            _buildStepIcon(step.iconType),
+            if (step.imageAsset != null)
+              Container(
+                width: 40,
+                height: 40,
+                padding: const EdgeInsets.all(2),
+                child: Image.asset(
+                  step.imageAsset!,
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) => _buildStepIcon(step.iconType),
+                ),
+              )
+            else
+              _buildStepIcon(step.iconType),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
@@ -1332,6 +1330,7 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
     return const [
       _ProcessStepItem(
         title: 'Kedelai',
+        imageAsset: 'assets/images/tempe_step1_kedelai.png',
         iconType: _StepIconType.kedelai,
         description:
             'Pemilihan biji kedelai kuning (Glycine max) berkualitas tinggi yang utuh dan bersih.',
@@ -1340,6 +1339,7 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
       ),
       _ProcessStepItem(
         title: 'Perendaman',
+        imageAsset: 'assets/images/tempe_step2_perendaman.png',
         iconType: _StepIconType.perendaman,
         description:
             'Kedelai direndam dalam air bersih selama 12–24 jam pada suhu ruang.',
@@ -1348,6 +1348,7 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
       ),
       _ProcessStepItem(
         title: 'Perebusan',
+        imageAsset: 'assets/images/tempe_step3_perebusan.png',
         iconType: _StepIconType.perebusan,
         description:
             'Kedelai direbus dalam air mendidih hingga melunak, lalu kulit ari dikupas.',
@@ -1357,6 +1358,7 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
       _ProcessStepItem(
         title: 'Pemberian Ragi',
         subtitle: '(Rhizopus oligosporus)',
+        imageAsset: 'assets/images/tempe_step4_ragi.png',
         iconType: _StepIconType.ragi,
         description:
             'Kedelai ditiriskan hingga kering dan dingin (suhu ruang), lalu diinokulasi spora kapang tempe.',
@@ -1365,7 +1367,8 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
       ),
       _ProcessStepItem(
         title: 'Pembungkusan',
-        subtitle: '(daun / plastik berlubang)',
+        subtitle: '(daun/ plastik berlubang)',
+        imageAsset: 'assets/images/tempe_step5_bungkus.png',
         iconType: _StepIconType.pembungkusan,
         description:
             'Kedelai beragi dibungkus daun pisang atau plastik dengan lubang jarum ventilasi mikro.',
@@ -1374,6 +1377,7 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
       ),
       _ProcessStepItem(
         title: 'Fermentasi 36-48 jam',
+        imageAsset: 'assets/images/tempe_step6_fermentasi.png',
         iconType: _StepIconType.fermentasi,
         description:
             'Paket tempe diperam di tempat hangat dan gelap pada suhu 28–32°C selama 36–48 jam.',
@@ -1382,6 +1386,7 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
       ),
       _ProcessStepItem(
         title: 'Tempe',
+        imageAsset: 'assets/images/tempe_step7_tempe.png',
         iconType: _StepIconType.tempe,
         description:
             'Tempe matang dengan miselium putih padat beraroma khas siap dikonsumsi atau diolah.',
@@ -1422,6 +1427,7 @@ enum _StepIconType {
 class _ProcessStepItem {
   final String title;
   final String? subtitle;
+  final String? imageAsset;
   final _StepIconType iconType;
   final String description;
   final String biologicalExplanation;
@@ -1429,6 +1435,7 @@ class _ProcessStepItem {
   const _ProcessStepItem({
     required this.title,
     this.subtitle,
+    this.imageAsset,
     required this.iconType,
     required this.description,
     required this.biologicalExplanation,

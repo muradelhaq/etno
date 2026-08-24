@@ -1,7 +1,7 @@
 name: e_modul_etnosains
 description: "Aplikasi E-Modul Etnosains Makanan Tradisional Berbasis Fermentasi"
 publish_to: 'none'
-version: 1.0.5+6
+version: 1.0.6+7
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
