@@ -169,10 +169,12 @@ Untuk memastikan kejelasan batas operasional dan lingkup fungsionalitas aplikasi
 
 ---
 
-## 6. 🚀 Roadmap Pengembangan Lanjutan (Future Enhancements)
+## 6. 🚀 Roadmap Pengembangan Prioritas (Next Priority Roadmap)
 
-- [ ] **Export to Excel / CSV**: Tombol unduh rekap nilai seluruh siswa dalam format `.xlsx` atau `.csv` untuk arsip guru.
-- [ ] **Guru Feedback / Nilai Manual**: Formulir bagi guru untuk memberikan komentar kualitatif dan nilai rubrik pada jawaban studi kasus siswa.
-- [ ] **Date Range Filter**: Filter tanggal pengumpulan tugas dan kuis berdasarkan pertemuan tatap muka / pekan pembelajaran.
-- [ ] **Dynamic Quiz Management**: Portal khusus untuk guru membuat dan menyusun paket soal kuis baru langsung dari database.
-- [ ] **Push Notification / Realtime Subscription**: Notifikasi instan saat siswa baru saja mengirimkan jawaban studi kasus.
+Berdasarkan kebutuhan utama pengelolaan kelas oleh Guru, roadmap pengembangan prioritas berikutnya difokuskan pada 2 fitur utama:
+
+1. 📥 **Fitur Ekspor Rekap Nilai ke Excel / CSV (`.xlsx` / `.csv`)**:
+   - Menambahkan tombol unduh laporan rekapitulasi nilai kelas, daftar perolehan skor Pre-test & Post-test PISA, ketercapaian KKM, serta transkrip jawaban studi kasus dalam format spreadsheet Excel / CSV untuk mempermudah pengolahan nilai dan arsip kurikulum guru.
+
+2. 🔔 **Fitur Push Notification / Real-time Live Alert (Supabase Realtime)**:
+   - Mengaktifkan fitur *Supabase Realtime Channel Subscription* untuk memberikan notifikasi visual / badge instan pada layar Dashboard Guru ketika ada siswa yang baru saja menyelesaikan kuis evaluasi atau mengirimkan respons analisis studi kasus baru.
