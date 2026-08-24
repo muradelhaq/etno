@@ -144,6 +144,8 @@ Dashboard Guru dibangun dengan antarmuka modern, intuitif, dan responsif (menduk
 | **TSK-12** | Sertifikat Dinamis | Integrasi Nama, Kelas, dan Asal Sekolah ke `CertificateViewScreen` dan `CertificateGenerator` PDF | ✅ **SELESAI** |
 | **TSK-13** | Validasi & QA | Pengujian `flutter analyze` (0 issue) dan kompilasi Web Server | ✅ **SELESAI** |
 | **TSK-14** | Release v1.0.7 | Tagging `v1.0.7` dan sinkronisasi push ke GitHub repository | ✅ **SELESAI** |
+| **TSK-15** | Ekspor Excel / CSV | Implementasi `ReportExportService` (Rekap Nilai, Transkrip Studi Kasus, Laporan Lengkap Terpadu ber-UTF-8 BOM) | ✅ **SELESAI** |
+| **TSK-16** | Supabase Realtime | Integrasi `RealtimeChannel` WebSocket untuk live alerts, event counter, dan auto-sync tanpa reload | ✅ **SELESAI** |
 
 ---
 
@@ -153,7 +155,7 @@ Untuk memastikan kejelasan batas operasional dan lingkup fungsionalitas aplikasi
 
 ### A. Batasan Autentikasi & Keamanan (Security & Access Scope)
 1. **Proteksi Akses Guru Berbasis PIN**: Akses ke Dashboard Admin menggunakan PIN/Kata Sandi statis (`123456`), belum menggunakan sistem autentikasi multi-user berbasis Email/Password atau Single Sign-On (SSO) per individu guru.
-2. **Karakteristik Hak Akses Admin (Read-Only)**: Dashboard Admin saat ini difokuskan sebagai alat **pemantauan & analisis evaluasi** (*read-only monitoring*). Admin belum dapat mengubah (*edit/update*) jawaban atau nilai yang telah dikirimkan siswa secara langsung dari dashboard.
+2. **Karakteristik Hak Akses Admin (Read-Only & Monitoring)**: Dashboard Admin saat ini difokuskan sebagai alat **pemantauan, analisis evaluasi, dan ekspor laporan**. Admin belum dapat mengubah (*edit/update*) jawaban atau nilai yang telah dikirimkan siswa secara langsung dari dashboard.
 3. **Pendaftaran Siswa Tanpa Kata Sandi**: Siswa hanya memasukkan *Nama Lengkap, Kelas, dan Nama Sekolah* tanpa verifikasi email atau kata sandi guna mempermudah akses belajar di kelas tanpa hambatan lupa sandi.
 
 ### B. Batasan Penyimpanan & Manajemen Konten (Data & Content Scope)
@@ -164,17 +166,16 @@ Untuk memastikan kejelasan batas operasional dan lingkup fungsionalitas aplikasi
 1. **Single-Project Database**: Seluruh data siswa dari berbagai sekolah tersimpan dalam satu project Supabase yang sama. Pemisahan data dilakukan melalui filter nama sekolah dan kelas, belum berupa isolasi database per sekolah (*multi-tenant database isolation*).
 
 ### D. Batasan Jaringan & Sinkronisasi (Network & Offline Scope)
-1. **Kebutuhan Koneksi Internet untuk Sinkronisasi**: Pengiriman jawaban studi kasus dan nilai kuis ke dashboard admin memerlukan koneksi internet aktif. Jika perangkat siswa offline, progres disimpan pada penyimpanan lokal perangkat (`SharedPreferences`) dan tidak akan muncul di dashboard admin sampai data disinkronkan saat terhubung ke internet.
-2. **Belum Ada Ekspor Berkas Fisik (Excel / CSV)**: Rekapitulasi nilai saat ini disajikan secara visual di layar dashboard dan belum memiliki tombol ekspor langsung menjadi file fisik `.xlsx` atau `.csv`.
+1. **Kebutuhan Koneksi Internet untuk Sinkronisasi Cloud**: Pengiriman jawaban studi kasus dan nilai kuis ke dashboard admin memerlukan koneksi internet aktif. Jika perangkat siswa offline, progres disimpan pada penyimpanan lokal perangkat (`SharedPreferences`) dan akan otomatis disinkronkan saat terhubung ke internet.
+2. **Ekspor Berkas Fisik (Excel / CSV) Telah Tersedia**: Rekapitulasi nilai dan transkrip jawaban kini dapat diunduh secara instan dalam format `.csv` ber-BOM UTF-8 yang sepenuhnya kompatibel dengan Microsoft Excel dan Google Sheets.
 
 ---
 
-## 6. 🚀 Roadmap Pengembangan Prioritas (Next Priority Roadmap)
+## 6. 🚀 Fitur Baru Selesai Diimplementasikan (Completed Roadmap)
 
-Berdasarkan kebutuhan utama pengelolaan kelas oleh Guru, roadmap pengembangan prioritas berikutnya difokuskan pada 2 fitur utama:
+1. ✅ 📥 **Fitur Ekspor Rekap Nilai ke Excel / CSV (`.xlsx` / `.csv`)**:
+   - Menambahkan tombol unduh laporan rekapitulasi nilai kelas, daftar perolehan skor Pre-test & Post-test PISA, ketercapaian KKM, serta transkrip jawaban studi kasus dalam format spreadsheet Excel / CSV dengan encoding UTF-8 BOM dan standard RFC-4180.
 
-1. 📥 **Fitur Ekspor Rekap Nilai ke Excel / CSV (`.xlsx` / `.csv`)**:
-   - Menambahkan tombol unduh laporan rekapitulasi nilai kelas, daftar perolehan skor Pre-test & Post-test PISA, ketercapaian KKM, serta transkrip jawaban studi kasus dalam format spreadsheet Excel / CSV untuk mempermudah pengolahan nilai dan arsip kurikulum guru.
+2. ✅ 🔔 **Fitur Push Notification / Real-time Live Alert (Supabase Realtime)**:
+   - Mengaktifkan fitur *Supabase Realtime Channel Subscription* untuk memberikan notifikasi visual / badge instan pada layar Dashboard Guru ketika ada siswa yang baru saja menyelesaikan kuis evaluasi atau mengirimkan respons analisis studi kasus baru, serta auto-sync data tanpa perlu reload manual.
 
-2. 🔔 **Fitur Push Notification / Real-time Live Alert (Supabase Realtime)**:
-   - Mengaktifkan fitur *Supabase Realtime Channel Subscription* untuk memberikan notifikasi visual / badge instan pada layar Dashboard Guru ketika ada siswa yang baru saja menyelesaikan kuis evaluasi atau mengirimkan respons analisis studi kasus baru.

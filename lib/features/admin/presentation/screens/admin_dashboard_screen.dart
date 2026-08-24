@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/services/supabase_service.dart';
 import '../../../../core/theme/text_styles.dart';
+import '../../../../core/utils/report_export_service.dart';
 import '../../../../core/widgets/ethno_card.dart';
 
 class AdminDashboardScreen extends ConsumerStatefulWidget {
@@ -20,9 +22,14 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
   late TabController _tabController;
 
   bool _isLoading = true;
+  bool _isExporting = false;
   List<Map<String, dynamic>> _students = [];
   List<Map<String, dynamic>> _quizzes = [];
   List<Map<String, dynamic>> _opinions = [];
+
+  // Realtime Channel
+  RealtimeChannel? _realtimeChannel;
+  int _liveEventCount = 0;
 
   // Filter States
   String _selectedClassFilter = 'all';
@@ -35,12 +42,90 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _loadDashboardData();
+    _setupRealtimeSubscription();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    if (_realtimeChannel != null) {
+      SupabaseService.client.removeChannel(_realtimeChannel!);
+    }
     super.dispose();
+  }
+
+  void _setupRealtimeSubscription() {
+    try {
+      _realtimeChannel = SupabaseService.subscribeToDashboardChanges(
+        onNewQuiz: (record) {
+          if (!mounted) return;
+          setState(() {
+            _quizzes.insert(0, record);
+            _liveEventCount++;
+          });
+          _showLiveAlert(
+            title: '🔔 Evaluasi Kuis Masuk!',
+            message: '${record['student_name'] ?? 'Siswa'} (${record['student_class'] ?? '-'}) menyelesaikan kuis (Skor: ${record['score'] ?? 0}).',
+            color: const Color(0xFF2E7D32),
+          );
+        },
+        onNewOpinion: (record) {
+          if (!mounted) return;
+          setState(() {
+            _opinions.insert(0, record);
+            _liveEventCount++;
+          });
+          _showLiveAlert(
+            title: '💬 Studi Kasus Baru Masuk!',
+            message: '${record['student_name'] ?? 'Siswa'} mengirim opini inkuiri pada Modul ${(record['module_id'] ?? '').toString().toUpperCase()}.',
+            color: const Color(0xFFE65100),
+          );
+        },
+        onUserChange: (record) {
+          if (!mounted) return;
+          setState(() {
+            final idx = _students.indexWhere((s) => s['id'] == record['id']);
+            if (idx >= 0) {
+              _students[idx] = record;
+            } else {
+              _students.insert(0, record);
+            }
+            _liveEventCount++;
+          });
+        },
+      );
+    } catch (e) {
+      debugPrint('Error setting up realtime subscription: $e');
+    }
+  }
+
+  void _showLiveAlert({required String title, required String message, required Color color}) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.bolt_rounded, color: AppColors.goldenYellow, size: 24),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.white)),
+                  Text(message, style: const TextStyle(fontSize: 11.5, color: Colors.white)),
+                ],
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: color,
+        duration: const Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        margin: const EdgeInsets.all(16),
+      ),
+    );
   }
 
   Future<void> _loadDashboardData() async {
@@ -64,6 +149,196 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
         setState(() => _isLoading = false);
       }
     }
+  }
+
+  Future<void> _handleExport(Future<bool> Function() exportFn, String successMessage) async {
+    setState(() => _isExporting = true);
+    try {
+      final success = await exportFn();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(success ? Icons.check_circle_rounded : Icons.error_outline_rounded, color: Colors.white),
+                const SizedBox(width: 10),
+                Text(success ? successMessage : 'Gagal mengekspor laporan.'),
+              ],
+            ),
+            backgroundColor: success ? const Color(0xFF2D6A4F) : Colors.red,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Terjadi kesalahan ekspor: $e'),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isExporting = false);
+      }
+    }
+  }
+
+  void _showExportModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        padding: const EdgeInsets.all(22),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E3A2B).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(Icons.file_download_rounded, color: Color(0xFF1E3A2B), size: 26),
+                ),
+                const SizedBox(width: 14),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Ekspor Laporan (Excel / CSV)',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1E3A2B)),
+                      ),
+                      Text(
+                        'Format spreadsheet standar UTF-8 BOM kompatibel dengan Microsoft Excel & Google Sheets',
+                        style: TextStyle(fontSize: 11, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 18),
+            _buildExportTile(
+              icon: Icons.table_chart_rounded,
+              title: '1. Rekapitulasi Nilai & KKM Siswa',
+              subtitle: 'Nilai Pre-test, Post-test PISA, ketercapaian KKM (>=75), Gain score, & XP.',
+              color: const Color(0xFF2D6A4F),
+              onTap: () {
+                Navigator.pop(ctx);
+                _handleExport(
+                  () => ReportExportService.exportStudentScoresCsv(
+                    students: _students,
+                    quizzes: _quizzes,
+                  ),
+                  'Rekap Nilai Siswa berhasil diekspor!',
+                );
+              },
+            ),
+            const SizedBox(height: 10),
+            _buildExportTile(
+              icon: Icons.forum_rounded,
+              title: '2. Transkrip Jawaban Studi Kasus Inkuiri',
+              subtitle: 'Koleksi penalaran ilmiah, hipotesis, dan rumusan masalah per modul pangan.',
+              color: const Color(0xFFBC6C25),
+              onTap: () {
+                Navigator.pop(ctx);
+                _handleExport(
+                  () => ReportExportService.exportCaseStudyResponsesCsv(
+                    opinions: _opinions,
+                  ),
+                  'Transkrip Studi Kasus berhasil diekspor!',
+                );
+              },
+            ),
+            const SizedBox(height: 10),
+            _buildExportTile(
+              icon: Icons.description_rounded,
+              title: '3. Laporan Lengkap Terpadu (Semua Data)',
+              subtitle: 'Statistik eksekutif kelas, tabel rekap nilai, & seluruh jawaban studi kasus.',
+              color: const Color(0xFF1B4332),
+              onTap: () {
+                Navigator.pop(ctx);
+                _handleExport(
+                  () => ReportExportService.exportFullClassReportCsv(
+                    students: _students,
+                    quizzes: _quizzes,
+                    opinions: _opinions,
+                  ),
+                  'Laporan Lengkap Kelas berhasil diekspor!',
+                );
+              },
+            ),
+            const SizedBox(height: 14),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExportTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(icon, color: color, size: 22),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF1E3A2B)),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -100,11 +375,17 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                     color: Color(0xFF4CAF50),
                     shape: BoxShape.circle,
                   ),
-                ),
+                ).animate(onPlay: (controller) => controller.repeat(reverse: true)).scale(
+                      begin: const Offset(0.8, 0.8),
+                      end: const Offset(1.3, 1.3),
+                      duration: 800.ms,
+                    ),
                 const SizedBox(width: 6),
-                const Text(
-                  'Database Supabase Online • Real-time Monitoring',
-                  style: TextStyle(
+                Text(
+                  _liveEventCount > 0
+                      ? 'Live Sync Aktif • $_liveEventCount aktivitas masuk'
+                      : 'Database Supabase Online • Real-time Live Connected',
+                  style: const TextStyle(
                     color: Color(0xFFB8D5C2),
                     fontSize: 11,
                   ),
@@ -114,8 +395,25 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
           ],
         ),
         actions: [
+          // Tombol Ekspor Excel / CSV
+          _isExporting
+              ? const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 14),
+                  child: Center(
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.goldenYellow),
+                    ),
+                  ),
+                )
+              : IconButton(
+                  icon: const Icon(Icons.file_download_rounded, color: AppColors.goldenYellow),
+                  onPressed: () => _showExportModal(context),
+                  tooltip: 'Ekspor Rekap Nilai (Excel / CSV)',
+                ),
           IconButton(
-            icon: const Icon(Icons.refresh_rounded, color: AppColors.goldenYellow),
+            icon: const Icon(Icons.refresh_rounded, color: Colors.white),
             onPressed: _loadDashboardData,
             tooltip: 'Segarkan Data',
           ),

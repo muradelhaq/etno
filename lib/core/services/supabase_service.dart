@@ -295,4 +295,47 @@ class SupabaseService {
       return {};
     }
   }
+
+  // ===========================================================================
+  // 6. REALTIME SUBSCRIPTIONS
+  // ===========================================================================
+
+  /// Berlangganan event real-time perubahan data Supabase (Kuis, Studi Kasus, dan Siswa)
+  static RealtimeChannel subscribeToDashboardChanges({
+    required void Function(Map<String, dynamic> record) onNewQuiz,
+    required void Function(Map<String, dynamic> record) onNewOpinion,
+    required void Function(Map<String, dynamic> record) onUserChange,
+  }) {
+    final channel = client.channel('public:admin_monitoring_${DateTime.now().millisecondsSinceEpoch}');
+
+    channel
+      ..onPostgresChanges(
+        event: PostgresChangeEvent.insert,
+        schema: 'public',
+        table: 'quiz_results',
+        callback: (payload) {
+          onNewQuiz(payload.newRecord);
+        },
+      )
+      ..onPostgresChanges(
+        event: PostgresChangeEvent.insert,
+        schema: 'public',
+        table: 'case_study_answers',
+        callback: (payload) {
+          onNewOpinion(payload.newRecord);
+        },
+      )
+      ..onPostgresChanges(
+        event: PostgresChangeEvent.all,
+        schema: 'public',
+        table: 'users',
+        callback: (payload) {
+          onUserChange(payload.newRecord);
+        },
+      )
+      ..subscribe();
+
+    return channel;
+  }
 }
+

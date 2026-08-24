@@ -97,7 +97,21 @@
 
 ---
 
-## 7. 🧪 Panduan Langkah Cepat Pengujian Mandiri
+## 7. 📥 Kategori 7: Fitur Ekspor Excel / CSV & Supabase Realtime Live Alert
+
+| No | Komponen / Skenario Uji | Deskripsi Tindakan & Hasil yang Diharapkan | Status Sistem | Verifikasi Manual |
+| :---: | :--- | :--- | :---: | :---: |
+| 7.1 | **Tombol Ekspor di AppBar** | Ikon file download kuning di AppBar $\rightarrow$ Muncul bottom sheet 3 pilihan format ekspor. | [x] **BERJALAN** | [ ] |
+| 7.2 | **Ekspor Rekap Nilai Siswa** | Klik opsi 1 $\rightarrow$ File `.csv` terunduh/terbuka dengan tabel nilai pre/post-test, KKM, Gain, dan XP (ber-UTF-8 BOM). | [x] **BERJALAN** | [ ] |
+| 7.3 | **Ekspor Transkrip Studi Kasus** | Klik opsi 2 $\rightarrow$ File `.csv` terunduh memuat seluruh rumusan masalah, hipotesis, dan opini inkuiri per modul. | [x] **BERJALAN** | [ ] |
+| 7.4 | **Ekspor Laporan Lengkap Terpadu** | Klik opsi 3 $\rightarrow$ File `.csv` terunduh memuat ringkasan eksekutif kelas, tabel nilai siswa, dan transkrip studi kasus. | [x] **BERJALAN** | [ ] |
+| 7.5 | **Indikator Realtime Live** | Titik hijau berdenyut (*pulse animation*) di AppBar dengan teks *"Live Connected"*. | [x] **BERJALAN** | [ ] |
+| 7.6 | **Live Alert Evaluasi Masuk** | Saat siswa submit kuis evaluasi di tab/device lain $\rightarrow$ Muncul floating banner hijau notifikasi kuis masuk dan list terupdate instan. | [x] **BERJALAN** | [ ] |
+| 7.7 | **Live Alert Studi Kasus Masuk** | Saat siswa mengirim studi kasus di tab/device lain $\rightarrow$ Muncul floating banner oranye notifikasi opini masuk dan list terupdate instan. | [x] **BERJALAN** | [ ] |
+
+---
+
+## 8. 🧪 Panduan Langkah Cepat Pengujian Mandiri
 
 1. **Jalankan Aplikasi Web**:
    Buka browser dan akses **[http://localhost:8080](http://localhost:8080)**.
@@ -110,7 +124,10 @@
 4. **Buka Portal Admin**:
    - Buka menu drawer samping, klik tombol **"Guru"** (atau buka URL `http://localhost:8080/#/admin`).
    - Masukkan PIN: **`123456`**.
-5. **Verifikasi Tiga Tab**:
+5. **Verifikasi Fitur**:
    - Periksa apakah angka statistik bertambah di **Tab 1**.
    - Periksa apakah profil siswa dan skornya muncul di **Tab 2**.
    - Periksa apakah teks jawaban yang baru saja diketik terbaca utuh di **Tab 3**.
+   - Klik ikon **Unduh (Ekspor)** di AppBar dan verifikasi file CSV terbuka rapi di Excel/Google Sheets.
+   - Buka 2 tab browser berbeda untuk menguji **Live Alert Realtime** saat siswa submit kuis.
+
