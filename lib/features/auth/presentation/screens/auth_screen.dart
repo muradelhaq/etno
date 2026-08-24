@@ -303,12 +303,15 @@ class _AuthScreenState extends ConsumerState<AuthScreen> with SingleTickerProvid
                         children: [
                           Icon(Icons.cloud_done_rounded, size: 14, color: Color(0xFF2E7D32)),
                           SizedBox(width: 6),
-                          Text(
-                            'Database Supabase Aktif & Tersinkronisasi',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Color(0xFF2E7D32),
-                              fontWeight: FontWeight.w600,
+                          Flexible(
+                            child: Text(
+                              'Database Supabase Aktif & Tersinkronisasi',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Color(0xFF2E7D32),
+                                fontWeight: FontWeight.w600,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],

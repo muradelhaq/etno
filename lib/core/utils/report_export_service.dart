@@ -25,6 +25,26 @@ class ReportExportService {
     return [...bom, ...utf8Bytes];
   }
 
+  static String _formatDisplayDate(DateTime dt) {
+    try {
+      return DateFormat('d MMMM yyyy, HH:mm', 'id_ID').format(dt);
+    } catch (_) {
+      return DateFormat('yyyy-MM-dd HH:mm').format(dt);
+    }
+  }
+
+  static String _formatDateTimeSafe(String? isoString, {bool withSeconds = false}) {
+    if (isoString == null) return '-';
+    final dt = DateTime.tryParse(isoString);
+    if (dt == null) return '-';
+    try {
+      final pattern = withSeconds ? 'dd/MM/yyyy HH:mm:ss' : 'dd/MM/yyyy HH:mm';
+      return DateFormat(pattern).format(dt);
+    } catch (_) {
+      return dt.toIso8601String();
+    }
+  }
+
   /// 1. Ekspor Rekapitulasi Nilai & Status KKM Siswa
   static Future<bool> exportStudentScoresCsv({
     required List<Map<String, dynamic>> students,
@@ -32,7 +52,7 @@ class ReportExportService {
   }) async {
     final buffer = StringBuffer();
     final nowStr = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-    final displayDate = DateFormat('d MMMM yyyy, HH:mm', 'id_ID').format(DateTime.now());
+    final displayDate = _formatDisplayDate(DateTime.now());
 
     // Title & Metadata
     buffer.writeln(_escapeCsv('REKAPITULASI NILAI EVALUASI DAN PROGRESS SISWA'));
@@ -71,31 +91,22 @@ class ReportExportService {
             (qName.trim().toLowerCase() == studentName.trim().toLowerCase());
       }).toList();
 
-      final preTest = studentQuizzes.firstWhere(
+      final preTest = studentQuizzes.where(
         (q) => (q['quiz_type'] ?? '').toString().toLowerCase().contains('pre'),
-        orElse: () => <String, dynamic>{},
-      );
-      final postTest = studentQuizzes.firstWhere(
+      ).firstOrNull;
+      final postTest = studentQuizzes.where(
         (q) =>
             (q['quiz_type'] ?? '').toString().toLowerCase().contains('post') ||
             (q['quiz_type'] ?? '').toString().toLowerCase().contains('evaluasi'),
-        orElse: () => <String, dynamic>{},
-      );
+      ).firstOrNull;
 
-      final preScore = (preTest['score'] as num?)?.toDouble();
-      final postScore = (postTest['score'] as num?)?.toDouble();
+      final preScore = (preTest?['score'] as num?)?.toDouble();
+      final postScore = (postTest?['score'] as num?)?.toDouble();
       final double? gain = (postScore != null && preScore != null) ? (postScore - preScore) : null;
       final isPassedKkm = postScore != null ? (postScore >= 75.0 ? 'TUNTAS' : 'BELUM TUNTAS') : 'BELUM UJIAN';
 
-      final lastActiveRaw = s['last_active']?.toString();
-      final lastActive = lastActiveRaw != null
-          ? DateFormat('dd/MM/yyyy HH:mm').format(DateTime.tryParse(lastActiveRaw) ?? DateTime.now())
-          : '-';
-
-      final createdAtRaw = s['created_at']?.toString();
-      final createdAt = createdAtRaw != null
-          ? DateFormat('dd/MM/yyyy HH:mm').format(DateTime.tryParse(createdAtRaw) ?? DateTime.now())
-          : '-';
+      final lastActive = _formatDateTimeSafe(s['last_active']?.toString());
+      final createdAt = _formatDateTimeSafe(s['created_at']?.toString());
 
       final row = [
         (i + 1).toString(),
@@ -130,7 +141,7 @@ class ReportExportService {
   }) async {
     final buffer = StringBuffer();
     final nowStr = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-    final displayDate = DateFormat('d MMMM yyyy, HH:mm', 'id_ID').format(DateTime.now());
+    final displayDate = _formatDisplayDate(DateTime.now());
 
     // Title & Metadata
     buffer.writeln(_escapeCsv('TRANSKRIP JAWABAN STUDI KASUS & HIPOTESIS SISWA'));
@@ -156,10 +167,7 @@ class ReportExportService {
     // Populate Rows
     for (int i = 0; i < opinions.length; i++) {
       final op = opinions[i];
-      final submittedAtRaw = op['submitted_at']?.toString();
-      final submittedAt = submittedAtRaw != null
-          ? DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.tryParse(submittedAtRaw) ?? DateTime.now())
-          : '-';
+      final submittedAt = _formatDateTimeSafe(op['submitted_at']?.toString(), withSeconds: true);
 
       final row = [
         (i + 1).toString(),
@@ -194,7 +202,7 @@ class ReportExportService {
   }) async {
     final buffer = StringBuffer();
     final nowStr = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-    final displayDate = DateFormat('d MMMM yyyy, HH:mm', 'id_ID').format(DateTime.now());
+    final displayDate = _formatDisplayDate(DateTime.now());
 
     // Hitung Statistik Agregat Kelas
     final totalStudents = students.length;
@@ -259,19 +267,17 @@ class ReportExportService {
             (qName.trim().toLowerCase() == studentName.trim().toLowerCase());
       }).toList();
 
-      final preTest = studentQuizzes.firstWhere(
+      final preTest = studentQuizzes.where(
         (q) => (q['quiz_type'] ?? '').toString().toLowerCase().contains('pre'),
-        orElse: () => <String, dynamic>{},
-      );
-      final postTest = studentQuizzes.firstWhere(
+      ).firstOrNull;
+      final postTest = studentQuizzes.where(
         (q) =>
             (q['quiz_type'] ?? '').toString().toLowerCase().contains('post') ||
             (q['quiz_type'] ?? '').toString().toLowerCase().contains('evaluasi'),
-        orElse: () => <String, dynamic>{},
-      );
+      ).firstOrNull;
 
-      final preScore = (preTest['score'] as num?)?.toDouble();
-      final postScore = (postTest['score'] as num?)?.toDouble();
+      final preScore = (preTest?['score'] as num?)?.toDouble();
+      final postScore = (postTest?['score'] as num?)?.toDouble();
       final gain = (postScore != null && preScore != null) ? (postScore - preScore) : null;
       final kkm = postScore != null ? (postScore >= 75.0 ? 'TUNTAS' : 'BELUM TUNTAS') : 'BELUM UJIAN';
 
