@@ -146,6 +146,8 @@ Dashboard Guru dibangun dengan antarmuka modern, intuitif, dan responsif (menduk
 | **TSK-14** | Release v1.0.7 | Tagging `v1.0.7` dan sinkronisasi push ke GitHub repository | ✅ **SELESAI** |
 | **TSK-15** | Ekspor Excel / CSV | Implementasi `ReportExportService` (Rekap Nilai, Transkrip Studi Kasus, Laporan Lengkap Terpadu ber-UTF-8 BOM) | ✅ **SELESAI** |
 | **TSK-16** | Supabase Realtime | Integrasi `RealtimeChannel` WebSocket untuk live alerts, event counter, dan auto-sync tanpa reload | ✅ **SELESAI** |
+| **TSK-17** | Virtual Lab Cloud Sync | Sinkronisasi rekaman observasi glukosa & uji organoleptik ke tabel `lab_records` di `virtual_lab_screen.dart` | ✅ **SELESAI** |
+| **TSK-18** | Test Suite Expansion | Penambahan unit & widget test suite (`auth_screen_test.dart`, `admin_dashboard_test.dart`, `virtual_lab_test.dart`) | ✅ **SELESAI** |
 
 ---
 

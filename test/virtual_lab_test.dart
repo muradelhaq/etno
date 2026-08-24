@@ -50,5 +50,11 @@ void main() {
 
     expect(find.byType(VirtualLabScreen), findsOneWidget);
     expect(find.textContaining('Simulasi'), findsWidgets);
+    expect(find.text('Simpan & Rekam Uji Lab ke Portofolio'), findsOneWidget);
+
+    // Test tap save lab record button
+    await tester.tap(find.text('Simpan & Rekam Uji Lab ke Portofolio'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Hasil uji lab'), findsOneWidget);
   });
 }

@@ -9,6 +9,7 @@ import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/ethno_card.dart';
 import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
+import '../../../../core/services/supabase_service.dart';
 import '../../data/models/glucose_experiment_model.dart';
 
 class VirtualLabScreen extends ConsumerStatefulWidget {
@@ -25,6 +26,7 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
   int _fermentationDays = 2;
   bool _isBananaLeaf = true;
   bool _showProcedureGuide = false;
+  bool _isSavingLab = false;
 
   // Mini-Game State (Misi 1, 2, 3)
   int _gameScore = 0;
@@ -315,6 +317,30 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
                         ],
                       ),
                     ],
+                  ),
+                ),
+
+                const SizedBox(height: 14),
+
+                // Button Rekam Hasil Lab ke Cloud Portofolio
+                ElevatedButton.icon(
+                  onPressed: _isSavingLab ? null : () => _recordLabExperiment(simulation),
+                  icon: _isSavingLab
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        )
+                      : const Icon(Icons.cloud_upload_rounded, size: 18),
+                  label: Text(
+                    _isSavingLab ? 'Menyimpan Catatan Lab...' : 'Simpan & Rekam Uji Lab ke Portofolio',
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2E7D32),
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(double.infinity, 42),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                 ),
               ],
@@ -798,5 +824,61 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
         ],
       ),
     );
+  }
+
+  Future<void> _recordLabExperiment(GlucoseExperimentPoint simulation) async {
+    final user = ref.read(userProgressProvider);
+    setState(() => _isSavingLab = true);
+
+    final observationData = {
+      'yeast_percent': _yeastPercent,
+      'fermentation_days': _fermentationDays,
+      'is_banana_leaf': _isBananaLeaf,
+      'container_type': _isBananaLeaf ? 'Daun Pisang (Alami)' : 'Plastik Kedap Udara',
+      'glucose_level': simulation.glucoseLevel,
+      'taste_profile': simulation.tasteProfile,
+      'aroma_profile': simulation.aromaProfile,
+      'texture_profile': simulation.textureProfile,
+      'organoleptic_rating': simulation.organolepticRating,
+      'meets_standard': simulation.glucoseLevel >= 51.14,
+    };
+
+    final conclusion = simulation.glucoseLevel >= 51.14
+        ? 'Konsentrasi ragi ${_yeastPercent.toStringAsFixed(1)}% pada hari ke-$_fermentationDays dengan wadah ${_isBananaLeaf ? "daun pisang" : "plastik"} menghasilkan kadar glukosa optimal ${simulation.glucoseLevel.toStringAsFixed(2)}% (memenuhi standar mutu prima >51,14%).'
+        : 'Konsentrasi ragi ${_yeastPercent.toStringAsFixed(1)}% pada hari ke-$_fermentationDays menghasilkan kadar glukosa ${simulation.glucoseLevel.toStringAsFixed(2)}% dengan profil rasa ${simulation.tasteProfile}.';
+
+    final success = await SupabaseService.saveLabRecord(
+      userId: user.studentId,
+      studentName: user.studentName.isNotEmpty ? user.studentName : 'Siswa',
+      experimentType: 'Simulasi Lab Glukosa Tape Singkong',
+      observationData: observationData,
+      conclusion: conclusion,
+    );
+
+    ref.read(userProgressProvider.notifier).addXP(25);
+
+    if (mounted) {
+      setState(() => _isSavingLab = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.check_circle_rounded, color: Colors.white, size: 20),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  success
+                      ? 'Hasil uji lab berhasil direkam ke Cloud & Portofolio Siswa (+25 XP)!'
+                      : 'Hasil uji lab tersimpan lokal (+25 XP)!',
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: AppColors.primaryGreen,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
   }
 }
