@@ -56,7 +56,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     if (!_navigated && mounted) {
       _navigated = true;
       final user = ref.read(userProgressProvider);
-      if (user.studentName.isEmpty || user.studentName == 'Siswa Etnosains') {
+      if (!user.isRegistered) {
         context.go('/auth');
       } else {
         context.go('/');

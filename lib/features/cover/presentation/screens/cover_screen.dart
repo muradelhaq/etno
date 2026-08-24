@@ -26,6 +26,11 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final user = ref.read(userProgressProvider);
+      if (!user.isRegistered) {
+        context.go('/auth');
+        return;
+      }
       ref.read(userProgressProvider.notifier).markModuleCompleted('cover', xpBonus: 20);
       _checkAutoUpdate();
     });

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../constants/app_colors.dart';
 import '../theme/text_styles.dart';
 import '../providers/landscape_nav_provider.dart';
+import '../../shared/services/local_storage_service.dart';
 import 'app_drawer.dart';
 import 'custom_app_bar.dart';
 import 'module_nav_bar.dart';
@@ -49,6 +51,16 @@ class EthnoScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // If student is not registered, redirect immediately to /auth
+    final userProgress = ref.watch(userProgressProvider);
+    if (!userProgress.isRegistered) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) {
+          context.go('/auth');
+        }
+      });
+    }
+
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
     final isNavVisible = ref.watch(landscapeNavVisibleProvider);

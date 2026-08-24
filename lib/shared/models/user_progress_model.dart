@@ -77,6 +77,11 @@ class UserProgressModel {
     this.caseStudyAnswers = const {},
   });
 
+  bool get isRegistered =>
+      studentId.isNotEmpty &&
+      studentName.trim().isNotEmpty &&
+      studentName.trim() != 'Siswa Etnosains';
+
   UserProgressModel copyWith({
     String? studentId,
     String? studentName,
