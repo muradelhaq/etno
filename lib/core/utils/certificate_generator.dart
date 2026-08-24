@@ -77,8 +77,17 @@ class CertificateGenerator {
                         progress.studentName.toUpperCase(),
                         style: pw.TextStyle(
                           font: fontHeading,
-                          fontSize: 26,
+                          fontSize: 24,
                           color: PdfColor.fromHex('#1B4332'),
+                        ),
+                      ),
+                      pw.SizedBox(height: 2),
+                      pw.Text(
+                        '${progress.studentClass}  •  ${progress.studentSchool}',
+                        style: pw.TextStyle(
+                          font: fontBold,
+                          fontSize: 11,
+                          color: PdfColor.fromHex('#2D6A4F'),
                         ),
                       ),
                       pw.Container(

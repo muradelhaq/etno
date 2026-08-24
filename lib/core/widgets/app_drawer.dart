@@ -140,50 +140,81 @@ class AppDrawer extends ConsumerWidget {
                       child: const Icon(Icons.eco_rounded,
                           color: AppColors.warmCream, size: 28),
                     ),
-                    InkWell(
-                      onTap: () => _showEditNameDialog(context, ref),
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppColors.warmTerracotta,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Admin Shortcut
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                            context.go('/admin');
+                          },
                           borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFD97706),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.admin_panel_settings_rounded, size: 13, color: Colors.white),
+                                SizedBox(width: 4),
+                                Text('Guru', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
+                              ],
+                            ),
+                          ),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.edit_rounded,
-                                size: 14, color: Colors.white),
-                            const SizedBox(width: 4),
-                            Text('Ganti Nama',
-                                style: AppTextStyles.tagText
-                                    .copyWith(color: Colors.white)),
-                          ],
+                        const SizedBox(width: 6),
+                        // Ganti Profil
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                            context.go('/auth');
+                          },
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: AppColors.warmTerracotta,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.person_rounded, size: 13, color: Colors.white),
+                                SizedBox(width: 4),
+                                Text('Profil', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
                 Text(
                   progress.studentName,
                   style: AppTextStyles.h2.copyWith(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 17,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
-                  'E-Modul Etnosains Fermentasi',
+                  '📚 ${progress.studentClass}  •  🏫 ${progress.studentSchool}',
                   style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.sageLight,
-                    fontSize: 12,
+                    fontSize: 11,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
                 // XP and completion banner
                 Row(
                   children: [
@@ -518,42 +549,5 @@ class AppDrawer extends ConsumerWidget {
         ),
       );
     }
-  }
-
-  void _showEditNameDialog(BuildContext context, WidgetRef ref) {
-    final currentName = ref.read(userProgressProvider).studentName;
-    final controller = TextEditingController(text: currentName);
-
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Masukkan Nama Siswa', style: AppTextStyles.h3),
-        content: TextField(
-          controller: controller,
-          decoration: const InputDecoration(
-            hintText: 'Nama lengkap untuk sertifikat',
-            prefixIcon: Icon(Icons.person_rounded),
-          ),
-          autofocus: true,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Batal'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if (controller.text.trim().isNotEmpty) {
-                ref
-                    .read(userProgressProvider.notifier)
-                    .updateStudentName(controller.text.trim());
-              }
-              Navigator.pop(ctx);
-            },
-            child: const Text('Simpan'),
-          ),
-        ],
-      ),
-    );
   }
 }

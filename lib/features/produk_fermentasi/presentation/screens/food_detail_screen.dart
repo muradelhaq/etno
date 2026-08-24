@@ -6,6 +6,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/ethno_scaffold.dart';
+import '../../../../core/services/supabase_service.dart';
 import '../../../../shared/services/local_storage_service.dart';
 import '../../domain/entities/fermented_food_entity.dart';
 import '../../data/models/fermented_foods_data.dart';
@@ -988,17 +989,46 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          ref
-                              .read(userProgressProvider.notifier)
-                              .saveCaseStudyAnswer(
-                                widget.foodId,
-                                _caseStudyController.text,
-                              );
+                          final text = _caseStudyController.text.trim();
+                          if (text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Silakan tulis analisis atau hipotesismu terlebih dahulu.'),
+                                backgroundColor: AppColors.warmTerracotta,
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+                            return;
+                          }
+
+                          final user = ref.read(userProgressProvider);
+
+                          // Save locally
+                          ref.read(userProgressProvider.notifier).saveCaseStudyAnswer(widget.foodId, text);
                           ref.read(userProgressProvider.notifier).addXP(25);
+
+                          // Submit to Supabase
+                          SupabaseService.submitCaseStudyOpinion(
+                            userId: user.studentId,
+                            studentName: user.studentName,
+                            studentClass: user.studentClass,
+                            studentSchool: user.studentSchool,
+                            moduleId: widget.foodId,
+                            caseTitle: caseStudy.title,
+                            researchQuestion: caseStudy.researchQuestion,
+                            studentOpinion: text,
+                            studentVariables: 'Bebas: ${caseStudy.manipulatedVariable}, Terikat: ${caseStudy.respondingVariable}',
+                          );
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text(
-                                  'Jawaban studi kasus tersimpan! (+25 XP)'),
+                              content: Row(
+                                children: [
+                                  Icon(Icons.cloud_done_rounded, color: Colors.white, size: 18),
+                                  SizedBox(width: 8),
+                                  Expanded(child: Text('Jawaban studi kasus tersimpan ke Database! (+25 XP)')),
+                                ],
+                              ),
                               backgroundColor: AppColors.primaryGreen,
                               behavior: SnackBarBehavior.floating,
                             ),
@@ -1012,7 +1042,14 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text('Simpan'),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.send_rounded, size: 14, color: Colors.white),
+                            SizedBox(width: 4),
+                            Text('Kirim'),
+                          ],
+                        ),
                       ),
                     ],
                   ),

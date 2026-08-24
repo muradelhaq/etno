@@ -7,6 +7,7 @@ import '../../../../core/theme/text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/ethno_card.dart';
 import '../../../../core/widgets/ethno_scaffold.dart';
+import '../../../../core/services/supabase_service.dart';
 import '../../../../shared/services/local_storage_service.dart';
 import '../../data/models/pisa_questions_data.dart';
 
@@ -59,6 +60,26 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
     final finalScore = (totalCorrect * 10).clamp(0, 100);
 
     ref.read(userProgressProvider.notifier).completeQuiz(finalScore);
+
+    // Save quiz result & update progress to Supabase
+    final user = ref.read(userProgressProvider);
+    SupabaseService.saveQuizResult(
+      userId: user.studentId,
+      studentName: user.studentName,
+      studentClass: user.studentClass,
+      studentSchool: user.studentSchool,
+      quizType: 'Post-test Evaluasi PISA',
+      score: finalScore.toDouble(),
+      correctCount: totalCorrect,
+      totalQuestions: PisaQuestionsData.questions.length,
+      answersDetail: _userSelectedAnswers.map((k, v) => MapEntry(k.toString(), v)),
+    );
+    SupabaseService.updateStudentProgress(
+      userId: user.studentId,
+      currentSlide: 12,
+      totalXp: user.earnedXP + ((finalScore >= 80) ? 250 : 150),
+      isCompleted: true,
+    );
 
     setState(() {
       _quizFinished = true;

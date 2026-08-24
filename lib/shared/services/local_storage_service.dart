@@ -36,17 +36,35 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
   UserProgressNotifier(this._storageService)
       : super(_storageService.loadUserProgress());
 
+  Future<void> updateStudentProfile({
+    required String id,
+    required String name,
+    required String className,
+    required String school,
+    String role = 'siswa',
+  }) async {
+    state = state.copyWith(
+      studentId: id,
+      studentName: name,
+      studentClass: className,
+      studentSchool: school,
+      role: role,
+    );
+    await _storageService.saveUserProgress(state);
+  }
+
   Future<void> updateStudentName(String name) async {
     state = state.copyWith(studentName: name);
     await _storageService.saveUserProgress(state);
   }
 
   Future<void> addXP(int xp) async {
-    state = state.copyWith(earnedXP: state.earnedXP + xp);
+    final newXP = state.earnedXP + xp;
+    state = state.copyWith(earnedXP: newXP);
     await _storageService.saveUserProgress(state);
   }
 
-  Future<void> markModuleCompleted(String moduleId, {int xpBonus = 50}) async {
+  Future<void> markModuleCompleted(String moduleId, {int xpBonus = 50, int? slideNumber}) async {
     final updated = Set<String>.from(state.completedModules)..add(moduleId);
     final xp = state.completedModules.contains(moduleId)
         ? state.earnedXP

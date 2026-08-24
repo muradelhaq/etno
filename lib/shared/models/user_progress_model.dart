@@ -43,7 +43,11 @@ class InnovationIdea {
 }
 
 class UserProgressModel {
+  final String studentId;
   final String studentName;
+  final String studentClass;
+  final String studentSchool;
+  final String role; // 'siswa' or 'admin'
   final int earnedXP;
   final Set<String> completedModules;
   final String apersepsiReflection;
@@ -56,7 +60,11 @@ class UserProgressModel {
   final Map<String, String> caseStudyAnswers; // foodId -> student answer
 
   UserProgressModel({
+    this.studentId = '',
     this.studentName = 'Siswa Etnosains',
+    this.studentClass = 'Kelas Biologi',
+    this.studentSchool = 'Sekolah Menengah Atas',
+    this.role = 'siswa',
     this.earnedXP = 0,
     this.completedModules = const {},
     this.apersepsiReflection = '',
@@ -70,7 +78,11 @@ class UserProgressModel {
   });
 
   UserProgressModel copyWith({
+    String? studentId,
     String? studentName,
+    String? studentClass,
+    String? studentSchool,
+    String? role,
     int? earnedXP,
     Set<String>? completedModules,
     String? apersepsiReflection,
@@ -83,7 +95,11 @@ class UserProgressModel {
     Map<String, String>? caseStudyAnswers,
   }) {
     return UserProgressModel(
+      studentId: studentId ?? this.studentId,
       studentName: studentName ?? this.studentName,
+      studentClass: studentClass ?? this.studentClass,
+      studentSchool: studentSchool ?? this.studentSchool,
+      role: role ?? this.role,
       earnedXP: earnedXP ?? this.earnedXP,
       completedModules: completedModules ?? this.completedModules,
       apersepsiReflection: apersepsiReflection ?? this.apersepsiReflection,
@@ -100,7 +116,11 @@ class UserProgressModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'studentId': studentId,
       'studentName': studentName,
+      'studentClass': studentClass,
+      'studentSchool': studentSchool,
+      'role': role,
       'earnedXP': earnedXP,
       'completedModules': completedModules.toList(),
       'apersepsiReflection': apersepsiReflection,
@@ -118,7 +138,11 @@ class UserProgressModel {
 
   factory UserProgressModel.fromMap(Map<String, dynamic> map) {
     return UserProgressModel(
+      studentId: map['studentId'] ?? '',
       studentName: map['studentName'] ?? 'Siswa Etnosains',
+      studentClass: map['studentClass'] ?? 'Kelas Biologi',
+      studentSchool: map['studentSchool'] ?? 'Sekolah Menengah Atas',
+      role: map['role'] ?? 'siswa',
       earnedXP: map['earnedXP'] ?? 0,
       completedModules: (map['completedModules'] as List<dynamic>?)
               ?.map((e) => e.toString())

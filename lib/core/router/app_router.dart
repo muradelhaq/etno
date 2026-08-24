@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
+import '../../features/auth/presentation/screens/auth_screen.dart';
+import '../../features/admin/presentation/screens/admin_dashboard_screen.dart';
 import '../../features/cover/presentation/screens/cover_screen.dart';
 import '../../features/apersepsi/presentation/screens/apersepsi_screen.dart';
 import '../../features/peta_konsep/presentation/screens/peta_konsep_screen.dart';
@@ -19,6 +21,22 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/splash',
       builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+      path: '/auth',
+      builder: (context, state) => const AuthScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const AuthScreen(),
+    ),
+    GoRoute(
+      path: '/register',
+      builder: (context, state) => const AuthScreen(),
+    ),
+    GoRoute(
+      path: '/admin',
+      builder: (context, state) => const AdminDashboardScreen(),
     ),
     GoRoute(
       path: '/',

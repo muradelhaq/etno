@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'app.dart';
+import 'core/services/supabase_service.dart';
 import 'shared/services/local_storage_service.dart';
 
 void main() async {
@@ -37,6 +38,11 @@ void main() async {
   SharedPreferences? sharedPrefs;
   try {
     sharedPrefs = await SharedPreferences.getInstance();
+  } catch (_) {}
+
+  // Initialize Supabase backend
+  try {
+    await SupabaseService.initialize();
   } catch (_) {}
 
   runApp(

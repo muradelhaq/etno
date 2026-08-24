@@ -176,25 +176,38 @@ class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
 
                     const SizedBox(height: 8),
 
-                    // Student Name
+                    // Student Name & School
                     InkWell(
                       onTap: () => _editNameDialog(context),
                       borderRadius: BorderRadius.circular(8),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
+                        child: Column(
                           children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  progress.studentName.toUpperCase(),
+                                  style: AppTextStyles.h1.copyWith(
+                                    fontSize: 19,
+                                    color: AppColors.primaryDark,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                const Icon(Icons.edit_rounded, size: 16, color: AppColors.warmTerracotta),
+                              ],
+                            ),
+                            const SizedBox(height: 2),
                             Text(
-                              progress.studentName.toUpperCase(),
-                              style: AppTextStyles.h1.copyWith(
-                                fontSize: 20,
-                                color: AppColors.primaryDark,
-                                decoration: TextDecoration.underline,
+                              '${progress.studentClass}  •  ${progress.studentSchool}',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2D5A3C),
                               ),
                             ),
-                            const SizedBox(width: 6),
-                            const Icon(Icons.edit_rounded, size: 16, color: AppColors.warmTerracotta),
                           ],
                         ),
                       ),
