@@ -52,4 +52,3 @@ void main() {
     expect(find.textContaining('Simulasi'), findsWidgets);
   });
 }
-

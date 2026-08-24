@@ -381,13 +381,16 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                       duration: 800.ms,
                     ),
                 const SizedBox(width: 6),
-                Text(
-                  _liveEventCount > 0
-                      ? 'Live Sync Aktif • $_liveEventCount aktivitas masuk'
-                      : 'Database Supabase Online • Real-time Live Connected',
-                  style: const TextStyle(
-                    color: Color(0xFFB8D5C2),
-                    fontSize: 11,
+                Flexible(
+                  child: Text(
+                    _liveEventCount > 0
+                        ? 'Live Sync • $_liveEventCount event baru'
+                        : 'Real-time Live Connected',
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Color(0xFFB8D5C2),
+                      fontSize: 11,
+                    ),
                   ),
                 ),
               ],
