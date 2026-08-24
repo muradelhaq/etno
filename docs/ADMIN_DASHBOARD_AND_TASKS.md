@@ -147,9 +147,32 @@ Dashboard Guru dibangun dengan antarmuka modern, intuitif, dan responsif (menduk
 
 ---
 
-## 5. 🚀 Roadmap Pengembangan Lanjutan (Future Enhancements)
+## 5. 🛡️ Batasan Sistem & Ruang Lingkup (System Limitations & Boundaries)
+
+Untuk memastikan kejelasan batas operasional dan lingkup fungsionalitas aplikasi pada rilis saat ini, berikut adalah batasan-batasan teknis yang berlaku:
+
+### A. Batasan Autentikasi & Keamanan (Security & Access Scope)
+1. **Proteksi Akses Guru Berbasis PIN**: Akses ke Dashboard Admin menggunakan PIN/Kata Sandi statis (`123456`), belum menggunakan sistem autentikasi multi-user berbasis Email/Password atau Single Sign-On (SSO) per individu guru.
+2. **Karakteristik Hak Akses Admin (Read-Only)**: Dashboard Admin saat ini difokuskan sebagai alat **pemantauan & analisis evaluasi** (*read-only monitoring*). Admin belum dapat mengubah (*edit/update*) jawaban atau nilai yang telah dikirimkan siswa secara langsung dari dashboard.
+3. **Pendaftaran Siswa Tanpa Kata Sandi**: Siswa hanya memasukkan *Nama Lengkap, Kelas, dan Nama Sekolah* tanpa verifikasi email atau kata sandi guna mempermudah akses belajar di kelas tanpa hambatan lupa sandi.
+
+### B. Batasan Penyimpanan & Manajemen Konten (Data & Content Scope)
+1. **Bank Soal Tersimpan di Kode Aplikasi**: Seluruh naskah butir soal evaluasi HOTS PISA dan studi kasus tersimpan secara statis di aset/kode aplikasi (`PisaQuestionsData`), bukan di tabel database Supabase. Database Supabase hanya mencatat ID pertanyaan, pilihan jawaban, skor, dan waktu submit siswa.
+2. **Belum Ada Manajemen Soal Dinamis**: Guru belum dapat menambah, mengedit, atau menghapus butir soal kuis secara langsung melalui dashboard admin (perubahan soal dilakukan melalui pembaruan kode aplikasi).
+
+### C. Batasan Multi-Tenancy & Organisasi Sekolah (Multi-Tenancy Scope)
+1. **Single-Project Database**: Seluruh data siswa dari berbagai sekolah tersimpan dalam satu project Supabase yang sama. Pemisahan data dilakukan melalui filter nama sekolah dan kelas, belum berupa isolasi database per sekolah (*multi-tenant database isolation*).
+
+### D. Batasan Jaringan & Sinkronisasi (Network & Offline Scope)
+1. **Kebutuhan Koneksi Internet untuk Sinkronisasi**: Pengiriman jawaban studi kasus dan nilai kuis ke dashboard admin memerlukan koneksi internet aktif. Jika perangkat siswa offline, progres disimpan pada penyimpanan lokal perangkat (`SharedPreferences`) dan tidak akan muncul di dashboard admin sampai data disinkronkan saat terhubung ke internet.
+2. **Belum Ada Ekspor Berkas Fisik (Excel / CSV)**: Rekapitulasi nilai saat ini disajikan secara visual di layar dashboard dan belum memiliki tombol ekspor langsung menjadi file fisik `.xlsx` atau `.csv`.
+
+---
+
+## 6. 🚀 Roadmap Pengembangan Lanjutan (Future Enhancements)
 
 - [ ] **Export to Excel / CSV**: Tombol unduh rekap nilai seluruh siswa dalam format `.xlsx` atau `.csv` untuk arsip guru.
 - [ ] **Guru Feedback / Nilai Manual**: Formulir bagi guru untuk memberikan komentar kualitatif dan nilai rubrik pada jawaban studi kasus siswa.
 - [ ] **Date Range Filter**: Filter tanggal pengumpulan tugas dan kuis berdasarkan pertemuan tatap muka / pekan pembelajaran.
+- [ ] **Dynamic Quiz Management**: Portal khusus untuk guru membuat dan menyusun paket soal kuis baru langsung dari database.
 - [ ] **Push Notification / Realtime Subscription**: Notifikasi instan saat siswa baru saja mengirimkan jawaban studi kasus.
