@@ -9,6 +9,7 @@ import '../../../../core/theme/text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
+import '../../../../shared/services/app_audio_service.dart';
 import '../../../../shared/services/app_update_service.dart';
 import '../../../../shared/widgets/app_update_dialog.dart';
 
@@ -20,7 +21,6 @@ class CoverScreen extends ConsumerStatefulWidget {
 }
 
 class _CoverScreenState extends ConsumerState<CoverScreen> {
-  bool _isAudioPlaying = false;
 
   @override
   void initState() {
@@ -183,24 +183,35 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
                     color: AppColors.warmTerracotta,
                     onTap: () => _showVideoPengantarDialog(context),
                   ),
-                  _buildQuickActionBtn(
-                    icon: _isAudioPlaying ? Icons.volume_up_rounded : Icons.headphones_rounded,
-                    label: _isAudioPlaying ? 'Narasi Aktif' : 'Audio Narasi',
-                    color: AppColors.primaryGreen,
-                    onTap: () {
-                      setState(() {
-                        _isAudioPlaying = !_isAudioPlaying;
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            _isAudioPlaying
-                                ? 'Memutar pengantar audio etnosains...'
-                                : 'Audio narasi dijeda.',
-                          ),
-                          duration: const Duration(seconds: 2),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final audioState = ref.watch(backgroundAudioProvider);
+                      final isPlaying = audioState.isPlaying && !audioState.isMuted;
+
+                      return _buildQuickActionBtn(
+                        icon: isPlaying
+                            ? Icons.volume_up_rounded
+                            : Icons.headphones_rounded,
+                        label: isPlaying ? 'Backsound On' : 'Audio Musik',
+                        color: AppColors.primaryGreen,
+                        onTap: () {
+                          ref.read(backgroundAudioProvider.notifier).togglePlay();
+                          final willPlay = !isPlaying;
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                willPlay
+                                    ? '🎵 Memutar musik latar (backsound) etnosains...'
+                                    : '🔇 Musik latar (backsound) dijeda.',
+                              ),
+                              duration: const Duration(seconds: 2),
+                              backgroundColor: willPlay
+                                  ? AppColors.primaryGreen
+                                  : AppColors.terracottaDark,
+                            ),
+                          );
+                        },
                       );
                     },
                   ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/app_colors.dart';
 import '../theme/text_styles.dart';
+import '../../shared/services/app_audio_service.dart';
 import '../../shared/services/local_storage_service.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
@@ -73,6 +74,77 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
+        // Music Toggle Button
+        Consumer(
+          builder: (context, ref, _) {
+            final audioState = ref.watch(backgroundAudioProvider);
+            final isPlaying = audioState.isPlaying && !audioState.isMuted;
+
+            return InkWell(
+              onTap: () {
+                ref.read(backgroundAudioProvider.notifier).togglePlay();
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      isPlaying
+                          ? '🔇 Musik latar (backsound) dijeda'
+                          : '🎵 Musik latar (backsound) dinyalakan',
+                    ),
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: isPlaying
+                        ? AppColors.terracottaDark
+                        : AppColors.primaryGreen,
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+              borderRadius: BorderRadius.circular(20),
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: isPlaying
+                      ? AppColors.sageLight
+                      : Colors.grey.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isPlaying
+                        ? AppColors.primaryGreen
+                        : AppColors.borderSubtle,
+                    width: 1.2,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      isPlaying
+                          ? Icons.music_note_rounded
+                          : Icons.music_off_rounded,
+                      color: isPlaying
+                          ? AppColors.primaryGreen
+                          : AppColors.textSecondary,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 2),
+                    Text(
+                      isPlaying ? 'Musik' : 'Mute',
+                      style: AppTextStyles.tagText.copyWith(
+                        color: isPlaying
+                            ? AppColors.primaryGreen
+                            : AppColors.textSecondary,
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+
         // XP Badge
         Container(
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),

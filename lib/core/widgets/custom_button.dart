@@ -41,9 +41,14 @@ class CustomButton extends StatelessWidget {
           Icon(icon, size: 20, color: effectiveFg),
           const SizedBox(width: 8),
         ],
-        Text(
-          text,
-          style: AppTextStyles.buttonText.copyWith(color: effectiveFg),
+        Flexible(
+          child: Text(
+            text,
+            style: AppTextStyles.buttonText.copyWith(color: effectiveFg),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ],
     );
@@ -54,7 +59,11 @@ class CustomButton extends StatelessWidget {
         backgroundColor: effectiveBg,
         foregroundColor: effectiveFg,
         elevation: isSecondary ? 0 : 2,
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        minimumSize: Size(
+          isFullWidth ? double.infinity : 64,
+          height ?? 50,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
           side: isSecondary
@@ -68,7 +77,6 @@ class CustomButton extends StatelessWidget {
     if (isFullWidth) {
       return SizedBox(
         width: double.infinity,
-        height: height ?? 52,
         child: buttonWidget,
       );
     }

@@ -5,6 +5,7 @@ import '../constants/app_colors.dart';
 import '../theme/text_styles.dart';
 import '../../shared/services/local_storage_service.dart';
 import '../../shared/services/app_update_service.dart';
+import '../../shared/services/app_audio_service.dart';
 import '../../shared/widgets/app_update_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -360,6 +361,67 @@ class AppDrawer extends ConsumerWidget {
                 ),
               ],
             ),
+          ),
+
+          // Background Music Setting Tile
+          Consumer(
+            builder: (context, ref, _) {
+              final audioState = ref.watch(backgroundAudioProvider);
+              final isPlaying = audioState.isPlaying && !audioState.isMuted;
+
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF9F6EE),
+                  border: Border(
+                    top: BorderSide(color: AppColors.borderSubtle),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      isPlaying
+                          ? Icons.music_note_rounded
+                          : Icons.music_off_rounded,
+                      color: isPlaying
+                          ? AppColors.primaryGreen
+                          : AppColors.textSecondary,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Musik Latar (Backsound)',
+                            style: AppTextStyles.bodyBold.copyWith(fontSize: 12),
+                          ),
+                          Text(
+                            isPlaying
+                                ? 'Sedang berputar • Tradisional'
+                                : 'Dinonaktifkan',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              fontSize: 10.5,
+                              color: isPlaying
+                                  ? AppColors.primaryGreen
+                                  : AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Switch.adaptive(
+                      value: isPlaying,
+                      activeTrackColor: AppColors.primaryGreen,
+                      onChanged: (val) {
+                        ref.read(backgroundAudioProvider.notifier).setMuted(!val);
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
 
           // App Version & Check Update Tile

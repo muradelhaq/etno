@@ -19,6 +19,9 @@ class PetaKonsepScreen extends ConsumerStatefulWidget {
 }
 
 class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey _microscopeKey = GlobalKey();
+
   double _microscopeZoom = 100.0;
   String _selectedMicrobeId = 'rhizopus';
   bool _isDetailExpanded = false;
@@ -29,6 +32,329 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(userProgressProvider.notifier).markModuleCompleted('peta_konsep', xpBonus: 40);
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _selectAndScrollToMicroscope(String microbeId, String microbeName) {
+    setState(() {
+      _selectedMicrobeId = microbeId;
+      _isDetailExpanded = true;
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_microscopeKey.currentContext != null) {
+        Scrollable.ensureVisible(
+          _microscopeKey.currentContext!,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeInOutCubic,
+          alignment: 0.05,
+        );
+      }
+    });
+
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('🔬 Mikroskop kini mengamati: $microbeName'),
+        duration: const Duration(seconds: 2),
+        backgroundColor: AppColors.primaryGreen,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  void _showMicrobeDetailDialog(BuildContext context, MicroorganismModel microbe) {
+    final isCurrentInSimulator = microbe.id == _selectedMicrobeId;
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        contentPadding: EdgeInsets.zero,
+        content: ClipRRect(
+          borderRadius: BorderRadius.circular(18),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header Image Banner
+                Stack(
+                  children: [
+                    Image.asset(
+                      microbe.imageUrl,
+                      height: 150,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        height: 150,
+                        color: const Color(0xFF10281E),
+                        child: Center(
+                          child: _buildMicroscopicView(microbe, 300),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 150,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withValues(alpha: 0.85),
+                          ],
+                          stops: const [0.35, 1.0],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppColors.warmTerracotta,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          microbe.kingdomType,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 10,
+                      left: 12,
+                      right: 12,
+                      child: Text(
+                        microbe.scientificName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          shadows: [
+                            Shadow(color: Colors.black, blurRadius: 6),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                // Detail Content
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Target Product
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(Icons.restaurant_rounded, size: 16, color: AppColors.warmTerracotta),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Produk Fermentasi Sasaran:',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.warmTerracotta,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  microbe.targetProduct,
+                                  style: AppTextStyles.bodyBold.copyWith(
+                                    fontSize: 13,
+                                    color: AppColors.primaryDark,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Primary Function
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(Icons.hub_rounded, size: 16, color: AppColors.primaryGreen),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Fungsi Utama:',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.primaryGreen,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  microbe.primaryFunction,
+                                  style: AppTextStyles.bodyMedium.copyWith(
+                                    fontSize: 12.5,
+                                    height: 1.4,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Biochemical Role
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF3F8F2),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: const Color(0xFFC8E6C9)),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Icon(Icons.science_rounded, size: 16, color: AppColors.primaryGreen),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Peran Biokimia & Reaksi:',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primaryGreen,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    microbe.biochemicalRole,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF1E3A2B),
+                                      height: 1.35,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Microscopic Feature
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF0F4F8),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: const Color(0xFFBBDEFB)),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Icon(Icons.biotech_rounded, size: 16, color: Color(0xFF1976D2)),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Ciri Morfologi Mikroskopik:',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF1976D2),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    microbe.microscopicFeature,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF2C3E50),
+                                      fontStyle: FontStyle.italic,
+                                      height: 1.35,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Button inside dialog to observe in microscope
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.pop(ctx);
+                            _selectAndScrollToMicroscope(
+                              microbe.id,
+                              microbe.scientificName,
+                            );
+                          },
+                          icon: const Icon(Icons.biotech_rounded, size: 16),
+                          label: Text(
+                            isCurrentInSimulator
+                                ? 'Sedang Diamati (Gulir ke Mikroskop)'
+                                : 'Amati di Simulator Mikroskop',
+                            style: const TextStyle(
+                              fontSize: 12.5,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryGreen,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Tutup'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -46,6 +372,7 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
       prevRoute: '/apersepsi',
       nextRoute: '/produk/tempe',
       body: SingleChildScrollView(
+        controller: _scrollController,
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
         child: Column(
@@ -92,14 +419,17 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
             const SizedBox(height: 14),
 
             // Section 2: Virtual Microscope Simulator
-            Row(
-              children: [
-                const Icon(Icons.biotech_rounded, color: AppColors.primaryGreen, size: 24),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text('2. Simulator Mikroskop Virtual', style: AppTextStyles.h2.copyWith(fontSize: 16)),
-                ),
-              ],
+            Container(
+              key: _microscopeKey,
+              child: Row(
+                children: [
+                  const Icon(Icons.biotech_rounded, color: AppColors.primaryGreen, size: 24),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text('2. Simulator Mikroskop Virtual', style: AppTextStyles.h2.copyWith(fontSize: 16)),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 6),
             Text(
@@ -356,268 +686,262 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
             ),
             const SizedBox(height: 6),
             Text(
-              'Pelajari taksonomi, peran biokimia, morfologi mikroskopik, dan produk pangan olahannya:',
+              'Pelajari taksonomi, peran biokimia, morfologi mikroskopik, dan produk pangan olahannya (Ketuk kartu/tombol untuk langsung mengamati di mikroskop):',
               style: AppTextStyles.bodySmall,
             ),
             const SizedBox(height: 12),
             LayoutBuilder(
               builder: (ctx, constraints) {
-                final isWide = constraints.maxWidth > 550;
-                final cardWidth = isWide
-                    ? (constraints.maxWidth - 12) / 2
-                    : constraints.maxWidth;
+                // In landscape / wide screen: 3 cards per row (2 rows)
+                // In portrait mobile: 2 cards per row (3 rows)
+                final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+                final isWide = constraints.maxWidth > 580 || isLandscape;
+                final columns = isWide ? 3 : 2;
+                final spacing = isWide ? 12.0 : 10.0;
+                final cardWidth = (constraints.maxWidth - ((columns - 1) * spacing)) / columns;
+                final bannerHeight = isWide ? 110.0 : 95.0;
 
                 return Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
+                  spacing: spacing,
+                  runSpacing: spacing,
                   children: MicroorganismData.microbes.map((microbe) {
                     final isCurrentInSimulator = microbe.id == _selectedMicrobeId;
 
                     return SizedBox(
                       width: cardWidth,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(
-                            color: isCurrentInSimulator
-                                ? AppColors.primaryGreen
-                                : AppColors.borderSubtle,
-                            width: isCurrentInSimulator ? 1.8 : 1.0,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
+                      child: InkWell(
+                        onTap: () => _showMicrobeDetailDialog(context, microbe),
+                        borderRadius: BorderRadius.circular(14),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
                               color: isCurrentInSimulator
-                                  ? AppColors.primaryGreen.withValues(alpha: 0.12)
-                                  : Colors.black.withValues(alpha: 0.04),
-                              blurRadius: 8,
-                              offset: const Offset(0, 3),
+                                  ? AppColors.primaryGreen
+                                  : AppColors.borderSubtle,
+                              width: isCurrentInSimulator ? 2.0 : 1.0,
                             ),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(13),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Photo / Microscopic Banner
-                              Stack(
-                                children: [
-                                  Image.asset(
-                                    microbe.imageUrl,
-                                    height: 120,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (_, __, ___) => Container(
-                                      height: 120,
-                                      color: const Color(0xFF10281E),
-                                      child: Center(
-                                        child: _buildMicroscopicView(microbe, 300),
+                            boxShadow: [
+                              BoxShadow(
+                                color: isCurrentInSimulator
+                                    ? AppColors.primaryGreen.withValues(alpha: 0.16)
+                                    : Colors.black.withValues(alpha: 0.04),
+                                blurRadius: isCurrentInSimulator ? 8 : 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(13),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Photo / Microscopic Banner
+                                Stack(
+                                  children: [
+                                    Image.asset(
+                                      microbe.imageUrl,
+                                      height: bannerHeight,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (_, __, ___) => Container(
+                                        height: bannerHeight,
+                                        color: const Color(0xFF10281E),
+                                        child: Center(
+                                          child: _buildMicroscopicView(microbe, 300),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  // Gradient shadow over photo
-                                  Container(
-                                    height: 120,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Colors.transparent,
-                                          Colors.black.withValues(alpha: 0.7),
-                                        ],
-                                        stops: const [0.4, 1.0],
-                                      ),
-                                    ),
-                                  ),
-                                  // Kingdom Badge (Top Left)
-                                  Positioned(
-                                    top: 8,
-                                    left: 8,
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    // Gradient shadow over photo
+                                    Container(
+                                      height: bannerHeight,
                                       decoration: BoxDecoration(
-                                        color: AppColors.warmTerracotta,
-                                        borderRadius: BorderRadius.circular(8),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withValues(alpha: 0.2),
-                                            blurRadius: 4,
-                                          ),
-                                        ],
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Colors.transparent,
+                                            Colors.black.withValues(alpha: 0.8),
+                                          ],
+                                          stops: const [0.3, 1.0],
+                                        ),
                                       ),
+                                    ),
+                                    // Kingdom Badge (Top Left only - prevents any badge collision)
+                                    Positioned(
+                                      top: 6,
+                                      left: 6,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.warmTerracotta,
+                                          borderRadius: BorderRadius.circular(6),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withValues(alpha: 0.25),
+                                              blurRadius: 3,
+                                            ),
+                                          ],
+                                        ),
+                                        child: Text(
+                                          microbe.kingdomType.split(' ').first,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 9.5,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // Scientific Name over photo bottom
+                                    Positioned(
+                                      bottom: 6,
+                                      left: 8,
+                                      right: 8,
                                       child: Text(
-                                        microbe.kingdomType.split(' ').first,
+                                        microbe.scientificName,
                                         style: const TextStyle(
                                           color: Colors.white,
-                                          fontSize: 10,
+                                          fontSize: 11.5,
                                           fontWeight: FontWeight.bold,
+                                          fontStyle: FontStyle.italic,
+                                          shadows: [
+                                            Shadow(color: Colors.black, blurRadius: 4),
+                                          ],
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                  // Target Product Badge (Top Right)
-                                  Positioned(
-                                    top: 8,
-                                    right: 8,
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withValues(alpha: 0.7),
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(color: AppColors.goldenYellow, width: 0.8),
-                                      ),
-                                      child: Text(
-                                        microbe.targetProduct.split('&').first.trim(),
-                                        style: const TextStyle(
-                                          color: AppColors.goldenYellow,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  // Scientific Name over photo bottom
-                                  Positioned(
-                                    bottom: 8,
-                                    left: 10,
-                                    right: 10,
-                                    child: Text(
-                                      microbe.scientificName,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13.5,
-                                        fontWeight: FontWeight.bold,
-                                        fontStyle: FontStyle.italic,
-                                        shadows: [
-                                          Shadow(color: Colors.black, blurRadius: 4),
-                                        ],
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              // Text Content Body
-                              Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Target product info
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Icon(Icons.fastfood_rounded, size: 14, color: AppColors.warmTerracotta),
-                                        const SizedBox(width: 6),
-                                        Expanded(
-                                          child: Text(
-                                            'Produk: ${microbe.targetProduct}',
-                                            style: AppTextStyles.bodyBold.copyWith(
-                                              fontSize: 11.5,
-                                              color: AppColors.primaryDark,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 6),
-
-                                    // Biochemical Role
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Icon(Icons.science_rounded, size: 14, color: AppColors.primaryGreen),
-                                        const SizedBox(width: 6),
-                                        Expanded(
-                                          child: Text(
-                                            'Peran Biokimia: ${microbe.biochemicalRole}',
-                                            style: AppTextStyles.bodySmall.copyWith(
-                                              color: AppColors.textPrimary,
-                                              fontSize: 11.5,
-                                              height: 1.3,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 6),
-
-                                    // Microscopic Feature
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Icon(Icons.biotech_rounded, size: 14, color: Color(0xFF5390D9)),
-                                        const SizedBox(width: 6),
-                                        Expanded(
-                                          child: Text(
-                                            'Ciri Mikroskopik: ${microbe.microscopicFeature}',
-                                            style: AppTextStyles.bodySmall.copyWith(
-                                              color: AppColors.textSecondary,
-                                              fontSize: 11,
-                                              fontStyle: FontStyle.italic,
-                                              height: 1.3,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-
-                                    // Interactive Button to inspect in microscope
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: OutlinedButton.icon(
-                                        onPressed: () {
-                                          setState(() {
-                                            _selectedMicrobeId = microbe.id;
-                                          });
-                                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content: Text('🔬 Mikroskop kini mengamati: ${microbe.scientificName}'),
-                                              duration: const Duration(seconds: 2),
-                                              backgroundColor: AppColors.primaryGreen,
-                                              behavior: SnackBarBehavior.floating,
-                                            ),
-                                          );
-                                        },
-                                        icon: Icon(
-                                          isCurrentInSimulator ? Icons.check_circle_rounded : Icons.visibility_rounded,
-                                          size: 14,
-                                          color: isCurrentInSimulator ? AppColors.primaryGreen : AppColors.primaryDark,
-                                        ),
-                                        label: Text(
-                                          isCurrentInSimulator ? 'Sedang Diamati di Mikroskop' : 'Amati di Simulator Mikroskop',
-                                          style: TextStyle(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.bold,
-                                            color: isCurrentInSimulator ? AppColors.primaryGreen : AppColors.primaryDark,
-                                          ),
-                                        ),
-                                        style: OutlinedButton.styleFrom(
-                                          backgroundColor: isCurrentInSimulator
-                                              ? AppColors.sageLight
-                                              : const Color(0xFFFAF7EE),
-                                          side: BorderSide(
-                                            color: isCurrentInSimulator
-                                                ? AppColors.primaryGreen
-                                                : AppColors.borderSubtle,
-                                          ),
-                                          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                          ),
-                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+
+                                // Text Content Body
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      // Target product info
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(Icons.fastfood_rounded, size: 13, color: AppColors.warmTerracotta),
+                                          const SizedBox(width: 5),
+                                          Expanded(
+                                            child: Text(
+                                              microbe.targetProduct,
+                                              style: AppTextStyles.bodyBold.copyWith(
+                                                fontSize: 11.0,
+                                                color: AppColors.primaryDark,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 5),
+
+                                      // Biochemical Role
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(Icons.science_rounded, size: 13, color: AppColors.primaryGreen),
+                                          const SizedBox(width: 5),
+                                          Expanded(
+                                            child: Text(
+                                              microbe.biochemicalRole,
+                                              style: AppTextStyles.bodySmall.copyWith(
+                                                color: AppColors.textPrimary,
+                                                fontSize: 10.5,
+                                                height: 1.3,
+                                              ),
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 5),
+
+                                      // Microscopic Feature
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(Icons.biotech_rounded, size: 13, color: Color(0xFF5390D9)),
+                                          const SizedBox(width: 5),
+                                          Expanded(
+                                            child: Text(
+                                              microbe.microscopicFeature,
+                                              style: AppTextStyles.bodySmall.copyWith(
+                                                color: AppColors.textSecondary,
+                                                fontSize: 10.0,
+                                                fontStyle: FontStyle.italic,
+                                                height: 1.3,
+                                              ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+
+                                      // Interactive Button to inspect in microscope
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: ElevatedButton.icon(
+                                          onPressed: () => _selectAndScrollToMicroscope(
+                                            microbe.id,
+                                            microbe.scientificName,
+                                          ),
+                                          icon: Icon(
+                                            isCurrentInSimulator
+                                                ? Icons.check_circle_rounded
+                                                : Icons.visibility_rounded,
+                                            size: 13,
+                                            color: isCurrentInSimulator
+                                                ? Colors.white
+                                                : AppColors.primaryDark,
+                                          ),
+                                          label: Text(
+                                            isCurrentInSimulator
+                                                ? 'Sedang Diamati'
+                                                : 'Amati di Mikroskop',
+                                            style: TextStyle(
+                                              fontSize: 10.5,
+                                              fontWeight: FontWeight.bold,
+                                              color: isCurrentInSimulator
+                                                  ? Colors.white
+                                                  : AppColors.primaryDark,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: isCurrentInSimulator
+                                                ? AppColors.primaryGreen
+                                                : const Color(0xFFFAF7EE),
+                                            elevation: isCurrentInSimulator ? 1 : 0,
+                                            side: BorderSide(
+                                              color: isCurrentInSimulator
+                                                  ? AppColors.primaryGreen
+                                                  : AppColors.borderSubtle,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
