@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
+import '../../../../shared/services/local_storage_service.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -54,7 +55,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   void _goToCover() {
     if (!_navigated && mounted) {
       _navigated = true;
-      context.go('/');
+      final user = ref.read(userProgressProvider);
+      if (user.studentName.isEmpty || user.studentName == 'Siswa Etnosains') {
+        context.go('/auth');
+      } else {
+        context.go('/');
+      }
     }
   }
 
