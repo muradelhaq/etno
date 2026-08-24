@@ -446,50 +446,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Modern Segmented Tab Switcher
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: const Color(0xFFEFF5EE),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: TabBar(
-              controller: _tabController,
-              indicator: BoxDecoration(
-                color: AppColors.primaryGreen,
-                borderRadius: BorderRadius.circular(11),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primaryGreen.withValues(alpha: 0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              indicatorSize: TabBarIndicatorSize.tab,
-              dividerColor: Colors.transparent,
-              labelColor: Colors.white,
-              unselectedLabelColor: const Color(0xFF2D5A3C),
-              labelStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-              ),
-              unselectedLabelStyle: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
-              ),
-              tabs: const [
-                Tab(
-                  icon: Icon(Icons.school_rounded, size: 18),
-                  text: 'Masuk Siswa',
-                ),
-                Tab(
-                  icon: Icon(Icons.admin_panel_settings_rounded, size: 18),
-                  text: 'Akses Guru / Admin',
-                ),
-              ],
-            ),
-          ),
+          // Custom Segmented Control Switcher
+          _buildCustomSegmentedTabBar(),
 
           const SizedBox(height: 20),
 
@@ -505,6 +463,134 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
         ],
       ),
     ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.05);
+  }
+
+  // ---------------------------------------------------------------------------
+  // COMPONENT 3.5: CUSTOM SEGMENTED TAB BAR
+  // ---------------------------------------------------------------------------
+  Widget _buildCustomSegmentedTabBar() {
+    final isStudent = _tabController.index == 0;
+
+    return Container(
+      height: 46,
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: const Color(0xFFEFF5EE),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFDCE8DC)),
+      ),
+      child: Row(
+        children: [
+          // 1. Tab Masuk Siswa
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _tabController.animateTo(0);
+                });
+              },
+              borderRadius: BorderRadius.circular(10),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  color: isStudent ? AppColors.primaryGreen : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: isStudent
+                      ? [
+                          BoxShadow(
+                            color: AppColors.primaryGreen.withValues(alpha: 0.3),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.school_rounded,
+                        size: 16,
+                        color: isStudent ? Colors.white : const Color(0xFF2D5A3C),
+                      ),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          'Masuk Siswa',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12.5,
+                            color: isStudent ? Colors.white : const Color(0xFF2D5A3C),
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(width: 4),
+
+          // 2. Tab Akses Guru / Admin
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _tabController.animateTo(1);
+                });
+              },
+              borderRadius: BorderRadius.circular(10),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  color: !isStudent ? AppColors.primaryDark : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: !isStudent
+                      ? [
+                          BoxShadow(
+                            color: AppColors.primaryDark.withValues(alpha: 0.3),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.admin_panel_settings_rounded,
+                        size: 16,
+                        color: !isStudent ? Colors.white : const Color(0xFF2D5A3C),
+                      ),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          'Akses Guru / Admin',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12.5,
+                            color: !isStudent ? Colors.white : const Color(0xFF2D5A3C),
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   // ---------------------------------------------------------------------------
