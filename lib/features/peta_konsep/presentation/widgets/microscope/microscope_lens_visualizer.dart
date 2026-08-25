@@ -19,22 +19,41 @@ class MicroscopeLensVisualizer extends StatelessWidget {
     required this.isLandscape,
   });
 
-  String _getFoodImageForMicrobe(String microbeId) {
+  String _getBeforeZoomImage(String microbeId) {
     switch (microbeId) {
       case 'rhizopus':
-        return 'assets/images/food_tempe.jpg';
+        return 'assets/images/tempe_microscope_before_zoom.png';
       case 'saccharomyces':
-        return 'assets/images/food_tape_singkong.jpg';
+        return 'assets/images/saccharomyces_before_zoom.png';
       case 'aspergillus_sp':
-        return 'assets/images/food_tape_ketan.jpg';
+        return 'assets/images/aspergillus_sp_before_zoom.png';
       case 'aspergillus_oryzae':
-        return 'assets/images/food_tauco.jpg';
+        return 'assets/images/aspergillus_oryzae_before_zoom.png';
       case 'tetragenococcus':
-        return 'assets/images/food_tauco.jpg';
+        return 'assets/images/tetragenococcus_before_zoom.png';
       case 'neurospora':
-        return 'assets/images/food_oncom.jpg';
+        return 'assets/images/neurospora_before_zoom.png';
       default:
         return 'assets/images/food_tempe.jpg';
+    }
+  }
+
+  String? _getAfterZoomImage(String microbeId) {
+    switch (microbeId) {
+      case 'rhizopus':
+        return 'assets/images/tempe_microscope_after_zoom.png';
+      case 'saccharomyces':
+        return 'assets/images/saccharomyces_after_zoom.png';
+      case 'aspergillus_sp':
+        return 'assets/images/aspergillus_sp_after_zoom.png';
+      case 'aspergillus_oryzae':
+        return 'assets/images/aspergillus_oryzae_after_zoom.png';
+      case 'tetragenococcus':
+        return 'assets/images/tetragenococcus_after_zoom.png';
+      case 'neurospora':
+        return 'assets/images/neurospora_after_zoom.png';
+      default:
+        return null;
     }
   }
 
@@ -45,7 +64,8 @@ class MicroscopeLensVisualizer extends StatelessWidget {
     final foodScale = 1.0 + t * 2.0;
     final microbeOpacity = (t * 2.0).clamp(0.0, 1.0);
     final microbeScale = 0.7 + t * 0.8;
-    final foodAsset = _getFoodImageForMicrobe(activeMicrobe.id);
+    final beforeZoomImage = _getBeforeZoomImage(activeMicrobe.id);
+    final afterZoomImage = _getAfterZoomImage(activeMicrobe.id);
 
     return Center(
       child: Container(
@@ -74,7 +94,7 @@ class MicroscopeLensVisualizer extends StatelessWidget {
                   child: Transform.scale(
                     scale: foodScale,
                     child: AppImage(
-                      foodAsset,
+                      beforeZoomImage,
                       width: lensSize,
                       height: lensSize,
                       fit: BoxFit.cover,
@@ -93,10 +113,17 @@ class MicroscopeLensVisualizer extends StatelessWidget {
                   opacity: microbeOpacity,
                   child: Transform.scale(
                     scale: microbeScale,
-                    child: MicroscopicCellularView(
-                      microbe: activeMicrobe,
-                      zoom: zoom,
-                    ),
+                    child: afterZoomImage != null
+                        ? AppImage(
+                            afterZoomImage,
+                            width: lensSize,
+                            height: lensSize,
+                            fit: BoxFit.cover,
+                          )
+                        : MicroscopicCellularView(
+                            microbe: activeMicrobe,
+                            zoom: zoom,
+                          ),
                   ),
                 ),
               const Divider(color: Colors.white24, thickness: 1),
@@ -114,9 +141,9 @@ class MicroscopeLensVisualizer extends StatelessWidget {
                   ),
                   child: Text(
                     zoom <= 200
-                        ? '${zoom.toInt()}x • Bahan: ${activeMicrobe.targetProduct.split(' ').first}'
+                        ? '${zoom.toInt()}x • Preparat sebelum zoom'
                         : (zoom <= 500
-                            ? '${zoom.toInt()}x • Transisi Hifa / Sel'
+                            ? '${zoom.toInt()}x • Transisi menuju mikroorganisme'
                             : '${zoom.toInt()}x • Sel ${activeMicrobe.scientificName.split(' ').first}'),
                     style: AppTextStyles.scientificFormula.copyWith(
                       color: AppColors.goldenYellow,
