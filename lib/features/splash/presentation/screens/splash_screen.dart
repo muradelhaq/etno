@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
+import 'package:e_modul_etnosains/shared/services/app_update_service.dart';
+import 'package:e_modul_etnosains/shared/widgets/app_update_dialog.dart';
 import '../widgets/splash_ambient_background.dart';
 import '../widgets/splash_emblem_logo.dart';
 import '../widgets/splash_pillars_wrap.dart';
@@ -23,6 +25,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   int _statusIndex = 0;
   Timer? _statusTimer;
   bool _navigated = false;
+  bool _animationFinished = false;
+  bool _updateCheckFinished = false;
 
   final List<String> _loadingSteps = [
     'Menyiapkan modul etnosains biologi...',
@@ -48,21 +52,51 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       }
     });
 
-    // Navigate to cover page after animation finishes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkUpdateOnStartup();
+    });
+
+    // Navigation waits for both the splash animation and update check.
     Future.delayed(const Duration(milliseconds: 2700), () {
-      _goToCover();
+      _animationFinished = true;
+      _continueToApp();
     });
   }
 
-  void _goToCover() {
-    if (!_navigated && mounted) {
-      _navigated = true;
-      final user = ref.read(userProgressProvider);
-      if (!user.isRegistered) {
-        context.go('/auth');
-      } else {
-        context.go('/');
+  Future<void> _checkUpdateOnStartup() async {
+    try {
+      final updateInfo =
+          await ref.read(appUpdateServiceProvider).checkForUpdate();
+      if (mounted && updateInfo != null && updateInfo.hasUpdate) {
+        await AppUpdateDialog.show(context, updateInfo);
       }
+    } catch (error) {
+      debugPrint('Startup update check failed: $error');
+    } finally {
+      _updateCheckFinished = true;
+      _continueToApp();
+    }
+  }
+
+  void _skipAnimation() {
+    _animationFinished = true;
+    _progressController.forward(from: _progressController.value);
+    _continueToApp();
+  }
+
+  void _continueToApp() {
+    if (_navigated ||
+        !mounted ||
+        !_animationFinished ||
+        !_updateCheckFinished) {
+      return;
+    }
+    _navigated = true;
+    final user = ref.read(userProgressProvider);
+    if (!user.isRegistered) {
+      context.go('/auth');
+    } else {
+      context.go('/');
     }
   }
 
@@ -77,7 +111,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
-        onTap: _goToCover,
+        onTap: _skipAnimation,
         child: SplashAmbientBackground(
           child: Stack(
             children: [
@@ -87,7 +121,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                 right: 20,
                 child: SafeArea(
                   child: TextButton.icon(
-                    onPressed: _goToCover,
+                    onPressed: _skipAnimation,
                     icon: const Icon(Icons.arrow_forward_rounded,
                         color: Colors.white70, size: 16),
                     label: const Text(

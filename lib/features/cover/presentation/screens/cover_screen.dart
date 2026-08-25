@@ -9,8 +9,6 @@ import 'package:e_modul_etnosains/core/widgets/custom_button.dart';
 import 'package:e_modul_etnosains/core/widgets/ethno_scaffold.dart';
 import 'package:e_modul_etnosains/core/utils/slide_navigation_guard.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
-import 'package:e_modul_etnosains/shared/services/app_update_service.dart';
-import 'package:e_modul_etnosains/shared/widgets/app_update_dialog.dart';
 import '../widgets/cards/cover_identity_badge_card.dart';
 import '../widgets/sections/cover_hero_poster.dart';
 import '../widgets/buttons/cover_quick_action_buttons.dart';
@@ -36,20 +34,7 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
       ref
           .read(userProgressProvider.notifier)
           .markModuleCompleted('cover', xpBonus: 20);
-      _checkAutoUpdate();
     });
-  }
-
-  Future<void> _checkAutoUpdate() async {
-    try {
-      final updateService = ref.read(appUpdateServiceProvider);
-      final updateInfo = await updateService.checkForUpdate();
-      if (updateInfo != null && updateInfo.hasUpdate && mounted) {
-        AppUpdateDialog.show(context, updateInfo);
-      }
-    } catch (e) {
-      debugPrint('Error auto checking update: $e');
-    }
   }
 
   @override
