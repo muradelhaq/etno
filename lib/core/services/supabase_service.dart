@@ -337,5 +337,40 @@ class SupabaseService {
 
     return channel;
   }
+
+  // ===========================================================================
+  // 7. MODULE ASSETS & MEDIA STORAGE (aset-sed)
+  // ===========================================================================
+
+  /// Fetch module assets from Supabase database
+  static Future<List<Map<String, dynamic>>> fetchModuleAssets({
+    String? moduleId,
+    String? category,
+  }) async {
+    try {
+      var query = client.from('module_assets').select();
+      if (moduleId != null && moduleId != 'all') {
+        query = query.eq('module_id', moduleId);
+      }
+      if (category != null && category != 'all') {
+        query = query.eq('category', category);
+      }
+      final response = await query.order('step_number', ascending: true);
+      return List<Map<String, dynamic>>.from(response);
+    } catch (e) {
+      debugPrint('Error fetchModuleAssets: $e');
+      return [];
+    }
+  }
+
+  /// Get public URL for an asset in 'aset-sed' storage bucket
+  static String getStorageAssetUrl(String filename) {
+    try {
+      return client.storage.from('aset-sed').getPublicUrl(filename);
+    } catch (e) {
+      return '$supabaseUrl/storage/v1/object/public/aset-sed/$filename';
+    }
+  }
 }
+
 

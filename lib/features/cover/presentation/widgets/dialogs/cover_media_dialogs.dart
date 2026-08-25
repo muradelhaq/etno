@@ -1,0 +1,116 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:e_modul_etnosains/core/constants/app_colors.dart';
+import 'package:e_modul_etnosains/core/constants/app_assets.dart';
+import 'package:e_modul_etnosains/core/theme/text_styles.dart';
+
+class CoverMediaDialogs {
+  static void showVideoPengantarDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            const Icon(Icons.movie_filter_rounded, color: AppColors.warmTerracotta),
+            const SizedBox(width: 10),
+            Text('Pengantar E-Modul', style: AppTextStyles.h3),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 150,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.black87,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Image.asset(
+                    AppAssets.flowchartFermentation,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
+                  Container(
+                    color: Colors.black45,
+                  ),
+                  const Icon(Icons.play_circle_fill, color: Colors.white, size: 54),
+                ],
+              ),
+            ),
+            const SizedBox(height: 14),
+            Text(
+              'Selamat Datang di E-Modul Etnosains Fermentasi!',
+              style: AppTextStyles.bodyBold.copyWith(fontSize: 14),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Melalui media interaktif ini, kamu akan mengeksplorasi bagaimana kearifan nenek moyang dalam mengolah tempe, tape, tauco, kecap, dan oncom sebenarnya merupakan penerapan bioteknologi mikroba yang sangat canggih.',
+              style: AppTextStyles.bodySmall.copyWith(fontSize: 12),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Tutup'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              context.go('/apersepsi');
+            },
+            child: const Text('Mulai Bab 1'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static void showQrDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            const Icon(Icons.qr_code_scanner_rounded, color: AppColors.primaryGreen),
+            const SizedBox(width: 10),
+            Text('Akses Cepat Modul', style: AppTextStyles.h3),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.borderSubtle),
+              ),
+              child: const Icon(Icons.qr_code_2, size: 140, color: AppColors.primaryDark),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Scan QR Code ini untuk membuka e-modul di perangkat ponsel atau tablet teman sekelasmu.',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodySmall,
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Tutup'),
+          ),
+        ],
+      ),
+    );
+  }
+}

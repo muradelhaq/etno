@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_assets.dart';
-import '../../../../core/constants/app_strings.dart';
-import '../../../../core/theme/text_styles.dart';
-import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/ethno_scaffold.dart';
-import '../../../../shared/services/local_storage_service.dart';
-import '../../../../shared/services/app_audio_service.dart';
-import '../../../../shared/services/app_update_service.dart';
-import '../../../../shared/widgets/app_update_dialog.dart';
+import 'package:e_modul_etnosains/core/constants/app_colors.dart';
+import 'package:e_modul_etnosains/core/constants/app_strings.dart';
+import 'package:e_modul_etnosains/core/theme/text_styles.dart';
+import 'package:e_modul_etnosains/core/widgets/custom_button.dart';
+import 'package:e_modul_etnosains/core/widgets/ethno_scaffold.dart';
+import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
+import 'package:e_modul_etnosains/shared/services/app_update_service.dart';
+import 'package:e_modul_etnosains/shared/widgets/app_update_dialog.dart';
+import '../widgets/cards/cover_identity_badge_card.dart';
+import '../widgets/sections/cover_hero_poster.dart';
+import '../widgets/buttons/cover_quick_action_buttons.dart';
+import '../widgets/dialogs/learning_objectives_sheet.dart';
 
 class CoverScreen extends ConsumerStatefulWidget {
   const CoverScreen({super.key});
@@ -21,7 +23,6 @@ class CoverScreen extends ConsumerStatefulWidget {
 }
 
 class _CoverScreenState extends ConsumerState<CoverScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -89,97 +90,7 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
               const SizedBox(height: 12),
 
               // Student Identity & Switch Account Quick Card
-              Consumer(
-                builder: (context, ref, _) {
-                  final user = ref.watch(userProgressProvider);
-                  final isNamed = user.studentName.isNotEmpty && user.studentName != 'Siswa Etnosains';
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 6),
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.primaryLight.withValues(alpha: 0.8)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.03),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 16,
-                                backgroundColor: AppColors.primaryGreen,
-                                child: Text(
-                                  isNamed ? user.studentName[0].toUpperCase() : 'S',
-                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      isNamed ? user.studentName : 'Siswa (Belum Terdaftar)',
-                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5, color: Color(0xFF1E3A2B)),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      isNamed ? '📚 ${user.studentClass} • 🏫 ${user.studentSchool}' : 'Klik untuk masuk & sinkronkan data ke Guru',
-                                      style: const TextStyle(fontSize: 10.5, color: Color(0xFF6B7280)),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        InkWell(
-                          onTap: () => context.go('/auth'),
-                          borderRadius: BorderRadius.circular(8),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: isNamed ? const Color(0xFFE8F5E9) : AppColors.primaryGreen,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  isNamed ? Icons.manage_accounts_rounded : Icons.login_rounded,
-                                  size: 14,
-                                  color: isNamed ? AppColors.primaryGreen : Colors.white,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  isNamed ? 'Profil / Guru' : 'Masuk / Daftar',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    color: isNamed ? AppColors.primaryGreen : Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+              const CoverIdentityBadgeCard(),
 
               const SizedBox(height: 12),
 
@@ -209,126 +120,13 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
 
               const SizedBox(height: 20),
 
-              // Hero Poster Image Container
-              Container(
-                height: 240,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primaryDark.withValues(alpha: 0.12),
-                      blurRadius: 16,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Image.asset(
-                        AppAssets.posterLearningModules,
-                        fit: BoxFit.cover,
-                        errorBuilder: (ctx, err, stack) => Container(
-                          color: AppColors.sageLight,
-                          child: const Center(
-                            child: Icon(Icons.menu_book_rounded, size: 64, color: AppColors.primaryGreen),
-                          ),
-                        ),
-                      ),
-                      // Gradient overlay at bottom
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        height: 70,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.transparent,
-                                Colors.black.withValues(alpha: 0.75),
-                              ],
-                            ),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            '🌾 Kearifan Leluhur • 🔬 Bioteknologi Modern',
-                            style: AppTextStyles.tagText.copyWith(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ).animate().fadeIn(delay: 350.ms, duration: 600.ms).scale(begin: const Offset(0.95, 0.95)),
+              // Hero Poster Image
+              const CoverHeroPoster().animate().fadeIn(delay: 350.ms, duration: 600.ms).scale(begin: const Offset(0.95, 0.95)),
 
               const SizedBox(height: 24),
 
               // Quick Action Media Buttons (Video, QR, Audio, Tujuan)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildQuickActionBtn(
-                    icon: Icons.play_circle_fill_rounded,
-                    label: 'Video Intro',
-                    color: AppColors.warmTerracotta,
-                    onTap: () => _showVideoPengantarDialog(context),
-                  ),
-                  Consumer(
-                    builder: (context, ref, _) {
-                      final audioState = ref.watch(backgroundAudioProvider);
-                      final isPlaying = audioState.isPlaying && !audioState.isMuted;
-
-                      return _buildQuickActionBtn(
-                        icon: isPlaying
-                            ? Icons.volume_up_rounded
-                            : Icons.headphones_rounded,
-                        label: isPlaying ? 'Backsound On' : 'Audio Musik',
-                        color: AppColors.primaryGreen,
-                        onTap: () {
-                          ref.read(backgroundAudioProvider.notifier).togglePlay();
-                          final willPlay = !isPlaying;
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                willPlay
-                                    ? '🎵 Memutar musik latar (backsound) etnosains...'
-                                    : '🔇 Musik latar (backsound) dijeda.',
-                              ),
-                              duration: const Duration(seconds: 2),
-                              backgroundColor: willPlay
-                                  ? AppColors.primaryGreen
-                                  : AppColors.terracottaDark,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  _buildQuickActionBtn(
-                    icon: Icons.qr_code_2_rounded,
-                    label: 'QR Akses',
-                    color: AppColors.infoBlue,
-                    onTap: () => _showQrDialog(context),
-                  ),
-                  _buildQuickActionBtn(
-                    icon: Icons.checklist_rounded,
-                    label: 'Tujuan',
-                    color: AppColors.goldenYellow,
-                    onTap: () => _showLearningObjectivesSheet(context),
-                  ),
-                ],
-              ).animate().fadeIn(delay: 450.ms, duration: 500.ms),
+              const CoverQuickActionButtons().animate().fadeIn(delay: 450.ms, duration: 500.ms),
 
               const SizedBox(height: 28),
 
@@ -348,7 +146,7 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
 
               // Button: Capaian Pembelajaran Sheet
               OutlinedButton.icon(
-                onPressed: () => _showLearningObjectivesSheet(context),
+                onPressed: () => LearningObjectivesSheet.show(context),
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 48),
                   side: const BorderSide(color: AppColors.primaryGreen, width: 1.5),
@@ -367,270 +165,6 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildQuickActionBtn({
-    required IconData icon,
-    required String label,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        width: 76,
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: color.withValues(alpha: 0.3), width: 1.2),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: color, size: 28),
-            const SizedBox(height: 6),
-            Text(
-              label,
-              style: AppTextStyles.tagText.copyWith(
-                color: AppColors.primaryDark,
-                fontSize: 10,
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showLearningObjectivesSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (ctx) => DraggableScrollableSheet(
-        initialChildSize: 0.65,
-        minChildSize: 0.4,
-        maxChildSize: 0.9,
-        expand: false,
-        builder: (c, scrollCtrl) => Padding(
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 44,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.sageLight,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(Icons.school_rounded, color: AppColors.primaryGreen),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Tujuan Pembelajaran Etnosains',
-                      style: AppTextStyles.h2.copyWith(fontSize: 18),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Kompetensi yang akan kamu kuasai setelah menyelesaikan modul:',
-                style: AppTextStyles.bodySmall,
-              ),
-              const Divider(height: 24),
-              Expanded(
-                child: ListView.separated(
-                  controller: scrollCtrl,
-                  itemCount: AppStrings.learningObjectives.length,
-                  separatorBuilder: (c, i) => const SizedBox(height: 12),
-                  itemBuilder: (c, i) {
-                    return Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.warmCream.withValues(alpha: 0.5),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.borderSubtle),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 26,
-                            height: 26,
-                            decoration: const BoxDecoration(
-                              color: AppColors.primaryGreen,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Text(
-                                '${i + 1}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              AppStrings.learningObjectives[i],
-                              style: AppTextStyles.bodyMedium.copyWith(fontSize: 13),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 12),
-              CustomButton(
-                text: 'Mengerti & Lanjutkan Belajar',
-                isFullWidth: true,
-                onPressed: () {
-                  Navigator.pop(ctx);
-                  context.go('/apersepsi');
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showVideoPengantarDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Row(
-          children: [
-            const Icon(Icons.movie_filter_rounded, color: AppColors.warmTerracotta),
-            const SizedBox(width: 10),
-            Text('Pengantar E-Modul', style: AppTextStyles.h3),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 150,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.black87,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Image.asset(
-                    AppAssets.flowchartFermentation,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
-                  Container(
-                    color: Colors.black45,
-                  ),
-                  const Icon(Icons.play_circle_fill, color: Colors.white, size: 54),
-                ],
-              ),
-            ),
-            const SizedBox(height: 14),
-            Text(
-              'Selamat Datang di E-Modul Etnosains Fermentasi!',
-              style: AppTextStyles.bodyBold.copyWith(fontSize: 14),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              'Melalui media interaktif ini, kamu akan mengeksplorasi bagaimana kearifan nenek moyang dalam mengolah tempe, tape, tauco, kecap, dan oncom sebenarnya merupakan penerapan bioteknologi mikroba yang sangat canggih.',
-              style: AppTextStyles.bodySmall.copyWith(fontSize: 12),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Tutup'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              context.go('/apersepsi');
-            },
-            child: const Text('Mulai Bab 1'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showQrDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Row(
-          children: [
-            const Icon(Icons.qr_code_scanner_rounded, color: AppColors.primaryGreen),
-            const SizedBox(width: 10),
-            Text('Akses Cepat Modul', style: AppTextStyles.h3),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.borderSubtle),
-              ),
-              child: const Icon(Icons.qr_code_2, size: 140, color: AppColors.primaryDark),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Scan QR Code ini untuk membuka e-modul di perangkat ponsel atau tablet teman sekelasmu.',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.bodySmall,
-            ),
-          ],
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Tutup'),
-          ),
-        ],
       ),
     );
   }

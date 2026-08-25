@@ -12,7 +12,7 @@ class BackgroundAudioState {
   const BackgroundAudioState({
     this.isPlaying = true,
     this.isMuted = false,
-    this.volume = 0.35,
+    this.volume = 0.50,
   });
 
   BackgroundAudioState copyWith({
@@ -63,7 +63,7 @@ class BackgroundAudioNotifier extends StateNotifier<BackgroundAudioState> {
     try {
       await _player.setReleaseMode(ReleaseMode.loop);
       await _player.setVolume(state.isMuted ? 0.0 : state.volume);
-      await _player.play(AssetSource('audio/backsound_etnosains.wav'));
+      await _player.play(AssetSource('audio/ssstik.io_1787630984112.mp3'));
       _isAudioLoaded = true;
       state = state.copyWith(isPlaying: true);
     } catch (e) {

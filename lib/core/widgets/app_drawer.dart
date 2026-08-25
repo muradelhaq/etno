@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 import '../constants/app_colors.dart';
 import '../theme/text_styles.dart';
 import '../../shared/services/local_storage_service.dart';
-import '../../shared/services/app_update_service.dart';
-import '../../shared/services/app_audio_service.dart';
-import '../../shared/widgets/app_update_dialog.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'drawer/drawer_user_header.dart';
+import 'drawer/drawer_module_item_tile.dart';
+import 'drawer/drawer_audio_setting_tile.dart';
+import 'drawer/drawer_version_footer.dart';
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
@@ -16,7 +16,7 @@ class AppDrawer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final progress = ref.watch(userProgressProvider);
 
-    final List<Map<String, dynamic>> menuItems = [
+    final List<Map<String, dynamic>> menuItems = const [
       {
         'slide': 1,
         'title': 'Cover & Pengantar',
@@ -119,161 +119,10 @@ class AppDrawer extends ConsumerWidget {
       backgroundColor: Colors.white,
       child: Column(
         children: [
-          // Drawer Header
-          Container(
-            padding: const EdgeInsets.fromLTRB(20, 48, 20, 20),
-            decoration: const BoxDecoration(
-              gradient: AppColors.primaryGradient,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(Icons.eco_rounded,
-                          color: AppColors.warmCream, size: 28),
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Admin Shortcut
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                            context.go('/admin');
-                          },
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFD97706),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.admin_panel_settings_rounded, size: 13, color: Colors.white),
-                                SizedBox(width: 4),
-                                Text('Guru', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        // Ganti Profil
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                            context.go('/auth');
-                          },
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: AppColors.warmTerracotta,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.person_rounded, size: 13, color: Colors.white),
-                                SizedBox(width: 4),
-                                Text('Profil', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  progress.studentName,
-                  style: AppTextStyles.h2.copyWith(
-                    color: Colors.white,
-                    fontSize: 17,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  '📚 ${progress.studentClass}  •  🏫 ${progress.studentSchool}',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.sageLight,
-                    fontSize: 11,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 12),
-                // XP and completion banner
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.stars_rounded,
-                                color: AppColors.goldenYellow, size: 18),
-                            const SizedBox(width: 6),
-                            Text(
-                              '${progress.earnedXP} XP',
-                              style: AppTextStyles.bodyBold.copyWith(
-                                color: Colors.white,
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.check_circle_rounded,
-                                color: AppColors.sageLight, size: 18),
-                            const SizedBox(width: 6),
-                            Text(
-                              '${progress.completedModules.length}/12 Modul',
-                              style: AppTextStyles.bodyBold.copyWith(
-                                color: Colors.white,
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          // 1. Drawer Header
+          DrawerUserHeader(progress: progress),
 
-          // Drawer List
+          // 2. Drawer Navigation List
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -285,78 +134,15 @@ class AppDrawer extends ConsumerWidget {
                 final isCompleted =
                     progress.completedModules.contains(item['id']);
 
-                return ListTile(
-                  leading: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: isCompleted
-                          ? AppColors.sageLight
-                          : AppColors.warmCream.withValues(alpha: 0.6),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Icon(
-                        item['icon'] as IconData,
-                        color: isCompleted
-                            ? AppColors.primaryGreen
-                            : AppColors.warmTerracotta,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                  title: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
-                        margin: const EdgeInsets.only(right: 6),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryDark.withValues(alpha: 0.08),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          'S${item['slide']}',
-                          style: AppTextStyles.tagText.copyWith(
-                            color: AppColors.primaryDark,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          item['title'] as String,
-                          style: AppTextStyles.bodyBold.copyWith(
-                            fontSize: 13,
-                            color: AppColors.primaryDark,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  subtitle: Text(
-                    item['subtitle'] as String,
-                    style: AppTextStyles.bodySmall.copyWith(fontSize: 11),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: isCompleted
-                      ? const Icon(Icons.check_circle_rounded,
-                          color: AppColors.successGreen, size: 20)
-                      : const Icon(Icons.chevron_right_rounded,
-                          color: AppColors.textLight, size: 20),
-                  onTap: () {
-                    Navigator.pop(context);
-                    context.go(item['route'] as String);
-                  },
+                return DrawerModuleItemTile(
+                  item: item,
+                  isCompleted: isCompleted,
                 );
               },
             ),
           ),
 
-          // Footer Options
+          // 3. Quick Action Buttons (Sertifikat & Idea Pad)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: const BoxDecoration(
@@ -394,160 +180,13 @@ class AppDrawer extends ConsumerWidget {
             ),
           ),
 
-          // Background Music Setting Tile
-          Consumer(
-            builder: (context, ref, _) {
-              final audioState = ref.watch(backgroundAudioProvider);
-              final isPlaying = audioState.isPlaying && !audioState.isMuted;
+          // 4. Background Music Setting Tile
+          const DrawerAudioSettingTile(),
 
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFF9F6EE),
-                  border: Border(
-                    top: BorderSide(color: AppColors.borderSubtle),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      isPlaying
-                          ? Icons.music_note_rounded
-                          : Icons.music_off_rounded,
-                      color: isPlaying
-                          ? AppColors.primaryGreen
-                          : AppColors.textSecondary,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Musik Latar (Backsound)',
-                            style: AppTextStyles.bodyBold.copyWith(fontSize: 12),
-                          ),
-                          Text(
-                            isPlaying
-                                ? 'Sedang berputar • Tradisional'
-                                : 'Dinonaktifkan',
-                            style: AppTextStyles.bodySmall.copyWith(
-                              fontSize: 10.5,
-                              color: isPlaying
-                                  ? AppColors.primaryGreen
-                                  : AppColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Switch.adaptive(
-                      value: isPlaying,
-                      activeTrackColor: AppColors.primaryGreen,
-                      onChanged: (val) {
-                        ref.read(backgroundAudioProvider.notifier).setMuted(!val);
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-
-          // App Version & Check Update Tile
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: const BoxDecoration(
-              color: AppColors.background,
-              border: Border(
-                top: BorderSide(color: AppColors.borderSubtle),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FutureBuilder<PackageInfo>(
-                  future: PackageInfo.fromPlatform(),
-                  builder: (context, snapshot) {
-                    final version = snapshot.data?.version ?? '1.0.3';
-                    return Text(
-                      'v$version (Etnosains)',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        fontSize: 11,
-                        color: AppColors.textLight,
-                      ),
-                    );
-                  },
-                ),
-                InkWell(
-                  onTap: () => _handleManualUpdateCheck(context, ref),
-                  borderRadius: BorderRadius.circular(8),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.sync_rounded,
-                            size: 14, color: AppColors.primaryGreen),
-                        const SizedBox(width: 4),
-                        Text(
-                          'Cek Update',
-                          style: AppTextStyles.tagText.copyWith(
-                            color: AppColors.primaryGreen,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // 5. App Version & Check Update Tile
+          const DrawerVersionFooter(),
         ],
       ),
     );
-  }
-
-  Future<void> _handleManualUpdateCheck(
-      BuildContext context, WidgetRef ref) async {
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Memeriksa pembaruan aplikasi ke GitHub...'),
-        duration: Duration(seconds: 2),
-      ),
-    );
-
-    try {
-      final updateService = ref.read(appUpdateServiceProvider);
-      final info = await updateService.checkForUpdate();
-
-      if (!context.mounted) return;
-
-      if (info != null && info.hasUpdate) {
-        AppUpdateDialog.show(context, info);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: AppColors.primaryGreen,
-            content: Text(
-              info != null
-                  ? 'Aplikasi sudah versi terbaru (${info.currentVersion})'
-                  : 'Aplikasi sudah versi terbaru.',
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: AppColors.errorRed,
-          content: Text('Gagal memeriksa pembaruan: $e'),
-        ),
-      );
-    }
   }
 }

@@ -33,4 +33,46 @@ class AppAssets {
   static const String image14 = '$basePath/image14.png';
   static const String image15 = '$basePath/image15.png';
   static const String image16 = '$basePath/image16.png';
+
+  // Seed / Authentic Fermentation Process Assets (aset_sed)
+  static const String asetSedPath = '$basePath/aset_sed';
+
+  // Tempe Process
+  static const String tempeKedelai = '$asetSedPath/kedelai-tempe.jpeg';
+  static const String tempePerendaman = '$asetSedPath/perendaman-tempe.jpeg';
+  static const String tempePerebusan = '$asetSedPath/perebusan-tempe.jpeg';
+  static const String tempeRagi = '$asetSedPath/ragi-tempe.jpeg';
+  static const String tempePembungkusan = '$asetSedPath/pembungkusan-tempe.jpeg';
+  static const String tempeProsesFerm = '$asetSedPath/proses-ferm-tempe.jpeg';
+  static const String tempeJadi = '$asetSedPath/jadi-tempe.jpeg';
+
+  // Tape Singkong Process
+  static const String tapeFase1 = '$asetSedPath/pase-1-singkong.jpeg';
+  static const String tapeFase1Alt = '$asetSedPath/tapesing-fase1.jpeg';
+  static const String tapeFase2 = '$asetSedPath/fase-2-singkong.jpeg';
+  static const String tapeFase2Alt = '$asetSedPath/tapesing-fase-2.jpeg';
+  static const String tapeFase3 = '$asetSedPath/fase-3-singkong.jpeg';
+  static const String tapeFase3Alt = '$asetSedPath/tapesing-fase-3.jpeg';
+  static const String tapeFase4 = '$asetSedPath/fase-4-singkong.jpeg';
+  static const String tapeFase4Alt = '$asetSedPath/tapesing-fase-4.jpeg';
+  static const String tapeFase5 = '$asetSedPath/fase-5-singkong.jpeg';
+  static const String tapeFase5Alt = '$asetSedPath/tapesing-fase-5.jpeg';
+  static const String tapeSingkongFermentasi = '$asetSedPath/fermentasi-tapesing.jpeg';
+  static const String tapeSingkongSiap = '$asetSedPath/tape-singkong-fermentasi.jpeg';
+
+  // Tauco Process & Traditional Dish
+  static const String taucoFase1 = '$asetSedPath/ferm-tauco-1.jpeg';
+  static const String taucoFase2 = '$asetSedPath/ferm-tauco-2.jpeg';
+  static const String taucoFase3 = '$asetSedPath/ferm-tauco-3.jpeg';
+  static const String taucoFase4a = '$asetSedPath/ferm-tauco-4a.jpeg';
+  static const String taucoFase4b = '$asetSedPath/ferm-tauco--4.jpeg';
+  static const String taucoFase5a = '$asetSedPath/ferm-tauco-5.jpeg';
+  static const String taucoFase5b = '$asetSedPath/ferm-tauco-5a.jpeg';
+  static const String taucoSayurIkan = '$asetSedPath/sayur-ikan-tauco.jpeg';
+  static const String taucoIkanFermentasi = '$asetSedPath/fermentasi-taucoikan.jpeg';
+
+  /// Helper to get Supabase Storage public URL
+  static String getSupabaseStorageUrl(String filename) {
+    return 'https://lumhlhxbmdtlqmlbcumc.supabase.co/storage/v1/object/public/aset-sed/$filename';
+  }
 }
