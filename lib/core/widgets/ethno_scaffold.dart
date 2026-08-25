@@ -9,7 +9,7 @@ import 'app_drawer.dart';
 import 'custom_app_bar.dart';
 import 'module_nav_bar.dart';
 
-class EthnoScaffold extends ConsumerWidget {
+class EthnoScaffold extends ConsumerStatefulWidget {
   final Widget body;
   final String? title;
   final String? subtitle;
@@ -50,7 +50,61 @@ class EthnoScaffold extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<EthnoScaffold> createState() => _EthnoScaffoldState();
+}
+
+class _EthnoScaffoldState extends ConsumerState<EthnoScaffold> {
+  bool _markingRead = false;
+
+  bool _onScrollNotification(ScrollNotification notification) {
+    if (widget.currentSlide == null ||
+        notification.metrics.axis != Axis.vertical) {
+      return false;
+    }
+    if (notification.metrics.extentAfter <= 8) _markCurrentSlideRead();
+    return false;
+  }
+
+  bool _onMetricsNotification(ScrollMetricsNotification notification) {
+    if (widget.currentSlide != null &&
+        notification.metrics.axis == Axis.vertical &&
+        notification.metrics.maxScrollExtent <= 8) {
+      _markCurrentSlideRead();
+    }
+    return false;
+  }
+
+  Future<void> _markCurrentSlideRead() async {
+    final slide = widget.currentSlide;
+    if (slide == null || _markingRead) return;
+    if (ref.read(userProgressProvider).readSlides.contains(slide)) return;
+    _markingRead = true;
+    await ref.read(userProgressProvider.notifier).markSlideRead(slide);
+    _markingRead = false;
+  }
+
+  void _handleNext() {
+    final slide = widget.currentSlide;
+    final progress = ref.read(userProgressProvider);
+    if (slide != null && !progress.canProceedFromSlide(slide)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(progress.requirementForSlide(slide)),
+          backgroundColor: AppColors.warmTerracotta,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+    if (widget.onNext != null) {
+      widget.onNext!();
+    } else if (widget.nextRoute != null) {
+      context.go(widget.nextRoute!);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // If student is not registered, redirect immediately to /auth
     final userProgress = ref.watch(userProgressProvider);
     if (!userProgress.isRegistered) {
@@ -68,51 +122,59 @@ class EthnoScaffold extends ConsumerWidget {
 
     // Resolve AppBar widget
     PreferredSizeWidget? effectiveAppBar;
-    if (customAppBar != null) {
-      effectiveAppBar = customAppBar;
-    } else if (title != null) {
+    if (widget.customAppBar != null) {
+      effectiveAppBar = widget.customAppBar;
+    } else if (widget.title != null) {
       effectiveAppBar = CustomAppBar(
-        title: title!,
-        subtitle: subtitle,
-        showBackButton: showBackButton,
-        actions: actions,
+        title: widget.title!,
+        subtitle: widget.subtitle,
+        showBackButton: widget.showBackButton,
+        actions: widget.actions,
       );
     }
 
     // Resolve BottomBar widget
     Widget? effectiveBottomBar;
-    if (customBottomBar != null) {
-      effectiveBottomBar = customBottomBar;
-    } else if (currentSlide != null) {
+    if (widget.customBottomBar != null) {
+      effectiveBottomBar = widget.customBottomBar;
+    } else if (widget.currentSlide != null) {
       effectiveBottomBar = ModuleNavBar(
-        currentSlide: currentSlide!,
-        totalSlides: totalSlides,
-        prevRoute: prevRoute,
-        nextRoute: nextRoute,
-        onNext: onNext,
-        onPrev: onPrev,
+        currentSlide: widget.currentSlide!,
+        totalSlides: widget.totalSlides,
+        prevRoute: widget.prevRoute,
+        nextRoute: widget.nextRoute,
+        onNext: _handleNext,
+        onPrev: widget.onPrev,
       );
     }
+
+    final effectiveBody = NotificationListener<ScrollMetricsNotification>(
+      onNotification: _onMetricsNotification,
+      child: NotificationListener<ScrollNotification>(
+        onNotification: _onScrollNotification,
+        child: widget.body,
+      ),
+    );
 
     // In Portrait mode: standard Scaffold layout
     if (!isLandscape) {
       return Scaffold(
-        backgroundColor: backgroundColor ?? AppColors.background,
-        drawer: drawer,
+        backgroundColor: widget.backgroundColor ?? AppColors.background,
+        drawer: widget.drawer,
         appBar: effectiveAppBar,
         bottomNavigationBar: effectiveBottomBar,
-        floatingActionButton: floatingActionButton,
-        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-        body: body,
+        floatingActionButton: widget.floatingActionButton,
+        resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+        body: effectiveBody,
       );
     }
 
     // In Landscape mode: full-bleed body with smoothly animated top & bottom bars
     return Scaffold(
-      backgroundColor: backgroundColor ?? AppColors.background,
-      drawer: drawer,
-      floatingActionButton: floatingActionButton,
-      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+      backgroundColor: widget.backgroundColor ?? AppColors.background,
+      drawer: widget.drawer,
+      floatingActionButton: widget.floatingActionButton,
+      resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
@@ -121,7 +183,7 @@ class EthnoScaffold extends ConsumerWidget {
         child: Stack(
           children: [
             // Full-screen content
-            Positioned.fill(child: body),
+            Positioned.fill(child: effectiveBody),
 
             // Top Header: Smooth Slide Up/Down & Fade
             if (effectiveAppBar != null)
@@ -172,7 +234,7 @@ class EthnoScaffold extends ConsumerWidget {
               ),
 
             // Floating Navigation Cue in Landscape when hidden
-            if (currentSlide != null)
+            if (widget.currentSlide != null)
               Positioned(
                 bottom: 12,
                 right: 16,
@@ -220,7 +282,7 @@ class EthnoScaffold extends ConsumerWidget {
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
-                                  'Slide $currentSlide/$totalSlides • Ketuk Navigasi',
+                                  'Slide ${widget.currentSlide}/${widget.totalSlides} • Ketuk Navigasi',
                                   style: AppTextStyles.tagText.copyWith(
                                     color: Colors.white,
                                     fontSize: 10,

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Upload all assets from aset-sed directory to Supabase Storage and seed module_assets table.
-Supports anon key (after bucket created via SQL) or service_role key (creates bucket automatically).
+Requires a service_role key and must only be run from a trusted terminal.
 """
 import os
 import sys
@@ -12,7 +12,6 @@ import urllib.request
 import urllib.error
 
 SUPABASE_URL = "https://lumhlhxbmdtlqmlbcumc.supabase.co"
-DEFAULT_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1bWhsaHhibWR0bHFtbGJjdW1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMDA0NTMsImV4cCI6MjEwMjg3NjQ1M30.aZQKELiqElVDuRo40HNPLqvUP6Cg8PeDGQuTL9eIhiE"
 BUCKET_NAME = "aset-sed"
 ASSETS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "aset-sed")
 
@@ -342,7 +341,7 @@ def upload_file(file_path, filename, auth_key):
         return False, str(e)
 
 def insert_database_row(item, auth_key):
-    url = f"{SUPABASE_URL}/rest/v1/module_assets"
+    url = f"{SUPABASE_URL}/rest/v1/module_assets?on_conflict=filename"
     payload = {
         "module_id": item["module_id"],
         "category": item["category"],
@@ -378,21 +377,24 @@ def insert_database_row(item, auth_key):
 def main():
     parser = argparse.ArgumentParser(description="Upload asset-sed files to Supabase Storage & Database")
     parser.add_argument("--service-key", help="Supabase service_role key", default=os.getenv("SUPABASE_SERVICE_ROLE_KEY"))
-    parser.add_argument("--anon-key", help="Supabase anon key", default=DEFAULT_ANON_KEY)
     args = parser.parse_args()
 
-    auth_key = args.service_key or args.anon_key
+    if not args.service_key:
+        parser.error(
+            "--service-key atau environment SUPABASE_SERVICE_ROLE_KEY wajib diisi"
+        )
+
+    auth_key = args.service_key
     print("================================================================")
     print(" 🚀 SUPABASE ASSET-SED UPLOADER & SEED TOOL")
     print(f" URL: {SUPABASE_URL}")
     print(f" Bucket: {BUCKET_NAME}")
     print(f" Source: {ASSETS_DIR}")
-    print(f" Key Mode: {'SERVICE ROLE KEY' if args.service_key else 'ANON KEY'}")
+    print(" Key Mode: SERVICE ROLE KEY")
     print("================================================================")
 
-    if args.service_key:
-        print("\n[Step 1] Creating/verifying bucket with service key...")
-        create_storage_bucket(args.service_key)
+    print("\n[Step 1] Creating/verifying bucket with service key...")
+    create_storage_bucket(args.service_key)
 
     total = len(ASSET_METADATA)
     success_uploads = 0
@@ -432,7 +434,7 @@ def main():
         print("1. Buka Supabase Dashboard: https://supabase.com/dashboard/project/lumhlhxbmdtlqmlbcumc")
         print("2. Buka menu SQL Editor, lalu jalankan file SQL yang sudah disiapkan:")
         print("   supabase/migrations/20260825_create_module_assets_and_storage.sql")
-        print("3. Setelah itu, jalankan kembali script ini: python3 scripts/upload_assets_to_supabase.py")
+        print("3. Jalankan kembali dengan SUPABASE_SERVICE_ROLE_KEY di environment.")
 
 if __name__ == "__main__":
     main()

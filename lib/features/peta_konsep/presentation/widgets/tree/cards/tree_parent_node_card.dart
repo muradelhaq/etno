@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import '../dialogs/concept_tree_detail_dialog.dart';
 import '../models/tree_concept_node.dart';
@@ -67,7 +68,7 @@ class TreeParentNodeCard extends StatelessWidget {
             const SizedBox(height: 1),
             ClipRRect(
               borderRadius: BorderRadius.circular(isLandscape ? 6 : 4),
-              child: Image.asset(
+              child: AppImage(
                 branch.imageAsset,
                 height: isLandscape ? 52 : 36,
                 width: double.infinity,

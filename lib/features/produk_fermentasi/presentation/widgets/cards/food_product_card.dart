@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../dialogs/traditional_food_info_dialog.dart';
 
@@ -39,7 +40,7 @@ class FoodProductCard extends StatelessWidget {
           // Food Image
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(13)),
-            child: Image.asset(
+            child: AppImage(
               imageAsset,
               height: 95,
               width: double.infinity,

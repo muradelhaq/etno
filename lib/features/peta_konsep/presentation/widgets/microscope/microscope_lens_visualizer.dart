@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 import 'package:e_modul_etnosains/features/peta_konsep/data/models/microorganism_model.dart';
@@ -72,7 +73,7 @@ class MicroscopeLensVisualizer extends StatelessWidget {
                   opacity: foodOpacity,
                   child: Transform.scale(
                     scale: foodScale,
-                    child: Image.asset(
+                    child: AppImage(
                       foodAsset,
                       width: lensSize,
                       height: lensSize,
@@ -103,8 +104,8 @@ class MicroscopeLensVisualizer extends StatelessWidget {
               Positioned(
                 top: isLandscape ? 6 : 10,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 2.5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2.5),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.8),
                     borderRadius: BorderRadius.circular(10),

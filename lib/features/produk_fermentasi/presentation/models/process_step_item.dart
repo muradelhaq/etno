@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../domain/entities/fermented_food_entity.dart';
 
@@ -221,9 +220,7 @@ class FoodProcessStepsProvider {
             ? StepIconType.kedelai
             : (s.stepNumber == 2
                 ? StepIconType.perebusan
-                : (s.stepNumber == 3
-                    ? StepIconType.ragi
-                    : StepIconType.tempe)),
+                : (s.stepNumber == 3 ? StepIconType.ragi : StepIconType.tempe)),
         description: s.description,
         biologicalExplanation: s.biologicalContext,
       );

@@ -6,11 +6,15 @@ import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 class DrawerModuleItemTile extends StatelessWidget {
   final Map<String, dynamic> item;
   final bool isCompleted;
+  final bool isUnlocked;
+  final VoidCallback? onLocked;
 
   const DrawerModuleItemTile({
     super.key,
     required this.item,
     required this.isCompleted,
+    this.isUnlocked = true,
+    this.onLocked,
   });
 
   @override
@@ -28,9 +32,8 @@ class DrawerModuleItemTile extends StatelessWidget {
         child: Center(
           child: Icon(
             item['icon'] as IconData,
-            color: isCompleted
-                ? AppColors.primaryGreen
-                : AppColors.warmTerracotta,
+            color:
+                isCompleted ? AppColors.primaryGreen : AppColors.warmTerracotta,
             size: 20,
           ),
         ),
@@ -74,9 +77,16 @@ class DrawerModuleItemTile extends StatelessWidget {
       trailing: isCompleted
           ? const Icon(Icons.check_circle_rounded,
               color: AppColors.successGreen, size: 20)
-          : const Icon(Icons.chevron_right_rounded,
-              color: AppColors.textLight, size: 20),
+          : Icon(
+              isUnlocked ? Icons.chevron_right_rounded : Icons.lock_rounded,
+              color: AppColors.textLight,
+              size: 20,
+            ),
       onTap: () {
+        if (!isUnlocked) {
+          onLocked?.call();
+          return;
+        }
         Navigator.pop(context);
         context.go(item['route'] as String);
       },

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 import 'package:e_modul_etnosains/core/widgets/custom_button.dart';
 import 'package:e_modul_etnosains/core/widgets/custom_app_bar.dart';
 import 'package:e_modul_etnosains/core/widgets/ethno_scaffold.dart';
+import 'package:e_modul_etnosains/core/utils/slide_navigation_guard.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
 import 'package:e_modul_etnosains/core/services/supabase_service.dart';
 import '../../data/models/glucose_experiment_model.dart';
@@ -36,9 +36,6 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(userProgressProvider.notifier).markModuleCompleted('virtual_lab', xpBonus: 50);
-    });
   }
 
   @override
@@ -55,7 +52,8 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
       'yeast_percent': _yeastPercent,
       'fermentation_days': _fermentationDays,
       'is_banana_leaf': _isBananaLeaf,
-      'container_type': _isBananaLeaf ? 'Daun Pisang (Alami)' : 'Plastik Kedap Udara',
+      'container_type':
+          _isBananaLeaf ? 'Daun Pisang (Alami)' : 'Plastik Kedap Udara',
       'glucose_level': simulation.glucoseLevel,
       'taste_profile': simulation.tasteProfile,
       'aroma_profile': simulation.aromaProfile,
@@ -76,7 +74,9 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
       conclusion: conclusion,
     );
 
-    ref.read(userProgressProvider.notifier).addXP(25);
+    await ref
+        .read(userProgressProvider.notifier)
+        .markModuleCompleted('virtual_lab', xpBonus: 25);
 
     if (mounted) {
       setState(() => _isSavingLab = false);
@@ -84,7 +84,8 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
         SnackBar(
           content: Row(
             children: [
-              const Icon(Icons.check_circle_rounded, color: Colors.white, size: 20),
+              const Icon(Icons.check_circle_rounded,
+                  color: Colors.white, size: 20),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -123,8 +124,12 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
           unselectedLabelColor: AppColors.textSecondary,
           indicatorColor: AppColors.primaryGreen,
           tabs: const [
-            Tab(icon: Icon(Icons.science_rounded), text: 'Simulasi Lab Glukosa'),
-            Tab(icon: Icon(Icons.sports_esports_rounded), text: 'Game Misi Sains'),
+            Tab(
+                icon: Icon(Icons.science_rounded),
+                text: 'Simulasi Lab Glukosa'),
+            Tab(
+                icon: Icon(Icons.sports_esports_rounded),
+                text: 'Game Misi Sains'),
           ],
         ),
       ),
@@ -159,18 +164,21 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
             ),
             child: Row(
               children: [
-                const Icon(Icons.science_rounded, color: AppColors.goldenYellow, size: 28),
+                const Icon(Icons.science_rounded,
+                    color: AppColors.goldenYellow, size: 28),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Laboratorium Bioteknologi Virtual',
-                          style: AppTextStyles.h3.copyWith(color: Colors.white, fontSize: 15)),
+                          style: AppTextStyles.h3
+                              .copyWith(color: Colors.white, fontSize: 15)),
                       const SizedBox(height: 2),
                       Text(
                         'Uji pengaruh konsentrasi ragi dan lama fermentasi terhadap kadar glukosa tape singkong secara empiris.',
-                        style: AppTextStyles.bodySmall.copyWith(color: AppColors.sageLight),
+                        style: AppTextStyles.bodySmall
+                            .copyWith(color: AppColors.sageLight),
                       ),
                     ],
                   ),
@@ -191,16 +199,22 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
             style: OutlinedButton.styleFrom(
               minimumSize: const Size(double.infinity, 44),
               side: const BorderSide(color: AppColors.primaryGreen, width: 1.2),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
             ),
             icon: Icon(
-              _showProcedureGuide ? Icons.expand_less : Icons.assignment_outlined,
+              _showProcedureGuide
+                  ? Icons.expand_less
+                  : Icons.assignment_outlined,
               color: AppColors.primaryGreen,
               size: 18,
             ),
             label: Text(
-              _showProcedureGuide ? 'Sembunyikan Prosedur Praktikum' : 'Lihat Prosedur Praktikum Lengkap',
-              style: AppTextStyles.tagText.copyWith(color: AppColors.primaryGreen),
+              _showProcedureGuide
+                  ? 'Sembunyikan Prosedur Praktikum'
+                  : 'Lihat Prosedur Praktikum Lengkap',
+              style:
+                  AppTextStyles.tagText.copyWith(color: AppColors.primaryGreen),
             ),
           ),
 
@@ -223,7 +237,8 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
           const SizedBox(height: 20),
 
           // Section 2: Interactive Controls
-          Text('Pengaturan Variabel Eksperimen', style: AppTextStyles.h2.copyWith(fontSize: 16)),
+          Text('Pengaturan Variabel Eksperimen',
+              style: AppTextStyles.h2.copyWith(fontSize: 16)),
           const SizedBox(height: 10),
 
           LabControlSliders(
@@ -256,9 +271,12 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
             icon: Icons.arrow_forward_rounded,
             isFullWidth: true,
             backgroundColor: AppColors.primaryGreen,
-            onPressed: () {
-              context.go('/challenge-proyek');
-            },
+            onPressed: () => navigateToNextSlide(
+              context,
+              ref,
+              currentSlide: 9,
+              route: '/challenge-proyek',
+            ),
           ),
 
           const SizedBox(height: 24),

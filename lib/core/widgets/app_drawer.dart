@@ -16,7 +16,7 @@ class AppDrawer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final progress = ref.watch(userProgressProvider);
 
-    final List<Map<String, dynamic>> menuItems = const [
+    const List<Map<String, dynamic>> menuItems = [
       {
         'slide': 1,
         'title': 'Cover & Pengantar',
@@ -133,10 +133,24 @@ class AppDrawer extends ConsumerWidget {
                 final item = menuItems[i];
                 final isCompleted =
                     progress.completedModules.contains(item['id']);
+                final slide = item['slide'] as int;
+                final isUnlocked = slide <= progress.highestUnlockedSlide;
 
                 return DrawerModuleItemTile(
                   item: item,
                   isCompleted: isCompleted,
+                  isUnlocked: isUnlocked,
+                  onLocked: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Selesaikan slide ${progress.highestUnlockedSlide} terlebih dahulu.',
+                        ),
+                        backgroundColor: AppColors.warmTerracotta,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
                 );
               },
             ),

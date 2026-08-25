@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import '../../../../../core/constants/app_colors.dart';
 
 class TraditionalFoodInfoDialog extends StatelessWidget {
@@ -45,7 +46,7 @@ class TraditionalFoodInfoDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
+              AppImage(
                 imageAsset,
                 height: 140,
                 width: double.infinity,
@@ -84,7 +85,8 @@ class TraditionalFoodInfoDialog extends StatelessWidget {
                         color: const Color(0xFFFAF7EE),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AppColors.goldenYellow.withValues(alpha: 0.6)),
+                            color:
+                                AppColors.goldenYellow.withValues(alpha: 0.6)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

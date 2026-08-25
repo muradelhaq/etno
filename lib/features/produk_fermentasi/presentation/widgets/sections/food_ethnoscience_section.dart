@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../domain/entities/fermented_food_entity.dart';
 
@@ -127,11 +128,12 @@ class FoodEthnoscienceSection extends StatelessWidget {
                                 ),
                               ),
                               child: ClipOval(
-                                child: Image.asset(
+                                child: AppImage(
                                   'assets/images/tempe_rhizopus_diagram.png',
                                   fit: BoxFit.contain,
                                   errorBuilder: (_, __, ___) => const Center(
-                                    child: Icon(Icons.biotech, color: AppColors.primaryGreen),
+                                    child: Icon(Icons.biotech,
+                                        color: AppColors.primaryGreen),
                                   ),
                                 ),
                               ),
@@ -139,7 +141,10 @@ class FoodEthnoscienceSection extends StatelessWidget {
                             const SizedBox(height: 4),
                             Text(
                               food.microorganisms.isNotEmpty
-                                  ? food.microorganisms.first.split('(').first.trim()
+                                  ? food.microorganisms.first
+                                      .split('(')
+                                      .first
+                                      .trim()
                                   : 'Rhizopus oligosporus',
                               style: const TextStyle(
                                 color: Color(0xFF1E3A2B),

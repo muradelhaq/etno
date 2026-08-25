@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:go_router/go_router.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
@@ -54,7 +55,7 @@ class ConceptTreeDialogs {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
+                AppImage(
                   imageAsset,
                   height: 150,
                   width: double.infinity,
@@ -115,8 +116,7 @@ class ConceptTreeDialogs {
                       const SizedBox(height: 10),
                       Text(
                         description,
-                        style:
-                            AppTextStyles.bodyMedium.copyWith(fontSize: 12),
+                        style: AppTextStyles.bodyMedium.copyWith(fontSize: 12),
                       ),
                     ],
                   ),

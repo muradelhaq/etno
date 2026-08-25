@@ -47,8 +47,8 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
       _userSelectedAnswers[questionId] = optionIndex;
     });
 
-    final q = PisaQuestionsData.questions
-        .firstWhere((item) => item.id == questionId);
+    final q =
+        PisaQuestionsData.questions.firstWhere((item) => item.id == questionId);
     final isCorrect = optionIndex == q.correctOptionIndex;
 
     ref
@@ -56,7 +56,7 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
         .saveQuizAnswer(questionId, optionIndex, isCorrect);
   }
 
-  void _finishQuiz() {
+  Future<void> _finishQuiz() async {
     int totalCorrect = 0;
     for (var q in PisaQuestionsData.questions) {
       if (_userSelectedAnswers[q.id] == q.correctOptionIndex) {
@@ -65,27 +65,31 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
     }
 
     final finalScore = (totalCorrect * 10).clamp(0, 100);
-    ref.read(userProgressProvider.notifier).completeQuiz(finalScore);
+    await ref.read(userProgressProvider.notifier).completeQuiz(finalScore);
 
     final user = ref.read(userProgressProvider);
-    SupabaseService.saveQuizResult(
-      userId: user.studentId,
-      studentName: user.studentName,
-      studentClass: user.studentClass,
-      studentSchool: user.studentSchool,
-      quizType: 'Post-test Evaluasi PISA',
-      score: finalScore.toDouble(),
-      correctCount: totalCorrect,
-      totalQuestions: PisaQuestionsData.questions.length,
-      answersDetail:
-          _userSelectedAnswers.map((k, v) => MapEntry(k.toString(), v)),
-    );
-    SupabaseService.updateStudentProgress(
-      userId: user.studentId,
-      currentSlide: 12,
-      totalXp: user.earnedXP + ((finalScore >= 80) ? 250 : 150),
-      isCompleted: true,
-    );
+    await Future.wait([
+      SupabaseService.saveQuizResult(
+        userId: user.studentId,
+        studentName: user.studentName,
+        studentClass: user.studentClass,
+        studentSchool: user.studentSchool,
+        quizType: 'Post-test Evaluasi PISA',
+        score: finalScore.toDouble(),
+        correctCount: totalCorrect,
+        totalQuestions: PisaQuestionsData.questions.length,
+        answersDetail:
+            _userSelectedAnswers.map((k, v) => MapEntry(k.toString(), v)),
+      ),
+      SupabaseService.updateStudentProgress(
+        userId: user.studentId,
+        currentSlide: 12,
+        totalXp: user.earnedXP,
+        isCompleted: true,
+      ),
+    ]);
+
+    if (!mounted) return;
 
     setState(() {
       _quizFinished = true;

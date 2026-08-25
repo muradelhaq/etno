@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import '../../models/process_step_item.dart';
 import '../dialogs/step_detail_dialog.dart';
 
@@ -30,7 +31,7 @@ class ProcessStepCard extends StatelessWidget {
                 width: 44,
                 height: 44,
                 padding: const EdgeInsets.all(2),
-                child: Image.asset(
+                child: AppImage(
                   step.imageAsset!,
                   fit: BoxFit.contain,
                   errorBuilder: (_, __, ___) => _buildStepIcon(step.iconType),

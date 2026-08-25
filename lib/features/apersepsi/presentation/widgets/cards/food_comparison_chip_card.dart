@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/widgets/ethno_card.dart';
 import 'package:e_modul_etnosains/features/apersepsi/data/models/food_comparison_model.dart';
@@ -32,7 +33,7 @@ class FoodComparisonChipCard extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             // Full-bleed Image
-            Image.asset(
+            AppImage(
               item.imageAsset,
               width: double.infinity,
               height: double.infinity,
@@ -41,9 +42,7 @@ class FoodComparisonChipCard extends StatelessWidget {
                 color: AppColors.warmCream,
                 child: Center(
                   child: Icon(
-                    isModern
-                        ? Icons.fastfood_rounded
-                        : Icons.rice_bowl_rounded,
+                    isModern ? Icons.fastfood_rounded : Icons.rice_bowl_rounded,
                     size: isLandscape ? 36 : 28,
                     color: isModern
                         ? AppColors.warmTerracotta

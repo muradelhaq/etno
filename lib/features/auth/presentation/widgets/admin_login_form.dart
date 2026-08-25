@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
+import 'package:e_modul_etnosains/core/services/supabase_service.dart';
 
 class AdminLoginForm extends StatefulWidget {
   const AdminLoginForm({super.key});
@@ -10,64 +11,62 @@ class AdminLoginForm extends StatefulWidget {
 }
 
 class _AdminLoginFormState extends State<AdminLoginForm> {
-  final _adminPinController = TextEditingController();
-  final _adminFormKey = GlobalKey<FormState>();
-  bool _isAdminPinObscured = true;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _obscurePassword = true;
+  bool _isLoading = false;
 
   @override
   void dispose() {
-    _adminPinController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
-  void _handleAdminSubmit() {
-    if (!_adminFormKey.currentState!.validate()) return;
+  Future<void> _handleSubmit() async {
+    if (!_formKey.currentState!.validate()) return;
+    setState(() => _isLoading = true);
 
-    final pin = _adminPinController.text.trim();
-
-    if (pin == '123456' || pin == 'admin123' || pin == 'guruetno') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Row(
-            children: [
-              Icon(Icons.verified_user_rounded, color: Colors.white),
-              SizedBox(width: 10),
-              Text('Akses Guru / Admin Diterima! Membuka Portal...'),
-            ],
-          ),
-          backgroundColor: AppColors.primaryDark,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      await SupabaseService.signInAdmin(
+        email: _emailController.text,
+        password: _passwordController.text,
       );
+      if (!mounted) return;
       context.go('/admin');
-    } else {
+    } catch (error) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Row(
-            children: [
-              Icon(Icons.error_outline_rounded, color: Colors.white),
-              SizedBox(width: 10),
-              Text('PIN / Kata Sandi Guru Salah! (Coba: 123456)'),
-            ],
-          ),
+          content: Text(_friendlyMessage(error)),
           backgroundColor: AppColors.errorRed,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
       );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
+  }
+
+  String _friendlyMessage(Object error) {
+    final message = error.toString().toLowerCase();
+    if (message.contains('invalid login credentials')) {
+      return 'Email atau kata sandi guru salah.';
+    }
+    if (message.contains('tidak memiliki akses')) {
+      return 'Akun ini tidak memiliki akses guru/admin.';
+    }
+    return 'Login guru gagal. Periksa koneksi dan coba lagi.';
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _adminFormKey,
+      key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Teacher Portal Info Box
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -78,11 +77,12 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
             child: const Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.admin_panel_settings_rounded, color: Color(0xFFD97706), size: 20),
+                Icon(Icons.admin_panel_settings_rounded,
+                    color: Color(0xFFD97706), size: 20),
                 SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'Portal khusus Guru / Pengajar untuk memantau statistik kelas, rekap nilai, hasil eksperimen lab, dan analisis inkuiri seluruh siswa.',
+                    'Masuk menggunakan akun guru yang telah terdaftar dan memiliki hak akses admin.',
                     style: TextStyle(
                       fontSize: 11.5,
                       color: Color(0xFF78350F),
@@ -93,138 +93,103 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
               ],
             ),
           ),
-
-          const SizedBox(height: 14),
-
-          // Security Notice & Shortcut Badge
-          Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 8,
-            runSpacing: 4,
-            children: [
-              const Text(
-                'Kata Sandi Guru',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
-                  color: Color(0xFF1E3A2B),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  _adminPinController.text = '123456';
-                },
-                borderRadius: BorderRadius.circular(6),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE8F5E9),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: const Color(0xFFC8E6C9)),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.touch_app_rounded, size: 12, color: AppColors.primaryGreen),
-                      SizedBox(width: 4),
-                      Text(
-                        'Isi Default (123456)',
-                        style: TextStyle(
-                          fontSize: 10.5,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryDark,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 8),
-
-          // PIN Input
+          const SizedBox(height: 16),
           TextFormField(
-            controller: _adminPinController,
-            obscureText: _isAdminPinObscured,
-            keyboardType: TextInputType.text,
+            controller: _emailController,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            autocorrect: false,
+            decoration: _decoration(
+              label: 'Email Guru',
+              hint: 'guru@sekolah.id',
+              icon: Icons.email_outlined,
+            ),
+            validator: (value) {
+              final email = value?.trim() ?? '';
+              if (email.isEmpty) return 'Email guru wajib diisi';
+              if (!email.contains('@')) return 'Format email tidak valid';
+              return null;
+            },
+          ),
+          const SizedBox(height: 12),
+          TextFormField(
+            controller: _passwordController,
+            obscureText: _obscurePassword,
             textInputAction: TextInputAction.done,
-            onFieldSubmitted: (_) => _handleAdminSubmit(),
-            decoration: InputDecoration(
-              labelText: 'PIN / Kata Sandi Guru',
-              hintText: 'Masukkan PIN akses admin (Default: 123456)',
-              prefixIcon: const Icon(Icons.lock_outline_rounded, color: AppColors.primaryDark),
+            onFieldSubmitted: (_) => _handleSubmit(),
+            decoration: _decoration(
+              label: 'Kata Sandi',
+              hint: 'Masukkan kata sandi akun guru',
+              icon: Icons.lock_outline_rounded,
+            ).copyWith(
               suffixIcon: IconButton(
                 icon: Icon(
-                  _isAdminPinObscured
+                  _obscurePassword
                       ? Icons.visibility_off_rounded
                       : Icons.visibility_rounded,
-                  color: Colors.grey,
                   size: 20,
                 ),
-                onPressed: () {
-                  setState(() {
-                    _isAdminPinObscured = !_isAdminPinObscured;
-                  });
-                },
+                onPressed: () => setState(
+                  () => _obscurePassword = !_obscurePassword,
+                ),
               ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: AppColors.primaryDark, width: 1.8),
-              ),
-              filled: true,
-              fillColor: const Color(0xFFF9FAF8),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
             ),
-            validator: (val) =>
-                (val == null || val.trim().isEmpty) ? 'PIN Admin wajib diisi' : null,
+            validator: (value) => (value == null || value.isEmpty)
+                ? 'Kata sandi wajib diisi'
+                : null,
           ),
-
           const SizedBox(height: 20),
-
-          // Submit Button
           SizedBox(
             height: 48,
             child: ElevatedButton(
-              onPressed: _handleAdminSubmit,
+              onPressed: _isLoading ? null : _handleSubmit,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryDark,
                 foregroundColor: Colors.white,
-                elevation: 3,
-                shadowColor: AppColors.primaryDark.withValues(alpha: 0.4),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
               ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.dashboard_rounded, size: 18),
-                  SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
-                      'Buka Dashboard Guru / Admin',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                      overflow: TextOverflow.ellipsis,
+              child: _isLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text(
+                      'Masuk ke Dashboard Guru',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  ),
-                ],
-              ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  InputDecoration _decoration({
+    required String label,
+    required String hint,
+    required IconData icon,
+  }) {
+    return InputDecoration(
+      labelText: label,
+      hintText: hint,
+      prefixIcon: Icon(icon, color: AppColors.primaryDark),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: AppColors.primaryDark, width: 1.8),
+      ),
+      filled: true,
+      fillColor: const Color(0xFFF9FAF8),
     );
   }
 }

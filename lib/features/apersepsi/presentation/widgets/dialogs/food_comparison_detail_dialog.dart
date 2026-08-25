@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 import 'package:e_modul_etnosains/features/apersepsi/data/models/food_comparison_model.dart';
@@ -16,7 +17,8 @@ class FoodComparisonDetailDialog extends StatelessWidget {
   static void show(BuildContext context, FoodItemModel item, bool isModern) {
     showDialog(
       context: context,
-      builder: (ctx) => FoodComparisonDetailDialog(item: item, isModern: isModern),
+      builder: (ctx) =>
+          FoodComparisonDetailDialog(item: item, isModern: isModern),
     );
   }
 
@@ -40,7 +42,7 @@ class FoodComparisonDetailDialog extends StatelessWidget {
               // Left: Full Photo
               Expanded(
                 flex: 5,
-                child: Image.asset(
+                child: AppImage(
                   item.imageAsset,
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) => Container(
@@ -113,8 +115,8 @@ class FoodComparisonDetailDialog extends StatelessWidget {
                         child: SingleChildScrollView(
                           child: Text(
                             item.description,
-                            style: AppTextStyles.bodySmall.copyWith(
-                                fontSize: 12, height: 1.4),
+                            style: AppTextStyles.bodySmall
+                                .copyWith(fontSize: 12, height: 1.4),
                           ),
                         ),
                       ),
@@ -144,7 +146,7 @@ class FoodComparisonDetailDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
+              AppImage(
                 item.imageAsset,
                 height: 150,
                 width: double.infinity,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/slide_navigation_guard.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/ethno_scaffold.dart';
 import '../../../../shared/services/local_storage_service.dart';
@@ -178,7 +178,12 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
               icon: Icons.arrow_forward_rounded,
               isFullWidth: true,
               backgroundColor: AppColors.primaryGreen,
-              onPressed: () => context.go(nextRoute),
+              onPressed: () => navigateToNextSlide(
+                context,
+                ref,
+                currentSlide: slideNum,
+                route: nextRoute,
+              ),
             ),
             const SizedBox(height: 24),
           ],

@@ -13,10 +13,12 @@ class FoodCaseStudyAccordion extends ConsumerStatefulWidget {
   const FoodCaseStudyAccordion({super.key, required this.food});
 
   @override
-  ConsumerState<FoodCaseStudyAccordion> createState() => _FoodCaseStudyAccordionState();
+  ConsumerState<FoodCaseStudyAccordion> createState() =>
+      _FoodCaseStudyAccordionState();
 }
 
-class _FoodCaseStudyAccordionState extends ConsumerState<FoodCaseStudyAccordion> {
+class _FoodCaseStudyAccordionState
+    extends ConsumerState<FoodCaseStudyAccordion> {
   late TextEditingController _caseStudyController;
   bool _showHypothesisGuide = false;
   bool _isCaseStudyExpanded = false;
@@ -47,12 +49,13 @@ class _FoodCaseStudyAccordionState extends ConsumerState<FoodCaseStudyAccordion>
     super.dispose();
   }
 
-  void _handleSubmit() {
+  Future<void> _handleSubmit() async {
     final text = _caseStudyController.text.trim();
     if (text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Silakan tulis analisis atau hipotesismu terlebih dahulu.'),
+          content:
+              Text('Silakan tulis analisis atau hipotesismu terlebih dahulu.'),
           backgroundColor: AppColors.warmTerracotta,
           behavior: SnackBarBehavior.floating,
         ),
@@ -64,11 +67,13 @@ class _FoodCaseStudyAccordionState extends ConsumerState<FoodCaseStudyAccordion>
     final caseStudy = widget.food.caseStudy;
 
     // Save locally
-    ref.read(userProgressProvider.notifier).saveCaseStudyAnswer(widget.food.id, text);
-    ref.read(userProgressProvider.notifier).addXP(25);
+    await ref
+        .read(userProgressProvider.notifier)
+        .saveCaseStudyAnswer(widget.food.id, text);
+    await ref.read(userProgressProvider.notifier).addXP(25);
 
     // Submit to Supabase
-    SupabaseService.submitCaseStudyOpinion(
+    final synced = await SupabaseService.submitCaseStudyOpinion(
       userId: user.studentId,
       studentName: user.studentName,
       studentClass: user.studentClass,
@@ -81,13 +86,24 @@ class _FoodCaseStudyAccordionState extends ConsumerState<FoodCaseStudyAccordion>
           'Bebas: ${caseStudy.manipulatedVariable}, Terikat: ${caseStudy.respondingVariable}',
     );
 
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
+      SnackBar(
         content: Row(
           children: [
-            Icon(Icons.cloud_done_rounded, color: Colors.white, size: 18),
-            SizedBox(width: 8),
-            Expanded(child: Text('Jawaban studi kasus tersimpan ke Database! (+25 XP)')),
+            Icon(
+              synced ? Icons.cloud_done_rounded : Icons.cloud_off_rounded,
+              color: Colors.white,
+              size: 18,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                synced
+                    ? 'Jawaban tersimpan ke Database! (+25 XP)'
+                    : 'Jawaban tersimpan offline dan akan disinkronkan otomatis. (+25 XP)',
+              ),
+            ),
           ],
         ),
         backgroundColor: AppColors.primaryGreen,
@@ -104,7 +120,8 @@ class _FoodCaseStudyAccordionState extends ConsumerState<FoodCaseStudyAccordion>
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.3)),
+        border:
+            Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.3)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -257,7 +274,8 @@ class _FoodCaseStudyAccordionState extends ConsumerState<FoodCaseStudyAccordion>
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.send_rounded, size: 14, color: Colors.white),
+                            Icon(Icons.send_rounded,
+                                size: 14, color: Colors.white),
                             SizedBox(width: 4),
                             Text('Kirim'),
                           ],
@@ -286,7 +304,8 @@ class _FoodCaseStudyAccordionState extends ConsumerState<FoodCaseStudyAccordion>
                                 color: AppColors.primaryGreen, fontSize: 12),
                           ),
                           const SizedBox(height: 4),
-                          Text('• Variabel Bebas: ${caseStudy.manipulatedVariable}',
+                          Text(
+                              '• Variabel Bebas: ${caseStudy.manipulatedVariable}',
                               style: const TextStyle(fontSize: 11)),
                           Text(
                               '• Variabel Terikat: ${caseStudy.respondingVariable}',

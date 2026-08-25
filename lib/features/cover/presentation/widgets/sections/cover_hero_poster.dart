@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/constants/app_assets.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
@@ -26,7 +27,7 @@ class CoverHeroPoster extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
+            AppImage(
               AppAssets.posterLearningModules,
               fit: BoxFit.cover,
               errorBuilder: (ctx, err, stack) => Container(
@@ -53,8 +54,8 @@ class CoverHeroPoster extends StatelessWidget {
                     ],
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 alignment: Alignment.bottomLeft,
                 child: Text(
                   '🌾 Kearifan Leluhur • 🔬 Bioteknologi Modern',

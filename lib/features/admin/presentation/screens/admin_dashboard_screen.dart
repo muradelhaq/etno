@@ -14,7 +14,8 @@ class AdminDashboardScreen extends ConsumerStatefulWidget {
   const AdminDashboardScreen({super.key});
 
   @override
-  ConsumerState<AdminDashboardScreen> createState() => _AdminDashboardScreenState();
+  ConsumerState<AdminDashboardScreen> createState() =>
+      _AdminDashboardScreenState();
 }
 
 class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
@@ -23,6 +24,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
 
   bool _isLoading = true;
   bool _isExporting = false;
+  String? _loadError;
   List<Map<String, dynamic>> _students = [];
   List<Map<String, dynamic>> _quizzes = [];
   List<Map<String, dynamic>> _opinions = [];
@@ -96,21 +98,29 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
     }
   }
 
-  void _showLiveAlert({required String title, required String message, required Color color}) {
+  void _showLiveAlert(
+      {required String title, required String message, required Color color}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
-            const Icon(Icons.bolt_rounded, color: AppColors.goldenYellow, size: 24),
+            const Icon(Icons.bolt_rounded,
+                color: AppColors.goldenYellow, size: 24),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.white)),
-                  Text(message, style: const TextStyle(fontSize: 11.5, color: Colors.white)),
+                  Text(title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                          color: Colors.white)),
+                  Text(message,
+                      style:
+                          const TextStyle(fontSize: 11.5, color: Colors.white)),
                 ],
               ),
             ),
@@ -126,7 +136,10 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
   }
 
   Future<void> _loadDashboardData() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _loadError = null;
+    });
     try {
       final results = await Future.wait([
         SupabaseService.fetchAllStudents(),
@@ -140,17 +153,24 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
           _quizzes = results[1];
           _opinions = results[2];
           _isLoading = false;
+          _loadError = null;
         });
       }
     } catch (e) {
       debugPrint('Error loading admin data: $e');
       if (mounted) {
-        setState(() => _isLoading = false);
+        setState(() {
+          _isLoading = false;
+          _loadError = e is SupabaseServiceException
+              ? e.message
+              : 'Dashboard gagal dimuat. Periksa koneksi lalu coba lagi.';
+        });
       }
     }
   }
 
-  Future<void> _handleExport(Future<bool> Function() exportFn, String successMessage) async {
+  Future<void> _handleExport(
+      Future<bool> Function() exportFn, String successMessage) async {
     setState(() => _isExporting = true);
     try {
       final success = await exportFn();
@@ -159,14 +179,19 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
           SnackBar(
             content: Row(
               children: [
-                Icon(success ? Icons.check_circle_rounded : Icons.error_outline_rounded, color: Colors.white),
+                Icon(
+                    success
+                        ? Icons.check_circle_rounded
+                        : Icons.error_outline_rounded,
+                    color: Colors.white),
                 const SizedBox(width: 10),
                 Text(success ? successMessage : 'Gagal mengekspor laporan.'),
               ],
             ),
             backgroundColor: success ? const Color(0xFF2D6A4F) : Colors.red,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
         );
       }
@@ -189,7 +214,8 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
 
   @override
   Widget build(BuildContext context) {
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F7F4),
@@ -221,7 +247,11 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                     color: Color(0xFF4CAF50),
                     shape: BoxShape.circle,
                   ),
-                ).animate(onPlay: (controller) => controller.repeat(reverse: true)).scale(
+                )
+                    .animate(
+                        onPlay: (controller) =>
+                            controller.repeat(reverse: true))
+                    .scale(
                       begin: const Offset(0.8, 0.8),
                       end: const Offset(1.3, 1.3),
                       duration: 800.ms,
@@ -229,9 +259,11 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                 const SizedBox(width: 6),
                 Flexible(
                   child: Text(
-                    _liveEventCount > 0
-                        ? 'Live Sync • $_liveEventCount event baru'
-                        : 'Real-time Live Connected',
+                    _realtimeChannel == null
+                        ? 'Real-time belum tersedia'
+                        : _liveEventCount > 0
+                            ? 'Live Sync • $_liveEventCount event baru'
+                            : 'Real-time Live Connected',
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       color: Color(0xFFB8D5C2),
@@ -251,12 +283,14 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                     child: SizedBox(
                       width: 20,
                       height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.goldenYellow),
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: AppColors.goldenYellow),
                     ),
                   ),
                 )
               : IconButton(
-                  icon: const Icon(Icons.file_download_rounded, color: AppColors.goldenYellow),
+                  icon: const Icon(Icons.file_download_rounded,
+                      color: AppColors.goldenYellow),
                   onPressed: () => AdminExportModal.show(
                     context,
                     students: _students,
@@ -273,7 +307,10 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
           ),
           IconButton(
             icon: const Icon(Icons.logout_rounded, color: Colors.white70),
-            onPressed: () => context.go('/auth'),
+            onPressed: () async {
+              await SupabaseService.signOutAdmin();
+              if (context.mounted) context.go('/auth');
+            },
             tooltip: 'Ganti Akun / Keluar',
           ),
         ],
@@ -283,11 +320,18 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
           indicatorWeight: 3,
           labelColor: AppColors.goldenYellow,
           unselectedLabelColor: Colors.white70,
-          labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+          labelStyle:
+              const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
           tabs: const [
-            Tab(icon: Icon(Icons.analytics_rounded, size: 18), text: 'Statistik Kelas'),
-            Tab(icon: Icon(Icons.people_alt_rounded, size: 18), text: 'Data Siswa'),
-            Tab(icon: Icon(Icons.forum_rounded, size: 18), text: 'Koleksi Jawaban'),
+            Tab(
+                icon: Icon(Icons.analytics_rounded, size: 18),
+                text: 'Statistik Kelas'),
+            Tab(
+                icon: Icon(Icons.people_alt_rounded, size: 18),
+                text: 'Data Siswa'),
+            Tab(
+                icon: Icon(Icons.forum_rounded, size: 18),
+                text: 'Koleksi Jawaban'),
           ],
         ),
       ),
@@ -298,35 +342,67 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                 children: [
                   CircularProgressIndicator(color: AppColors.primaryGreen),
                   SizedBox(height: 14),
-                  Text('Memuat data dari Supabase...', style: TextStyle(color: Color(0xFF2D5A3C))),
+                  Text('Memuat data dari Supabase...',
+                      style: TextStyle(color: Color(0xFF2D5A3C))),
                 ],
               ),
             )
-          : TabBarView(
-              controller: _tabController,
-              children: [
-                // TAB 1: STATISTIK KELAS
-                AdminStatisticsTab(
-                  isLandscape: isLandscape,
-                  students: _students,
-                  quizzes: _quizzes,
-                  opinions: _opinions,
-                ),
+          : _loadError != null
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.cloud_off_rounded,
+                          size: 54,
+                          color: Color(0xFF8A3B32),
+                        ),
+                        const SizedBox(height: 14),
+                        Text(
+                          _loadError!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Color(0xFF4A2A26),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        FilledButton.icon(
+                          onPressed: _loadDashboardData,
+                          icon: const Icon(Icons.refresh_rounded),
+                          label: const Text('Coba Lagi'),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : TabBarView(
+                  controller: _tabController,
+                  children: [
+                    // TAB 1: STATISTIK KELAS
+                    AdminStatisticsTab(
+                      isLandscape: isLandscape,
+                      students: _students,
+                      quizzes: _quizzes,
+                      opinions: _opinions,
+                    ),
 
-                // TAB 2: DATA & PORTOFOLIO SISWA
-                AdminStudentsTab(
-                  isLandscape: isLandscape,
-                  students: _students,
-                  quizzes: _quizzes,
-                ),
+                    // TAB 2: DATA & PORTOFOLIO SISWA
+                    AdminStudentsTab(
+                      isLandscape: isLandscape,
+                      students: _students,
+                      quizzes: _quizzes,
+                    ),
 
-                // TAB 3: KOLEKSI JAWABAN & REFLEKSI SISWA
-                AdminOpinionsTab(
-                  isLandscape: isLandscape,
-                  opinions: _opinions,
+                    // TAB 3: KOLEKSI JAWABAN & REFLEKSI SISWA
+                    AdminOpinionsTab(
+                      isLandscape: isLandscape,
+                      opinions: _opinions,
+                    ),
+                  ],
                 ),
-              ],
-            ),
     );
   }
 }

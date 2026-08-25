@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 import 'package:e_modul_etnosains/features/peta_konsep/data/models/microorganism_model.dart';
@@ -7,7 +8,8 @@ import '../microscope/microscopic_cellular_view.dart';
 class MicroorganismDetailDialog extends StatelessWidget {
   final MicroorganismModel microbe;
   final bool isCurrentInSimulator;
-  final void Function(String microbeId, String microbeName) onSelectInMicroscope;
+  final void Function(String microbeId, String microbeName)
+      onSelectInMicroscope;
 
   const MicroorganismDetailDialog({
     super.key,
@@ -20,7 +22,8 @@ class MicroorganismDetailDialog extends StatelessWidget {
     BuildContext context, {
     required MicroorganismModel microbe,
     required bool isCurrentInSimulator,
-    required void Function(String microbeId, String microbeName) onSelectInMicroscope,
+    required void Function(String microbeId, String microbeName)
+        onSelectInMicroscope,
   }) {
     showDialog(
       context: context,
@@ -47,7 +50,7 @@ class MicroorganismDetailDialog extends StatelessWidget {
               // Header Image Banner
               Stack(
                 children: [
-                  Image.asset(
+                  AppImage(
                     microbe.imageUrl,
                     height: 150,
                     width: double.infinity,
@@ -56,7 +59,8 @@ class MicroorganismDetailDialog extends StatelessWidget {
                       height: 150,
                       color: const Color(0xFF10281E),
                       child: Center(
-                        child: MicroscopicCellularView(microbe: microbe, zoom: 300),
+                        child: MicroscopicCellularView(
+                            microbe: microbe, zoom: 300),
                       ),
                     ),
                   ),
@@ -78,7 +82,8 @@ class MicroorganismDetailDialog extends StatelessWidget {
                     top: 10,
                     left: 10,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
                         color: AppColors.warmTerracotta,
                         borderRadius: BorderRadius.circular(8),
@@ -123,7 +128,8 @@ class MicroorganismDetailDialog extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.restaurant_rounded, size: 16, color: AppColors.warmTerracotta),
+                        const Icon(Icons.restaurant_rounded,
+                            size: 16, color: AppColors.warmTerracotta),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Column(
@@ -156,7 +162,8 @@ class MicroorganismDetailDialog extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.hub_rounded, size: 16, color: AppColors.primaryGreen),
+                        const Icon(Icons.hub_rounded,
+                            size: 16, color: AppColors.primaryGreen),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Column(
@@ -196,7 +203,8 @@ class MicroorganismDetailDialog extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(Icons.science_rounded, size: 16, color: AppColors.primaryGreen),
+                          const Icon(Icons.science_rounded,
+                              size: 16, color: AppColors.primaryGreen),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Column(
@@ -238,7 +246,8 @@ class MicroorganismDetailDialog extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(Icons.biotech_rounded, size: 16, color: Color(0xFF1976D2)),
+                          const Icon(Icons.biotech_rounded,
+                              size: 16, color: Color(0xFF1976D2)),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Column(

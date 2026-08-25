@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:go_router/go_router.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/constants/app_assets.dart';
@@ -12,7 +13,8 @@ class CoverMediaDialogs {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: [
-            const Icon(Icons.movie_filter_rounded, color: AppColors.warmTerracotta),
+            const Icon(Icons.movie_filter_rounded,
+                color: AppColors.warmTerracotta),
             const SizedBox(width: 10),
             Text('Pengantar E-Modul', style: AppTextStyles.h3),
           ],
@@ -31,7 +33,7 @@ class CoverMediaDialogs {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  Image.asset(
+                  const AppImage(
                     AppAssets.flowchartFermentation,
                     fit: BoxFit.cover,
                     width: double.infinity,
@@ -39,7 +41,8 @@ class CoverMediaDialogs {
                   Container(
                     color: Colors.black45,
                   ),
-                  const Icon(Icons.play_circle_fill, color: Colors.white, size: 54),
+                  const Icon(Icons.play_circle_fill,
+                      color: Colors.white, size: 54),
                 ],
               ),
             ),
@@ -79,7 +82,8 @@ class CoverMediaDialogs {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: [
-            const Icon(Icons.qr_code_scanner_rounded, color: AppColors.primaryGreen),
+            const Icon(Icons.qr_code_scanner_rounded,
+                color: AppColors.primaryGreen),
             const SizedBox(width: 10),
             Text('Akses Cepat Modul', style: AppTextStyles.h3),
           ],
@@ -94,7 +98,8 @@ class CoverMediaDialogs {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.borderSubtle),
               ),
-              child: const Icon(Icons.qr_code_2, size: 140, color: AppColors.primaryDark),
+              child: const Icon(Icons.qr_code_2,
+                  size: 140, color: AppColors.primaryDark),
             ),
             const SizedBox(height: 12),
             Text(

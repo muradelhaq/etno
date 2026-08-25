@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../models/process_step_item.dart';
 
@@ -25,7 +26,7 @@ class StepDetailDialog extends StatelessWidget {
               width: 40,
               height: 40,
               padding: const EdgeInsets.all(2),
-              child: Image.asset(
+              child: AppImage(
                 step.imageAsset!,
                 fit: BoxFit.contain,
                 errorBuilder: (_, __, ___) => _buildFallbackIcon(step.iconType),
@@ -107,7 +108,8 @@ class StepDetailDialog extends StatelessWidget {
         color: Color(0xFFE8F5E9),
         shape: BoxShape.circle,
       ),
-      child: const Icon(Icons.grain_rounded, color: AppColors.primaryGreen, size: 18),
+      child: const Icon(Icons.grain_rounded,
+          color: AppColors.primaryGreen, size: 18),
     );
   }
 }

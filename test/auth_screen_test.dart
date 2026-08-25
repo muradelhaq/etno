@@ -7,7 +7,8 @@ import 'package:e_modul_etnosains/features/auth/presentation/screens/auth_screen
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
 
 void main() {
-  testWidgets('AuthScreen render and student tab test', (WidgetTester tester) async {
+  testWidgets('AuthScreen render and student tab test',
+      (WidgetTester tester) async {
     tester.view.physicalSize = const Size(1080, 1920);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() => tester.view.resetPhysicalSize());
@@ -24,11 +25,13 @@ void main() {
         ),
         GoRoute(
           path: '/',
-          builder: (context, state) => const Scaffold(body: Text('Home Screen')),
+          builder: (context, state) =>
+              const Scaffold(body: Text('Home Screen')),
         ),
         GoRoute(
           path: '/admin',
-          builder: (context, state) => const Scaffold(body: Text('Admin Screen')),
+          builder: (context, state) =>
+              const Scaffold(body: Text('Admin Screen')),
         ),
       ],
     );
@@ -55,28 +58,23 @@ void main() {
     await tester.tap(find.text('Akses Guru / Admin'));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('Portal khusus Guru'), findsOneWidget);
-    expect(find.text('Buka Dashboard Guru / Admin'), findsOneWidget);
+    expect(find.textContaining('Masuk menggunakan akun guru'), findsOneWidget);
+    expect(find.text('Masuk ke Dashboard Guru'), findsOneWidget);
 
-    // Test submit with empty PIN
-    await tester.tap(find.text('Buka Dashboard Guru / Admin'));
+    // Both credentials are required.
+    await tester.tap(find.text('Masuk ke Dashboard Guru'));
     await tester.pumpAndSettle();
 
-    expect(find.text('PIN Admin wajib diisi'), findsOneWidget);
+    expect(find.text('Email guru wajib diisi'), findsOneWidget);
+    expect(find.text('Kata sandi wajib diisi'), findsOneWidget);
 
-    // Test enter wrong PIN
-    final pinField = find.byType(TextFormField);
-    await tester.enterText(pinField, '999999');
-    await tester.tap(find.text('Buka Dashboard Guru / Admin'));
+    // Reject malformed email before any network request is made.
+    final fields = find.byType(TextFormField);
+    await tester.enterText(fields.at(0), 'bukan-email');
+    await tester.enterText(fields.at(1), 'rahasia');
+    await tester.tap(find.text('Masuk ke Dashboard Guru'));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('PIN / Kata Sandi Guru Salah!'), findsOneWidget);
-
-    // Test enter correct PIN
-    await tester.enterText(pinField, '123456');
-    await tester.tap(find.text('Buka Dashboard Guru / Admin'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Admin Screen'), findsOneWidget);
+    expect(find.text('Format email tidak valid'), findsOneWidget);
   });
 }

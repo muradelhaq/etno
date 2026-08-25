@@ -58,6 +58,7 @@ class UserProgressModel {
   final Map<int, int> likertAnswers; // questionId -> score 1-5
   final List<InnovationIdea> innovationIdeas;
   final Map<String, String> caseStudyAnswers; // foodId -> student answer
+  final Set<int> readSlides;
 
   UserProgressModel({
     this.studentId = '',
@@ -75,7 +76,53 @@ class UserProgressModel {
     this.likertAnswers = const {},
     this.innovationIdeas = const [],
     this.caseStudyAnswers = const {},
+    this.readSlides = const {},
   });
+
+  bool canProceedFromSlide(int slide) {
+    if (!readSlides.contains(slide)) return false;
+    switch (slide) {
+      case 2:
+        return apersepsiReflection.trim().isNotEmpty;
+      case 4:
+        return (caseStudyAnswers['tempe'] ?? '').trim().isNotEmpty;
+      case 5:
+        return (caseStudyAnswers['tape'] ?? '').trim().isNotEmpty;
+      case 6:
+        return (caseStudyAnswers['tauco'] ?? '').trim().isNotEmpty;
+      case 7:
+        return (caseStudyAnswers['kecap'] ?? '').trim().isNotEmpty;
+      case 9:
+        return completedModules.contains('virtual_lab');
+      case 11:
+        return completedModules.contains('cultural_assessment');
+      case 12:
+        return completedModules.contains('pisa_quiz');
+      default:
+        return true;
+    }
+  }
+
+  String requirementForSlide(int slide) {
+    if (!readSlides.contains(slide)) {
+      return 'Baca seluruh isi slide sampai bagian paling bawah terlebih dahulu.';
+    }
+    if (slide == 2) return 'Isi kolom refleksi sebelum melanjutkan.';
+    if (slide >= 4 && slide <= 7) {
+      return 'Isi dan simpan jawaban studi kasus sebelum melanjutkan.';
+    }
+    if (slide == 9) return 'Rekam hasil percobaan virtual lab terlebih dahulu.';
+    if (slide == 11) return 'Jawab dan kirim seluruh pernyataan asesmen.';
+    if (slide == 12) return 'Jawab dan selesaikan seluruh soal evaluasi.';
+    return 'Selesaikan aktivitas pada slide ini terlebih dahulu.';
+  }
+
+  int get highestUnlockedSlide {
+    for (var slide = 1; slide < 12; slide++) {
+      if (!canProceedFromSlide(slide)) return slide;
+    }
+    return 12;
+  }
 
   bool get isRegistered =>
       studentId.isNotEmpty &&
@@ -98,6 +145,7 @@ class UserProgressModel {
     Map<int, int>? likertAnswers,
     List<InnovationIdea>? innovationIdeas,
     Map<String, String>? caseStudyAnswers,
+    Set<int>? readSlides,
   }) {
     return UserProgressModel(
       studentId: studentId ?? this.studentId,
@@ -116,6 +164,7 @@ class UserProgressModel {
       likertAnswers: likertAnswers ?? this.likertAnswers,
       innovationIdeas: innovationIdeas ?? this.innovationIdeas,
       caseStudyAnswers: caseStudyAnswers ?? this.caseStudyAnswers,
+      readSlides: readSlides ?? this.readSlides,
     );
   }
 
@@ -134,10 +183,10 @@ class UserProgressModel {
       'quizSelectedAnswers':
           quizSelectedAnswers.map((k, v) => MapEntry(k.toString(), v)),
       'culturalAwarenessScore': culturalAwarenessScore,
-      'likertAnswers':
-          likertAnswers.map((k, v) => MapEntry(k.toString(), v)),
+      'likertAnswers': likertAnswers.map((k, v) => MapEntry(k.toString(), v)),
       'innovationIdeas': innovationIdeas.map((e) => e.toMap()).toList(),
       'caseStudyAnswers': caseStudyAnswers,
+      'readSlides': readSlides.toList(),
     };
   }
 
@@ -159,7 +208,8 @@ class UserProgressModel {
       quizSelectedAnswers: (map['quizSelectedAnswers'] as Map<String, dynamic>?)
               ?.map((k, v) => MapEntry(int.tryParse(k) ?? 0, v as int)) ??
           {},
-      culturalAwarenessScore: (map['culturalAwarenessScore'] as num?)?.toDouble() ?? 0.0,
+      culturalAwarenessScore:
+          (map['culturalAwarenessScore'] as num?)?.toDouble() ?? 0.0,
       likertAnswers: (map['likertAnswers'] as Map<String, dynamic>?)
               ?.map((k, v) => MapEntry(int.tryParse(k) ?? 0, v as int)) ??
           {},
@@ -169,6 +219,10 @@ class UserProgressModel {
           [],
       caseStudyAnswers: (map['caseStudyAnswers'] as Map<String, dynamic>?)
               ?.map((k, v) => MapEntry(k, v.toString())) ??
+          {},
+      readSlides: (map['readSlides'] as List<dynamic>?)
+              ?.map((value) => (value as num).toInt())
+              .toSet() ??
           {},
     );
   }

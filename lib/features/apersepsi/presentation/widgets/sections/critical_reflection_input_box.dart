@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
+import 'package:e_modul_etnosains/core/utils/slide_navigation_guard.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 import 'package:e_modul_etnosains/core/widgets/custom_button.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
@@ -10,10 +10,12 @@ class CriticalReflectionInputBox extends StatefulWidget {
   const CriticalReflectionInputBox({super.key});
 
   @override
-  State<CriticalReflectionInputBox> createState() => _CriticalReflectionInputBoxState();
+  State<CriticalReflectionInputBox> createState() =>
+      _CriticalReflectionInputBoxState();
 }
 
-class _CriticalReflectionInputBoxState extends State<CriticalReflectionInputBox> {
+class _CriticalReflectionInputBoxState
+    extends State<CriticalReflectionInputBox> {
   late TextEditingController _reflectionController;
 
   @override
@@ -32,7 +34,8 @@ class _CriticalReflectionInputBoxState extends State<CriticalReflectionInputBox>
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, _) {
-        final currentReflect = ref.watch(userProgressProvider).apersepsiReflection;
+        final currentReflect =
+            ref.watch(userProgressProvider).apersepsiReflection;
         if (_reflectionController.text.isEmpty && currentReflect.isNotEmpty) {
           _reflectionController.text = currentReflect;
         }
@@ -59,12 +62,12 @@ class _CriticalReflectionInputBoxState extends State<CriticalReflectionInputBox>
               ),
             ),
             const SizedBox(height: 14),
-
             TextField(
               controller: _reflectionController,
               maxLines: 5,
               decoration: InputDecoration(
-                hintText: 'Tuliskan pendapat atau analisis pribadimu di sini...',
+                hintText:
+                    'Tuliskan pendapat atau analisis pribadimu di sini...',
                 hintStyle: AppTextStyles.bodySmall,
                 filled: true,
                 fillColor: Colors.white,
@@ -74,18 +77,27 @@ class _CriticalReflectionInputBoxState extends State<CriticalReflectionInputBox>
                 ),
               ),
               onChanged: (val) {
-                ref.read(userProgressProvider.notifier).saveApersepsiReflection(val);
+                ref
+                    .read(userProgressProvider.notifier)
+                    .saveApersepsiReflection(val);
               },
             ),
-
             const SizedBox(height: 14),
-
             CustomButton(
               text: 'Simpan Pendapat & Lanjut ke Peta Konsep',
               icon: Icons.arrow_forward_rounded,
               isFullWidth: true,
               backgroundColor: AppColors.primaryGreen,
               onPressed: () {
+                if (_reflectionController.text.trim().isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Isi kolom refleksi terlebih dahulu.'),
+                      backgroundColor: AppColors.warmTerracotta,
+                    ),
+                  );
+                  return;
+                }
                 ref
                     .read(userProgressProvider.notifier)
                     .saveApersepsiReflection(_reflectionController.text);
@@ -95,7 +107,12 @@ class _CriticalReflectionInputBoxState extends State<CriticalReflectionInputBox>
                     backgroundColor: AppColors.primaryGreen,
                   ),
                 );
-                context.go('/peta-konsep');
+                navigateToNextSlide(
+                  context,
+                  ref,
+                  currentSlide: 2,
+                  route: '/peta-konsep',
+                );
               },
             ),
           ],

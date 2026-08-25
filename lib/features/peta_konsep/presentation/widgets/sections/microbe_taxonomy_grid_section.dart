@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 import 'package:e_modul_etnosains/features/peta_konsep/data/models/microorganism_model.dart';
@@ -7,7 +8,8 @@ import '../dialogs/microorganism_detail_dialog.dart';
 
 class MicrobeTaxonomyGridSection extends StatelessWidget {
   final String selectedMicrobeId;
-  final void Function(String microbeId, String microbeName) onSelectInMicroscope;
+  final void Function(String microbeId, String microbeName)
+      onSelectInMicroscope;
 
   const MicrobeTaxonomyGridSection({
     super.key,
@@ -22,7 +24,8 @@ class MicrobeTaxonomyGridSection extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.menu_book_rounded, color: AppColors.primaryGreen, size: 22),
+            const Icon(Icons.menu_book_rounded,
+                color: AppColors.primaryGreen, size: 22),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
@@ -93,7 +96,7 @@ class MicrobeTaxonomyGridSection extends StatelessWidget {
                             // Photo / Microscopic Banner
                             Stack(
                               children: [
-                                Image.asset(
+                                AppImage(
                                   microbe.imageUrl,
                                   height: bannerHeight,
                                   width: double.infinity,
@@ -153,7 +156,8 @@ class MicrobeTaxonomyGridSection extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       fontStyle: FontStyle.italic,
                                       shadows: [
-                                        Shadow(color: Colors.black, blurRadius: 4),
+                                        Shadow(
+                                            color: Colors.black, blurRadius: 4),
                                       ],
                                     ),
                                     maxLines: 2,
@@ -170,15 +174,18 @@ class MicrobeTaxonomyGridSection extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Icon(Icons.fastfood_rounded,
-                                          size: 13, color: AppColors.warmTerracotta),
+                                          size: 13,
+                                          color: AppColors.warmTerracotta),
                                       const SizedBox(width: 5),
                                       Expanded(
                                         child: Text(
                                           microbe.targetProduct,
-                                          style: AppTextStyles.bodyBold.copyWith(
+                                          style:
+                                              AppTextStyles.bodyBold.copyWith(
                                             fontSize: 11.0,
                                             color: AppColors.primaryDark,
                                           ),
@@ -190,15 +197,18 @@ class MicrobeTaxonomyGridSection extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 5),
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Icon(Icons.science_rounded,
-                                          size: 13, color: AppColors.primaryGreen),
+                                          size: 13,
+                                          color: AppColors.primaryGreen),
                                       const SizedBox(width: 5),
                                       Expanded(
                                         child: Text(
                                           microbe.biochemicalRole,
-                                          style: AppTextStyles.bodySmall.copyWith(
+                                          style:
+                                              AppTextStyles.bodySmall.copyWith(
                                             color: AppColors.textPrimary,
                                             fontSize: 10.5,
                                             height: 1.3,
@@ -253,7 +263,8 @@ class MicrobeTaxonomyGridSection extends StatelessWidget {
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 6, horizontal: 6),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
                                       ),
                                     ),

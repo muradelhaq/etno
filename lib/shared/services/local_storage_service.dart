@@ -64,7 +64,8 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
     await _storageService.saveUserProgress(state);
   }
 
-  Future<void> markModuleCompleted(String moduleId, {int xpBonus = 50, int? slideNumber}) async {
+  Future<void> markModuleCompleted(String moduleId,
+      {int xpBonus = 50, int? slideNumber}) async {
     final updated = Set<String>.from(state.completedModules)..add(moduleId);
     final xp = state.completedModules.contains(moduleId)
         ? state.earnedXP
@@ -73,12 +74,21 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
     await _storageService.saveUserProgress(state);
   }
 
+  Future<void> markSlideRead(int slideNumber) async {
+    if (state.readSlides.contains(slideNumber)) return;
+    state = state.copyWith(
+      readSlides: Set<int>.from(state.readSlides)..add(slideNumber),
+    );
+    await _storageService.saveUserProgress(state);
+  }
+
   Future<void> saveApersepsiReflection(String text) async {
     state = state.copyWith(apersepsiReflection: text);
     await _storageService.saveUserProgress(state);
   }
 
-  Future<void> saveQuizAnswer(int questionId, int optionIndex, bool isCorrect) async {
+  Future<void> saveQuizAnswer(
+      int questionId, int optionIndex, bool isCorrect) async {
     final answers = Map<int, int>.from(state.quizSelectedAnswers);
     answers[questionId] = optionIndex;
 
@@ -100,8 +110,10 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
     await _storageService.saveUserProgress(state);
   }
 
-  Future<void> saveLikertAnswers(Map<int, int> answers, double scoreIndex) async {
-    final updated = Set<String>.from(state.completedModules)..add('cultural_assessment');
+  Future<void> saveLikertAnswers(
+      Map<int, int> answers, double scoreIndex) async {
+    final updated = Set<String>.from(state.completedModules)
+      ..add('cultural_assessment');
     state = state.copyWith(
       likertAnswers: answers,
       culturalAwarenessScore: scoreIndex,
@@ -112,8 +124,10 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
   }
 
   Future<void> addInnovationIdea(InnovationIdea idea) async {
-    final updatedList = List<InnovationIdea>.from(state.innovationIdeas)..add(idea);
-    final updatedModules = Set<String>.from(state.completedModules)..add('inovasi_pangan');
+    final updatedList = List<InnovationIdea>.from(state.innovationIdeas)
+      ..add(idea);
+    final updatedModules = Set<String>.from(state.completedModules)
+      ..add('inovasi_pangan');
     state = state.copyWith(
       innovationIdeas: updatedList,
       completedModules: updatedModules,

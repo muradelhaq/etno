@@ -26,43 +26,41 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
   final List<Map<String, dynamic>> _rubrics = [
     {
       'title': '1. Sejarah & Asal-usul',
-      'desc': 'Menjelaskan latar belakang budaya dan etimologi nama kuliner secara lugas.',
+      'desc':
+          'Menjelaskan latar belakang budaya dan etimologi nama kuliner secara lugas.',
       'icon': Icons.history_rounded,
     },
     {
       'title': '2. Proses Bioteknologi',
-      'desc': 'Menguraikan peran kapang/khamir/bakteri dan tahapan fermentasi secara ilmiah.',
+      'desc':
+          'Menguraikan peran kapang/khamir/bakteri dan tahapan fermentasi secara ilmiah.',
       'icon': Icons.biotech_rounded,
     },
     {
       'title': '3. Manfaat Kesehatan',
-      'desc': 'Memaparkan kandungan gizi, asam amino, vitamin B12, atau daya cerna protein.',
+      'desc':
+          'Memaparkan kandungan gizi, asam amino, vitamin B12, atau daya cerna protein.',
       'icon': Icons.health_and_safety_rounded,
     },
     {
       'title': '4. Nilai Kearifan Lokal',
-      'desc': 'Menonjolkan filosofi ramah lingkungan (zero waste) dan kebiasaan tradisional.',
+      'desc':
+          'Menonjolkan filosofi ramah lingkungan (zero waste) dan kebiasaan tradisional.',
       'icon': Icons.eco_rounded,
     },
     {
       'title': '5. Inovasi Produk Modern',
-      'desc': 'Menawarkan ide penyajian kekinian agar digemari generasi muda masa kini.',
+      'desc':
+          'Menawarkan ide penyajian kekinian agar digemari generasi muda masa kini.',
       'icon': Icons.lightbulb_rounded,
     },
     {
       'title': '6. Ajakan Melestarikan',
-      'desc': 'Memberikan ajakan persuasif dan bangga terhadap kekayaan kuliner Nusantara.',
+      'desc':
+          'Memberikan ajakan persuasif dan bangga terhadap kekayaan kuliner Nusantara.',
       'icon': Icons.campaign_rounded,
     },
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(userProgressProvider.notifier).markModuleCompleted('challenge', xpBonus: 40);
-    });
-  }
 
   @override
   void dispose() {
@@ -77,7 +75,8 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
     if (_titleController.text.isEmpty || _membersController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Silakan lengkapi judul proyek dan nama anggota kelompok!'),
+          content:
+              Text('Silakan lengkapi judul proyek dan nama anggota kelompok!'),
           backgroundColor: AppColors.errorRed,
         ),
       );
@@ -88,7 +87,9 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
       _isSubmitted = true;
     });
 
-    ref.read(userProgressProvider.notifier).addXP(100);
+    ref
+        .read(userProgressProvider.notifier)
+        .markModuleCompleted('challenge', xpBonus: 100);
 
     showDialog(
       context: context,
@@ -141,17 +142,21 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.video_camera_back_rounded, color: Colors.white, size: 30),
+                  const Icon(Icons.video_camera_back_rounded,
+                      color: Colors.white, size: 30),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Tugas Proyek Kolaboratif', style: AppTextStyles.h3.copyWith(color: Colors.white, fontSize: 16)),
+                        Text('Tugas Proyek Kolaboratif',
+                            style: AppTextStyles.h3
+                                .copyWith(color: Colors.white, fontSize: 16)),
                         const SizedBox(height: 2),
                         Text(
                           'Buat video promosi (TikTok / IG Reels 1–2 menit) tentang makanan fermentasi tradisional khas daerahmu!',
-                          style: AppTextStyles.bodySmall.copyWith(color: Colors.white.withValues(alpha: 0.9)),
+                          style: AppTextStyles.bodySmall.copyWith(
+                              color: Colors.white.withValues(alpha: 0.9)),
                         ),
                       ],
                     ),
@@ -163,7 +168,8 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
             const SizedBox(height: 18),
 
             // Section 1: 6 Mandatory Criteria
-            Text('6 Kriteria Wajib Konten Edukasi:', style: AppTextStyles.h2.copyWith(fontSize: 16)),
+            Text('6 Kriteria Wajib Konten Edukasi:',
+                style: AppTextStyles.h2.copyWith(fontSize: 16)),
             const SizedBox(height: 10),
 
             ..._rubrics.map((r) {
@@ -179,15 +185,21 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
                           color: AppColors.sageLight,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Icon(r['icon'] as IconData, color: AppColors.primaryGreen, size: 20),
+                        child: Icon(r['icon'] as IconData,
+                            color: AppColors.primaryGreen, size: 20),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(r['title'] as String, style: AppTextStyles.bodyBold.copyWith(fontSize: 13, color: AppColors.primaryDark)),
-                            Text(r['desc'] as String, style: AppTextStyles.bodySmall.copyWith(fontSize: 11)),
+                            Text(r['title'] as String,
+                                style: AppTextStyles.bodyBold.copyWith(
+                                    fontSize: 13,
+                                    color: AppColors.primaryDark)),
+                            Text(r['desc'] as String,
+                                style: AppTextStyles.bodySmall
+                                    .copyWith(fontSize: 11)),
                           ],
                         ),
                       ),
@@ -204,13 +216,17 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
               onPressed: () => context.go('/inovasi-pangan'),
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 48),
-                side: const BorderSide(color: AppColors.warmTerracotta, width: 1.5),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                side: const BorderSide(
+                    color: AppColors.warmTerracotta, width: 1.5),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
               ),
-              icon: const Icon(Icons.lightbulb_rounded, color: AppColors.warmTerracotta),
+              icon: const Icon(Icons.lightbulb_rounded,
+                  color: AppColors.warmTerracotta),
               label: Text(
                 'Buka Galeri Ide Inovasi Pangan Modern',
-                style: AppTextStyles.bodyBold.copyWith(color: AppColors.terracottaDark),
+                style: AppTextStyles.bodyBold
+                    .copyWith(color: AppColors.terracottaDark),
               ),
             ),
 
@@ -219,7 +235,8 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
             const SizedBox(height: 14),
 
             // Section 2: Submission Form
-            Text('Formulir Pengumpulan Proyek Kelompok', style: AppTextStyles.h2.copyWith(fontSize: 16)),
+            Text('Formulir Pengumpulan Proyek Kelompok',
+                style: AppTextStyles.h2.copyWith(fontSize: 16)),
             const SizedBox(height: 8),
 
             EthnoCard(
@@ -232,13 +249,12 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
                   TextField(
                     controller: _titleController,
                     decoration: const InputDecoration(
-                      hintText: 'Contoh: Rahasia Kelezatan Colenak & Bio-Sainsnya',
+                      hintText:
+                          'Contoh: Rahasia Kelezatan Colenak & Bio-Sainsnya',
                       prefixIcon: Icon(Icons.movie_creation_outlined),
                     ),
                   ),
-
                   const SizedBox(height: 12),
-
                   Text('Anggota Kelompok:', style: AppTextStyles.bodyBold),
                   const SizedBox(height: 4),
                   TextField(
@@ -248,10 +264,9 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
                       prefixIcon: Icon(Icons.group_outlined),
                     ),
                   ),
-
                   const SizedBox(height: 12),
-
-                  Text('Tautan Video (TikTok / IG Reels / YouTube):', style: AppTextStyles.bodyBold),
+                  Text('Tautan Video (TikTok / IG Reels / YouTube):',
+                      style: AppTextStyles.bodyBold),
                   const SizedBox(height: 4),
                   TextField(
                     controller: _linkController,
@@ -260,23 +275,23 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
                       prefixIcon: Icon(Icons.link_rounded),
                     ),
                   ),
-
                   const SizedBox(height: 12),
-
-                  Text('Catatan / Sinopsis Singkat:', style: AppTextStyles.bodyBold),
+                  Text('Catatan / Sinopsis Singkat:',
+                      style: AppTextStyles.bodyBold),
                   const SizedBox(height: 4),
                   TextField(
                     controller: _notesController,
                     maxLines: 3,
                     decoration: const InputDecoration(
-                      hintText: 'Uraikan secara singkat alur video yang kalian buat...',
+                      hintText:
+                          'Uraikan secara singkat alur video yang kalian buat...',
                     ),
                   ),
-
                   const SizedBox(height: 18),
-
                   CustomButton(
-                    text: _isSubmitted ? 'Kirim Pembaruan Proyek' : 'Kirim Tugas Proyek (+100 XP)',
+                    text: _isSubmitted
+                        ? 'Kirim Pembaruan Proyek'
+                        : 'Kirim Tugas Proyek (+100 XP)',
                     icon: Icons.send_rounded,
                     isFullWidth: true,
                     backgroundColor: AppColors.primaryGreen,

@@ -7,6 +7,7 @@ import 'package:e_modul_etnosains/core/constants/app_strings.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 import 'package:e_modul_etnosains/core/widgets/custom_button.dart';
 import 'package:e_modul_etnosains/core/widgets/ethno_scaffold.dart';
+import 'package:e_modul_etnosains/core/utils/slide_navigation_guard.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
 import 'package:e_modul_etnosains/shared/services/app_update_service.dart';
 import 'package:e_modul_etnosains/shared/widgets/app_update_dialog.dart';
@@ -32,7 +33,9 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
         context.go('/auth');
         return;
       }
-      ref.read(userProgressProvider.notifier).markModuleCompleted('cover', xpBonus: 20);
+      ref
+          .read(userProgressProvider.notifier)
+          .markModuleCompleted('cover', xpBonus: 20);
       _checkAutoUpdate();
     });
   }
@@ -55,6 +58,8 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
       title: AppStrings.appName,
       subtitle: 'Slide 1 / 12 • Beranda Utama',
       showBackButton: false,
+      currentSlide: 1,
+      nextRoute: '/apersepsi',
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(
@@ -64,7 +69,8 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
             children: [
               // Badge Category
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                 decoration: BoxDecoration(
                   color: AppColors.sageLight,
                   borderRadius: BorderRadius.circular(30),
@@ -73,7 +79,8 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.eco_rounded, color: AppColors.primaryGreen, size: 16),
+                    const Icon(Icons.eco_rounded,
+                        color: AppColors.primaryGreen, size: 16),
                     const SizedBox(width: 6),
                     Text(
                       'E-MODUL INTERAKTIF BIOLOGI SMA',
@@ -121,12 +128,17 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
               const SizedBox(height: 20),
 
               // Hero Poster Image
-              const CoverHeroPoster().animate().fadeIn(delay: 350.ms, duration: 600.ms).scale(begin: const Offset(0.95, 0.95)),
+              const CoverHeroPoster()
+                  .animate()
+                  .fadeIn(delay: 350.ms, duration: 600.ms)
+                  .scale(begin: const Offset(0.95, 0.95)),
 
               const SizedBox(height: 24),
 
               // Quick Action Media Buttons (Video, QR, Audio, Tujuan)
-              const CoverQuickActionButtons().animate().fadeIn(delay: 450.ms, duration: 500.ms),
+              const CoverQuickActionButtons()
+                  .animate()
+                  .fadeIn(delay: 450.ms, duration: 500.ms),
 
               const SizedBox(height: 28),
 
@@ -137,9 +149,12 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
                 isFullWidth: true,
                 height: 56,
                 backgroundColor: AppColors.primaryGreen,
-                onPressed: () {
-                  context.go('/apersepsi');
-                },
+                onPressed: () => navigateToNextSlide(
+                  context,
+                  ref,
+                  currentSlide: 1,
+                  route: '/apersepsi',
+                ),
               ).animate().fadeIn(delay: 550.ms).slideY(begin: 0.2, end: 0),
 
               const SizedBox(height: 12),
@@ -149,15 +164,18 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
                 onPressed: () => LearningObjectivesSheet.show(context),
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 48),
-                  side: const BorderSide(color: AppColors.primaryGreen, width: 1.5),
+                  side: const BorderSide(
+                      color: AppColors.primaryGreen, width: 1.5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                icon: const Icon(Icons.assignment_outlined, color: AppColors.primaryGreen, size: 20),
+                icon: const Icon(Icons.assignment_outlined,
+                    color: AppColors.primaryGreen, size: 20),
                 label: Text(
                   'Lihat 5 Capaian Pembelajaran',
-                  style: AppTextStyles.bodyBold.copyWith(color: AppColors.primaryGreen),
+                  style: AppTextStyles.bodyBold
+                      .copyWith(color: AppColors.primaryGreen),
                 ),
               ).animate().fadeIn(delay: 650.ms),
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
@@ -71,7 +72,7 @@ class RegionCulturalSpotlightCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: Stack(
               children: [
-                Image.asset(
+                AppImage(
                   activeItem.imageAsset,
                   height: 140,
                   width: double.infinity,
@@ -151,8 +152,7 @@ class RegionCulturalSpotlightCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             activeItem.funFact,
-            style:
-                AppTextStyles.bodyMedium.copyWith(fontSize: 13, height: 1.5),
+            style: AppTextStyles.bodyMedium.copyWith(fontSize: 13, height: 1.5),
           ),
 
           const SizedBox(height: 12),
@@ -160,7 +160,8 @@ class RegionCulturalSpotlightCard extends StatelessWidget {
           // Ethnoscience connection
           Text(
             'Kaitannya dengan Kearifan Etnosains:',
-            style: AppTextStyles.bodyBold.copyWith(color: AppColors.primaryDark),
+            style:
+                AppTextStyles.bodyBold.copyWith(color: AppColors.primaryDark),
           ),
           const SizedBox(height: 4),
           Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../services/supabase_service.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../../features/auth/presentation/screens/auth_screen.dart';
 import '../../features/admin/presentation/screens/admin_dashboard_screen.dart';
@@ -17,6 +18,13 @@ import '../../features/sertifikat/presentation/screens/certificate_view_screen.d
 
 final appRouter = GoRouter(
   initialLocation: '/splash',
+  redirect: (context, state) {
+    if (state.matchedLocation == '/admin' &&
+        !SupabaseService.isCurrentUserAdmin) {
+      return '/auth?adminRequired=1';
+    }
+    return null;
+  },
   routes: [
     GoRoute(
       path: '/splash',

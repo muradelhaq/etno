@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS public.module_assets (
   category TEXT NOT NULL DEFAULT 'process_step',
   step_number INT,
   title TEXT NOT NULL,
-  filename TEXT NOT NULL,
+  filename TEXT NOT NULL UNIQUE,
   storage_path TEXT NOT NULL,
   public_url TEXT NOT NULL,
   description TEXT,
@@ -436,4 +436,12 @@ VALUES
     'Sajian kuliner warisan etnosains pesisir Jawa Barat berpadu bumbu rempah lokal.',
     'Kombinasi protein hewani dan asam amino nabati terfermentasi meningkatkan bioavailabilitas nutrisi.'
   )
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (filename) DO UPDATE SET
+  module_id = EXCLUDED.module_id,
+  category = EXCLUDED.category,
+  step_number = EXCLUDED.step_number,
+  title = EXCLUDED.title,
+  storage_path = EXCLUDED.storage_path,
+  public_url = EXCLUDED.public_url,
+  description = EXCLUDED.description,
+  biological_context = EXCLUDED.biological_context;

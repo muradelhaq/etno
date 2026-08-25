@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/widgets/custom_button.dart';
 import 'package:e_modul_etnosains/core/widgets/ethno_card.dart';
 import 'package:e_modul_etnosains/core/widgets/ethno_scaffold.dart';
+import 'package:e_modul_etnosains/core/utils/slide_navigation_guard.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
 import 'package:e_modul_etnosains/features/jelajah_budaya/data/models/region_culture_model.dart';
 import '../widgets/cards/region_cultural_spotlight_card.dart';
@@ -98,9 +98,12 @@ class _JelajahBudayaScreenState extends ConsumerState<JelajahBudayaScreen> {
               icon: Icons.science_rounded,
               isFullWidth: true,
               backgroundColor: AppColors.primaryGreen,
-              onPressed: () {
-                context.go('/virtual-lab');
-              },
+              onPressed: () => navigateToNextSlide(
+                context,
+                ref,
+                currentSlide: 8,
+                route: '/virtual-lab',
+              ),
             ),
 
             const SizedBox(height: 24),
