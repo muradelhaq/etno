@@ -14,4 +14,17 @@ void main() {
     const url = 'https://example.com/image.png';
     expect(AppImage.publicUrl(url), url);
   });
+
+  test('Supabase object URL uses an optimized render endpoint', () {
+    final url = AppImage.optimizedUrl(
+      'assets/images/aset_sed/ferm-tauco-5.jpeg',
+      width: 960,
+      quality: 70,
+    );
+
+    expect(url, contains('/storage/v1/render/image/public/media-assets/'));
+    expect(url, contains('width=960'));
+    expect(url, contains('quality=70'));
+    expect(url, contains('resize=contain'));
+  });
 }

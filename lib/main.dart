@@ -12,6 +12,12 @@ import 'shared/services/student_session_store.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Keep decoded remote images from consuming excessive memory while students
+  // move through image-heavy slides. Images remain cached by the Supabase CDN.
+  final imageCache = PaintingBinding.instance.imageCache;
+  imageCache.maximumSize = 80;
+  imageCache.maximumSizeBytes = 40 << 20;
+
   // Set preferred orientations & status bar style
   try {
     await SystemChrome.setPreferredOrientations([
