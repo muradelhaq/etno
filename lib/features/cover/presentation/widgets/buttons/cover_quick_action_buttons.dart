@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
-import 'package:e_modul_etnosains/shared/services/app_audio_service.dart';
 import '../dialogs/learning_objectives_sheet.dart';
 import '../dialogs/cover_media_dialogs.dart';
 
@@ -19,44 +17,6 @@ class CoverQuickActionButtons extends StatelessWidget {
           label: 'Video Intro',
           color: AppColors.warmTerracotta,
           onTap: () => CoverMediaDialogs.showVideoPengantarDialog(context),
-        ),
-        Consumer(
-          builder: (context, ref, _) {
-            final audioState = ref.watch(backgroundAudioProvider);
-            final isPlaying = audioState.isPlaying && !audioState.isMuted;
-
-            return _buildActionBtn(
-              icon: isPlaying
-                  ? Icons.volume_up_rounded
-                  : Icons.headphones_rounded,
-              label: isPlaying ? 'Backsound On' : 'Audio Musik',
-              color: AppColors.primaryGreen,
-              onTap: () {
-                ref.read(backgroundAudioProvider.notifier).togglePlay();
-                final willPlay = !isPlaying;
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      willPlay
-                          ? '🎵 Memutar musik latar (backsound) etnosains...'
-                          : '🔇 Musik latar (backsound) dijeda.',
-                    ),
-                    duration: const Duration(seconds: 2),
-                    backgroundColor: willPlay
-                        ? AppColors.primaryGreen
-                        : AppColors.terracottaDark,
-                  ),
-                );
-              },
-            );
-          },
-        ),
-        _buildActionBtn(
-          icon: Icons.qr_code_2_rounded,
-          label: 'QR Akses',
-          color: AppColors.infoBlue,
-          onTap: () => CoverMediaDialogs.showQrDialog(context),
         ),
         _buildActionBtn(
           icon: Icons.checklist_rounded,

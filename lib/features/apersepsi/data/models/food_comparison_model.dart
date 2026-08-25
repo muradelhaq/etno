@@ -42,8 +42,7 @@ class ApersepsiData {
       category: 'Modern',
       imageAsset: 'assets/images/food_kimchi.jpg',
       baseFermentationProduct: 'Bakteri Asam Laktat (Leuconostoc)',
-      description:
-          'Sayuran fermentasi khas Korea dengan bakteri asam laktat.',
+      description: 'Sayuran fermentasi khas Korea dengan bakteri asam laktat.',
     ),
     FoodItemModel(
       id: 'yogurt',
@@ -70,7 +69,7 @@ class ApersepsiData {
       id: 'mendoan',
       name: 'Tempe Mendoan',
       category: 'Tradisional',
-      imageAsset: 'assets/images/food_tempe.jpg',
+      imageAsset: 'assets/images/tempe-mendoan.jpg',
       baseFermentationProduct: 'Tempe (Rhizopus)',
       description:
           'Tempe kedelai khas Banyumas digoreng setengah matang (mendo).',
@@ -79,7 +78,7 @@ class ApersepsiData {
       id: 'goyobod',
       name: 'Es Goyobod / Peuyeum',
       category: 'Tradisional',
-      imageAsset: 'assets/images/food_tape_singkong.jpg',
+      imageAsset: 'assets/images/es-goyobod.jpg',
       baseFermentationProduct: 'Tape Singkong',
       description:
           'Minuman dingin segar khas Jawa Barat dengan isian peuyeum singkong manis.',
@@ -88,16 +87,15 @@ class ApersepsiData {
       id: 'es_tape_ketan',
       name: 'Es Tape Ketan',
       category: 'Tradisional',
-      imageAsset: 'assets/images/food_tape_ketan.jpg',
+      imageAsset: 'assets/images/es_tape.jpg',
       baseFermentationProduct: 'Tape Ketan',
-      description:
-          'Sajian manis asam khas fermentasi beras ketan hijau/hitam.',
+      description: 'Sajian manis asam khas fermentasi beras ketan hijau/hitam.',
     ),
     FoodItemModel(
       id: 'martabak_ketan',
       name: 'Martabak Ketan',
       category: 'Tradisional',
-      imageAsset: 'assets/images/food_tape_ketan.jpg',
+      imageAsset: 'assets/images/martabak_ketan.jpg',
       baseFermentationProduct: 'Tape Ketan',
       description: 'Martabak manis dengan isian tape ketan legit.',
     ),
@@ -105,7 +103,7 @@ class ApersepsiData {
       id: 'sayur_tauco',
       name: 'Sayur Ikan Tauco',
       category: 'Tradisional',
-      imageAsset: 'assets/images/food_tauco.jpg',
+      imageAsset: 'assets/images/sayur_tauco.jpg',
       baseFermentationProduct: 'Tauco (Fermentasi Garam)',
       description:
           'Masakan ikan berkuah gurih dengan fermentasi kedelai garam Cianjur.',
@@ -114,7 +112,7 @@ class ApersepsiData {
       id: 'tutug_oncom',
       name: 'Nasi Tutug Oncom',
       category: 'Tradisional',
-      imageAsset: 'assets/images/food_oncom.jpg',
+      imageAsset: 'assets/images/tutug_oncom.jpg',
       baseFermentationProduct: 'Oncom (Neurospora)',
       description:
           'Nasi hangat ditumbuk bersama oncom bakar bumbu kencur gurih.',
@@ -123,7 +121,7 @@ class ApersepsiData {
       id: 'combro',
       name: 'Combro (Oncom di Jero)',
       category: 'Tradisional',
-      imageAsset: 'assets/images/food_oncom.jpg',
+      imageAsset: 'assets/images/combro_oncom.webp',
       baseFermentationProduct: 'Oncom (Neurospora)',
       description:
           'Gorengan parutan singkong berisi tumisan oncom pedas wangi.',

@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
-import 'package:e_modul_etnosains/core/constants/app_assets.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 
 class CoverMediaDialogs {
+  static const String _introVideoUrl =
+      'https://www.youtube.com/watch?v=bWxPpK7t5lE';
+  static const String _introThumbnailUrl =
+      'https://img.youtube.com/vi/bWxPpK7t5lE/hqdefault.jpg';
+
+  static Future<void> _openIntroVideo(BuildContext context) async {
+    final uri = Uri.parse(_introVideoUrl);
+    var opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!opened) {
+      opened = await launchUrl(uri, mode: LaunchMode.platformDefault);
+    }
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Video YouTube tidak dapat dibuka pada perangkat ini.'),
+          backgroundColor: AppColors.warmTerracotta,
+        ),
+      );
+    }
+  }
+
   static void showVideoPengantarDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -23,27 +44,51 @@ class CoverMediaDialogs {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 150,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.black87,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  const AppImage(
-                    AppAssets.flowchartFermentation,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
-                  Container(
-                    color: Colors.black45,
-                  ),
-                  const Icon(Icons.play_circle_fill,
-                      color: Colors.white, size: 54),
-                ],
+            InkWell(
+              onTap: () => _openIntroVideo(context),
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                height: 180,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.black87,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const AppImage(
+                      _introThumbnailUrl,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                    Container(color: Colors.black38),
+                    const Icon(
+                      Icons.play_circle_fill_rounded,
+                      color: Colors.white,
+                      size: 62,
+                    ),
+                    const Positioned(
+                      left: 10,
+                      bottom: 8,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                        ),
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          child: Text(
+                            'Tonton di YouTube',
+                            style: TextStyle(color: Colors.white, fontSize: 11),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 14),
@@ -62,6 +107,11 @@ class CoverMediaDialogs {
           TextButton(
             onPressed: () => Navigator.pop(ctx),
             child: const Text('Tutup'),
+          ),
+          ElevatedButton.icon(
+            onPressed: () => _openIntroVideo(context),
+            icon: const Icon(Icons.play_arrow_rounded),
+            label: const Text('Tonton Video'),
           ),
           ElevatedButton(
             onPressed: () {
