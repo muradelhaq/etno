@@ -3,7 +3,6 @@ import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 import 'package:e_modul_etnosains/features/peta_konsep/data/models/microorganism_model.dart';
-import 'microscopic_cellular_view.dart';
 
 class MicroscopeLensVisualizer extends StatelessWidget {
   final MicroorganismModel activeMicrobe;
@@ -19,44 +18,6 @@ class MicroscopeLensVisualizer extends StatelessWidget {
     required this.isLandscape,
   });
 
-  String _getBeforeZoomImage(String microbeId) {
-    switch (microbeId) {
-      case 'rhizopus':
-        return 'assets/images/tempe_microscope_before_zoom.png';
-      case 'saccharomyces':
-        return 'assets/images/saccharomyces_before_zoom.png';
-      case 'aspergillus_sp':
-        return 'assets/images/aspergillus_sp_before_zoom.png';
-      case 'aspergillus_oryzae':
-        return 'assets/images/aspergillus_oryzae_before_zoom.png';
-      case 'tetragenococcus':
-        return 'assets/images/tetragenococcus_before_zoom.png';
-      case 'neurospora':
-        return 'assets/images/neurospora_before_zoom.png';
-      default:
-        return 'assets/images/food_tempe.jpg';
-    }
-  }
-
-  String? _getAfterZoomImage(String microbeId) {
-    switch (microbeId) {
-      case 'rhizopus':
-        return 'assets/images/tempe_microscope_after_zoom.png';
-      case 'saccharomyces':
-        return 'assets/images/saccharomyces_after_zoom.png';
-      case 'aspergillus_sp':
-        return 'assets/images/aspergillus_sp_after_zoom.png';
-      case 'aspergillus_oryzae':
-        return 'assets/images/aspergillus_oryzae_after_zoom.png';
-      case 'tetragenococcus':
-        return 'assets/images/tetragenococcus_after_zoom.png';
-      case 'neurospora':
-        return 'assets/images/neurospora_after_zoom.png';
-      default:
-        return null;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final t = ((zoom - 100.0) / 900.0).clamp(0.0, 1.0);
@@ -64,8 +25,8 @@ class MicroscopeLensVisualizer extends StatelessWidget {
     final foodScale = 1.0 + t * 2.0;
     final microbeOpacity = (t * 2.0).clamp(0.0, 1.0);
     final microbeScale = 0.7 + t * 0.8;
-    final beforeZoomImage = _getBeforeZoomImage(activeMicrobe.id);
-    final afterZoomImage = _getAfterZoomImage(activeMicrobe.id);
+    final beforeZoomImage = activeMicrobe.beforeZoomImage;
+    final afterZoomImage = activeMicrobe.afterZoomImage;
 
     return Center(
       child: Container(
@@ -113,17 +74,12 @@ class MicroscopeLensVisualizer extends StatelessWidget {
                   opacity: microbeOpacity,
                   child: Transform.scale(
                     scale: microbeScale,
-                    child: afterZoomImage != null
-                        ? AppImage(
-                            afterZoomImage,
-                            width: lensSize,
-                            height: lensSize,
-                            fit: BoxFit.cover,
-                          )
-                        : MicroscopicCellularView(
-                            microbe: activeMicrobe,
-                            zoom: zoom,
-                          ),
+                    child: AppImage(
+                      afterZoomImage,
+                      width: lensSize,
+                      height: lensSize,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               const Divider(color: Colors.white24, thickness: 1),

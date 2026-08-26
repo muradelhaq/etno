@@ -89,14 +89,16 @@ class UserProgressModel {
       case 5:
         return (caseStudyAnswers['tape'] ?? '').trim().isNotEmpty;
       case 6:
-        return (caseStudyAnswers['tauco'] ?? '').trim().isNotEmpty;
+        return (caseStudyAnswers['tape-ketan'] ?? '').trim().isNotEmpty;
       case 7:
+        return (caseStudyAnswers['tauco'] ?? '').trim().isNotEmpty;
+      case 8:
         return (caseStudyAnswers['kecap'] ?? '').trim().isNotEmpty;
-      case 9:
+      case 10:
         return completedModules.contains('virtual_lab');
-      case 11:
-        return completedModules.contains('cultural_assessment');
       case 12:
+        return completedModules.contains('cultural_assessment');
+      case 13:
         return completedModules.contains('pisa_quiz');
       default:
         return true;
@@ -108,20 +110,22 @@ class UserProgressModel {
       return 'Baca seluruh isi slide sampai bagian paling bawah terlebih dahulu.';
     }
     if (slide == 2) return 'Isi kolom refleksi sebelum melanjutkan.';
-    if (slide >= 4 && slide <= 7) {
+    if (slide >= 4 && slide <= 8) {
       return 'Isi dan simpan jawaban studi kasus sebelum melanjutkan.';
     }
-    if (slide == 9) return 'Rekam hasil percobaan virtual lab terlebih dahulu.';
-    if (slide == 11) return 'Jawab dan kirim seluruh pernyataan asesmen.';
-    if (slide == 12) return 'Jawab dan selesaikan seluruh soal evaluasi.';
+    if (slide == 10) {
+      return 'Rekam hasil percobaan virtual lab terlebih dahulu.';
+    }
+    if (slide == 12) return 'Jawab dan kirim seluruh pernyataan asesmen.';
+    if (slide == 13) return 'Jawab dan selesaikan seluruh soal evaluasi.';
     return 'Selesaikan aktivitas pada slide ini terlebih dahulu.';
   }
 
   int get highestUnlockedSlide {
-    for (var slide = 1; slide < 12; slide++) {
+    for (var slide = 1; slide < 13; slide++) {
       if (!canProceedFromSlide(slide)) return slide;
     }
-    return 12;
+    return 13;
   }
 
   bool get isRegistered =>

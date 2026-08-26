@@ -60,7 +60,7 @@ class ApersepsiData {
       id: 'orek_tempe',
       name: 'Orek Tempe',
       category: 'Tradisional',
-      imageAsset: 'assets/images/food_tempe.jpg',
+      imageAsset: 'assets/images/food_orek_tempe_slide.png',
       baseFermentationProduct: 'Tempe (Rhizopus)',
       description:
           'Olahan tempe bumbu kecap gurih untuk memperpanjang daya simpan.',

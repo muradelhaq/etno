@@ -50,7 +50,7 @@ List<TreeBranch> getConceptTreeData() {
         TreeChild(
           id: 'orek_tempe',
           title: 'Orek Tempe',
-          imageAsset: 'assets/images/food_tempe.jpg',
+          imageAsset: 'assets/images/food_orek_tempe_slide.png',
           parentProduct: 'Tempe Kedelai (Rhizopus)',
           description:
               'Potongan tempe yang ditumis gurih manis dengan kecap dan bumbu rempah aromatik.',
@@ -59,7 +59,7 @@ List<TreeBranch> getConceptTreeData() {
         TreeChild(
           id: 'mendoan',
           title: 'Mendoan',
-          imageAsset: 'assets/images/food_tempe.jpg',
+          imageAsset: 'assets/images/tempe-mendoan.jpg',
           parentProduct: 'Tempe Kedelai (Rhizopus)',
           description:
               'Tempe tipis khas Banyumas dibalut adonan tepung berbumbu dan digoreng mendo (setengah matang).',
@@ -79,7 +79,7 @@ List<TreeBranch> getConceptTreeData() {
         TreeChild(
           id: 'goyobod',
           title: 'Goyobod',
-          imageAsset: 'assets/images/food_tape_singkong.jpg',
+          imageAsset: 'assets/images/es-goyobod.jpg',
           parentProduct: 'Tape Singkong / Peuyeum',
           description:
               'Minuman es tradisional khas Sunda Jawa Barat berisi potongan peuyeum legit, santan, dan serutan es segar.',
@@ -99,7 +99,7 @@ List<TreeBranch> getConceptTreeData() {
         TreeChild(
           id: 'es_tape_ketan',
           title: 'Es Tape Ketan',
-          imageAsset: 'assets/images/food_tape_ketan.jpg',
+          imageAsset: 'assets/images/es_tape.jpg',
           parentProduct: 'Tape Ketan (Amylomyces)',
           description:
               'Sajian es pelepas dahaga dari paduan sari manis tape ketan hijau, santan, dan es serut.',
@@ -108,7 +108,7 @@ List<TreeBranch> getConceptTreeData() {
         TreeChild(
           id: 'martabak_ketan',
           title: 'Martabak Ketan',
-          imageAsset: 'assets/images/food_tape_ketan.jpg',
+          imageAsset: 'assets/images/martabak_ketan.jpg',
           parentProduct: 'Tape Ketan (Amylomyces)',
           description:
               'Martabak manis legit dengan isian tape ketan hitam/hijau yang lembut harum.',
@@ -128,7 +128,7 @@ List<TreeBranch> getConceptTreeData() {
         TreeChild(
           id: 'sayur_tauco',
           title: 'Sayur Ikan Tauco',
-          imageAsset: 'assets/images/food_tauco.jpg',
+          imageAsset: 'assets/images/sayur_tauco.jpg',
           parentProduct: 'Tauco Cianjur (A. oryzae)',
           description:
               'Olahan sayur kuah ikan gurih khas dengan aroma dan cita rasa tauco fermentasi kedelai yang khas.',

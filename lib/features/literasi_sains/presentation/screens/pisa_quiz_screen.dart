@@ -83,7 +83,7 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
       ),
       SupabaseService.updateStudentProgress(
         userId: user.studentId,
-        currentSlide: 12,
+        currentSlide: 13,
         totalXp: user.earnedXP,
         isCompleted: true,
       ),
@@ -107,9 +107,9 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
 
     return EthnoScaffold(
       title: 'Evaluasi Literasi Sains (PISA)',
-      subtitle: 'Slide 12 / 12 • 10 Soal HOTS Berbasis Data',
-      currentSlide: 12,
-      totalSlides: 12,
+      subtitle: 'Slide 13 / 13 • 10 Soal HOTS Berbasis Data',
+      currentSlide: 13,
+      totalSlides: 13,
       prevRoute: '/evaluasi-kearifan',
       nextRoute: '/sertifikat',
       body: SingleChildScrollView(

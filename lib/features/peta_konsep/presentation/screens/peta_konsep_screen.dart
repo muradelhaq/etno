@@ -28,7 +28,9 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(userProgressProvider.notifier).markModuleCompleted('peta_konsep', xpBonus: 40);
+      ref
+          .read(userProgressProvider.notifier)
+          .markModuleCompleted('peta_konsep', xpBonus: 40);
     });
   }
 
@@ -69,9 +71,9 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
   Widget build(BuildContext context) {
     return EthnoScaffold(
       title: 'Peta Konsep & Mikroorganisme',
-      subtitle: 'Slide 3 / 12 • Taksonomi Hayati',
+      subtitle: 'Slide 3 / 13 • Taksonomi Hayati',
       currentSlide: 3,
-      totalSlides: 12,
+      totalSlides: 13,
       prevRoute: '/apersepsi',
       nextRoute: '/produk/tempe',
       body: SingleChildScrollView(
@@ -93,12 +95,14 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.account_tree_rounded, color: AppColors.goldenYellow, size: 24),
+                      const Icon(Icons.account_tree_rounded,
+                          color: AppColors.goldenYellow, size: 24),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           'Pohon Konsep Fermentasi Tradisional',
-                          style: AppTextStyles.h3.copyWith(color: Colors.white, fontSize: 16),
+                          style: AppTextStyles.h3
+                              .copyWith(color: Colors.white, fontSize: 16),
                         ),
                       ),
                     ],
@@ -106,7 +110,8 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
                   const SizedBox(height: 8),
                   Text(
                     'Bagan struktur pohon hubungan antara 4 Produk Induk Fermentasi dan Kuliner Olahan Tradisional Nusantara:',
-                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.sageLight),
+                    style: AppTextStyles.bodySmall
+                        .copyWith(color: AppColors.sageLight),
                   ),
                 ],
               ),
@@ -126,10 +131,12 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
               key: _microscopeKey,
               child: Row(
                 children: [
-                  const Icon(Icons.biotech_rounded, color: AppColors.primaryGreen, size: 24),
+                  const Icon(Icons.biotech_rounded,
+                      color: AppColors.primaryGreen, size: 24),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text('2. Simulator Mikroskop Virtual', style: AppTextStyles.h2.copyWith(fontSize: 16)),
+                    child: Text('2. Simulator Mikroskop Virtual',
+                        style: AppTextStyles.h2.copyWith(fontSize: 16)),
                   ),
                 ],
               ),

@@ -42,7 +42,8 @@ class DrawerUserHeader extends StatelessWidget {
                     },
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: const Color(0xFFD97706),
                         borderRadius: BorderRadius.circular(20),
@@ -50,9 +51,14 @@ class DrawerUserHeader extends StatelessWidget {
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.admin_panel_settings_rounded, size: 13, color: Colors.white),
+                          Icon(Icons.admin_panel_settings_rounded,
+                              size: 13, color: Colors.white),
                           SizedBox(width: 4),
-                          Text('Guru', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
+                          Text('Guru',
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
                         ],
                       ),
                     ),
@@ -66,7 +72,8 @@ class DrawerUserHeader extends StatelessWidget {
                     },
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: AppColors.warmTerracotta,
                         borderRadius: BorderRadius.circular(20),
@@ -74,9 +81,14 @@ class DrawerUserHeader extends StatelessWidget {
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.person_rounded, size: 13, color: Colors.white),
+                          Icon(Icons.person_rounded,
+                              size: 13, color: Colors.white),
                           SizedBox(width: 4),
-                          Text('Profil', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
+                          Text('Profil',
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
                         ],
                       ),
                     ),
@@ -111,8 +123,8 @@ class DrawerUserHeader extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(10),
@@ -136,8 +148,8 @@ class DrawerUserHeader extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(10),
@@ -148,7 +160,7 @@ class DrawerUserHeader extends StatelessWidget {
                           color: AppColors.sageLight, size: 18),
                       const SizedBox(width: 6),
                       Text(
-                        '${progress.completedModules.length}/12 Modul',
+                        '${progress.completedModules.length}/13 Modul',
                         style: AppTextStyles.bodyBold.copyWith(
                           color: Colors.white,
                           fontSize: 13,

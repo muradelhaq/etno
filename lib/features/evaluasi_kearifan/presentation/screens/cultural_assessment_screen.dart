@@ -49,9 +49,12 @@ class _CulturalAssessmentScreenState
     _answers.forEach((k, v) => totalScore += v);
 
     // Max score = 10 * 5 = 50. Index % = (totalScore / 50) * 100
-    final double indexScore = (totalScore / (CulturalAssessmentData.questions.length * 5)) * 100;
+    final double indexScore =
+        (totalScore / (CulturalAssessmentData.questions.length * 5)) * 100;
 
-    ref.read(userProgressProvider.notifier).saveLikertAnswers(_answers, indexScore);
+    ref
+        .read(userProgressProvider.notifier)
+        .saveLikertAnswers(_answers, indexScore);
 
     setState(() {
       _isSubmitted = true;
@@ -63,7 +66,8 @@ class _CulturalAssessmentScreenState
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Row(
           children: [
-            const Icon(Icons.stars_rounded, color: AppColors.goldenYellow, size: 28),
+            const Icon(Icons.stars_rounded,
+                color: AppColors.goldenYellow, size: 28),
             const SizedBox(width: 8),
             Text('Hasil Asesmen Budaya', style: AppTextStyles.h3),
           ],
@@ -78,7 +82,8 @@ class _CulturalAssessmentScreenState
             const SizedBox(height: 8),
             Text(
               '${indexScore.toStringAsFixed(1)}%',
-              style: AppTextStyles.scientificData.copyWith(fontSize: 36, color: AppColors.primaryGreen),
+              style: AppTextStyles.scientificData
+                  .copyWith(fontSize: 36, color: AppColors.primaryGreen),
             ),
             const SizedBox(height: 8),
             Container(
@@ -88,8 +93,11 @@ class _CulturalAssessmentScreenState
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                indexScore >= 80 ? 'Kategori: Sangat Tinggi (Bangsawan Budaya)' : 'Kategori: Baik & Peduli Budaya',
-                style: AppTextStyles.tagText.copyWith(color: AppColors.primaryDark),
+                indexScore >= 80
+                    ? 'Kategori: Sangat Tinggi (Bangsawan Budaya)'
+                    : 'Kategori: Baik & Peduli Budaya',
+                style: AppTextStyles.tagText
+                    .copyWith(color: AppColors.primaryDark),
               ),
             ),
             const SizedBox(height: 12),
@@ -119,9 +127,9 @@ class _CulturalAssessmentScreenState
 
     return EthnoScaffold(
       title: 'Asesmen Kesadaran Budaya',
-      subtitle: 'Slide 11 / 12 • Skala Sikap & Kearifan Etnosains',
-      currentSlide: 11,
-      totalSlides: 12,
+      subtitle: 'Slide 12 / 13 • Skala Sikap & Kearifan Etnosains',
+      currentSlide: 12,
+      totalSlides: 13,
       prevRoute: '/challenge-proyek',
       nextRoute: '/literasi-sains-quiz',
       body: SingleChildScrollView(
@@ -139,17 +147,21 @@ class _CulturalAssessmentScreenState
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.rate_review_rounded, color: AppColors.goldenYellow, size: 28),
+                  const Icon(Icons.rate_review_rounded,
+                      color: AppColors.goldenYellow, size: 28),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Angket Sikap & Nilai Kearifan', style: AppTextStyles.h3.copyWith(color: Colors.white, fontSize: 15)),
+                        Text('Angket Sikap & Nilai Kearifan',
+                            style: AppTextStyles.h3
+                                .copyWith(color: Colors.white, fontSize: 15)),
                         const SizedBox(height: 2),
                         Text(
                           'Pilihlah skala 1 (Sangat Tidak Setuju) hingga 5 (Sangat Setuju) yang paling mencerminkan pandangan pribadimu:',
-                          style: AppTextStyles.bodySmall.copyWith(color: AppColors.sageLight),
+                          style: AppTextStyles.bodySmall
+                              .copyWith(color: AppColors.sageLight),
                         ),
                       ],
                     ),
@@ -166,16 +178,20 @@ class _CulturalAssessmentScreenState
                 borderColor: AppColors.goldenYellow,
                 child: Row(
                   children: [
-                    const Icon(Icons.verified_rounded, color: AppColors.warmTerracotta, size: 32),
+                    const Icon(Icons.verified_rounded,
+                        color: AppColors.warmTerracotta, size: 32),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Indeks Kesadaran Budaya Kamu:', style: AppTextStyles.bodyBold.copyWith(fontSize: 13)),
+                          Text('Indeks Kesadaran Budaya Kamu:',
+                              style: AppTextStyles.bodyBold
+                                  .copyWith(fontSize: 13)),
                           Text(
                             '${userProgress.culturalAwarenessScore.toStringAsFixed(1)}% (Kategori Unggul & Cinta Warisan)',
-                            style: AppTextStyles.tagText.copyWith(color: AppColors.primaryGreen, fontSize: 12),
+                            style: AppTextStyles.tagText.copyWith(
+                                color: AppColors.primaryGreen, fontSize: 12),
                           ),
                         ],
                       ),
@@ -221,14 +237,17 @@ class _CulturalAssessmentScreenState
                           ),
                           const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
                               color: AppColors.warmCream,
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
                               q.indicator,
-                              style: AppTextStyles.tagText.copyWith(color: AppColors.terracottaDark, fontSize: 10),
+                              style: AppTextStyles.tagText.copyWith(
+                                  color: AppColors.terracottaDark,
+                                  fontSize: 10),
                             ),
                           ),
                         ],
@@ -236,7 +255,8 @@ class _CulturalAssessmentScreenState
                       const SizedBox(height: 8),
                       Text(
                         q.statement,
-                        style: AppTextStyles.bodyMedium.copyWith(fontSize: 13, height: 1.4),
+                        style: AppTextStyles.bodyMedium
+                            .copyWith(fontSize: 13, height: 1.4),
                       ),
                       const SizedBox(height: 12),
 
@@ -260,7 +280,8 @@ class _CulturalAssessmentScreenState
                               decoration: BoxDecoration(
                                 color: isSelected
                                     ? AppColors.primaryGreen
-                                    : AppColors.warmCream.withValues(alpha: 0.5),
+                                    : AppColors.warmCream
+                                        .withValues(alpha: 0.5),
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
                                   color: isSelected
@@ -274,15 +295,25 @@ class _CulturalAssessmentScreenState
                                   Text(
                                     '$score',
                                     style: TextStyle(
-                                      color: isSelected ? Colors.white : AppColors.primaryDark,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : AppColors.primaryDark,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
                                     ),
                                   ),
                                   Text(
-                                    score == 1 ? 'STS' : (score == 5 ? 'SS' : (score == 3 ? 'N' : (score == 2 ? 'TS' : 'S'))),
+                                    score == 1
+                                        ? 'STS'
+                                        : (score == 5
+                                            ? 'SS'
+                                            : (score == 3
+                                                ? 'N'
+                                                : (score == 2 ? 'TS' : 'S'))),
                                     style: TextStyle(
-                                      color: isSelected ? Colors.white70 : AppColors.textSecondary,
+                                      color: isSelected
+                                          ? Colors.white70
+                                          : AppColors.textSecondary,
                                       fontSize: 9,
                                     ),
                                   ),
@@ -301,7 +332,9 @@ class _CulturalAssessmentScreenState
             const SizedBox(height: 14),
 
             CustomButton(
-              text: _isSubmitted ? 'Perbarui Asesmen Sikap' : 'Kirim Asesmen Sikap (+100 XP)',
+              text: _isSubmitted
+                  ? 'Perbarui Asesmen Sikap'
+                  : 'Kirim Asesmen Sikap (+100 XP)',
               icon: Icons.check_circle_outline_rounded,
               isFullWidth: true,
               backgroundColor: AppColors.primaryGreen,

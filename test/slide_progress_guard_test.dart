@@ -20,13 +20,13 @@ void main() {
 
   test('case study, lab, and assessment remain mandatory', () {
     final progress = UserProgressModel(
-      readSlides: {4, 9, 10, 11},
+      readSlides: {4, 10, 11, 12},
     );
 
     expect(progress.canProceedFromSlide(4), isFalse);
-    expect(progress.canProceedFromSlide(9), isFalse);
-    expect(progress.canProceedFromSlide(10), isTrue);
-    expect(progress.canProceedFromSlide(11), isFalse);
+    expect(progress.canProceedFromSlide(10), isFalse);
+    expect(progress.canProceedFromSlide(11), isTrue);
+    expect(progress.canProceedFromSlide(12), isFalse);
 
     final completed = progress.copyWith(
       caseStudyAnswers: {'tempe': 'Hipotesis siswa'},
@@ -37,8 +37,8 @@ void main() {
       },
     );
     expect(completed.canProceedFromSlide(4), isTrue);
-    expect(completed.canProceedFromSlide(9), isTrue);
     expect(completed.canProceedFromSlide(10), isTrue);
     expect(completed.canProceedFromSlide(11), isTrue);
+    expect(completed.canProceedFromSlide(12), isTrue);
   });
 }

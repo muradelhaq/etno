@@ -42,9 +42,9 @@ class _JelajahBudayaScreenState extends ConsumerState<JelajahBudayaScreen> {
 
     return EthnoScaffold(
       title: 'Jelajah Budaya Nusantara',
-      subtitle: 'Slide 8 / 12 • Kearifan & Peta Kuliner Tradisional',
-      currentSlide: 8,
-      totalSlides: 12,
+      subtitle: 'Slide 9 / 13 • Kearifan & Peta Kuliner Tradisional',
+      currentSlide: 9,
+      totalSlides: 13,
       prevRoute: '/produk/kecap',
       nextRoute: '/virtual-lab',
       body: SingleChildScrollView(
@@ -101,7 +101,7 @@ class _JelajahBudayaScreenState extends ConsumerState<JelajahBudayaScreen> {
               onPressed: () => navigateToNextSlide(
                 context,
                 ref,
-                currentSlide: 8,
+                currentSlide: 9,
                 route: '/virtual-lab',
               ),
             ),

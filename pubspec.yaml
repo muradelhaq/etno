@@ -1,7 +1,7 @@
 name: e_modul_etnosains
 description: "Aplikasi E-Modul Etnosains Makanan Tradisional Berbasis Fermentasi"
 publish_to: 'none'
-version: 1.1.7+18
+version: 1.1.8+19
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
@@ -44,6 +44,7 @@ dependencies:
   supabase_flutter: ^2.8.0
   open_filex: ^4.7.0
   url_launcher: ^6.3.2
+  youtube_player_iframe: ^5.2.1
 
 dev_dependencies:
   flutter_test:

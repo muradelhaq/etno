@@ -16,7 +16,7 @@ class ModuleNavBar extends ConsumerWidget {
   const ModuleNavBar({
     super.key,
     required this.currentSlide,
-    this.totalSlides = 12,
+    this.totalSlides = 13,
     this.prevRoute,
     this.nextRoute,
     this.onNext,
@@ -60,7 +60,8 @@ class ModuleNavBar extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              icon: const Icon(Icons.home_rounded, color: AppColors.primaryDark),
+              icon:
+                  const Icon(Icons.home_rounded, color: AppColors.primaryDark),
               onPressed: () => context.go('/'),
             ),
 
@@ -101,8 +102,7 @@ class ModuleNavBar extends ConsumerWidget {
                   decoration: BoxDecoration(
                     color: AppColors.sageLight,
                     borderRadius: BorderRadius.circular(12),
-                    border:
-                        Border.all(color: AppColors.primaryGreen, width: 1),
+                    border: Border.all(color: AppColors.primaryGreen, width: 1),
                   ),
                   child: Text(
                     '$currentSlide / $totalSlides',

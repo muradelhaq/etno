@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 
 class CoverMediaDialogs {
   static const String _introVideoUrl =
       'https://www.youtube.com/watch?v=bWxPpK7t5lE';
-  static const String _introThumbnailUrl =
-      'https://img.youtube.com/vi/bWxPpK7t5lE/hqdefault.jpg';
 
   static Future<void> _openIntroVideo(BuildContext context) async {
     final uri = Uri.parse(_introVideoUrl);
@@ -44,52 +42,9 @@ class CoverMediaDialogs {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () => _openIntroVideo(context),
+            ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Container(
-                height: 180,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.black87,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    const AppImage(
-                      _introThumbnailUrl,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    ),
-                    Container(color: Colors.black38),
-                    const Icon(
-                      Icons.play_circle_fill_rounded,
-                      color: Colors.white,
-                      size: 62,
-                    ),
-                    const Positioned(
-                      left: 10,
-                      bottom: 8,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                        ),
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          child: Text(
-                            'Tonton di YouTube',
-                            style: TextStyle(color: Colors.white, fontSize: 11),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              child: const _IntroVideoPlayer(),
             ),
             const SizedBox(height: 14),
             Text(
@@ -166,6 +121,45 @@ class CoverMediaDialogs {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _IntroVideoPlayer extends StatefulWidget {
+  const _IntroVideoPlayer();
+
+  @override
+  State<_IntroVideoPlayer> createState() => _IntroVideoPlayerState();
+}
+
+class _IntroVideoPlayerState extends State<_IntroVideoPlayer> {
+  late final YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = YoutubePlayerController.fromVideoId(
+      videoId: 'bWxPpK7t5lE',
+      autoPlay: false,
+      params: const YoutubePlayerParams(
+        showControls: true,
+        showFullscreenButton: true,
+        strictRelatedVideos: true,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return YoutubePlayer(
+      controller: _controller,
+      aspectRatio: 16 / 9,
     );
   }
 }

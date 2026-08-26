@@ -13,7 +13,8 @@ class FoodInnovationScreen extends ConsumerStatefulWidget {
   const FoodInnovationScreen({super.key});
 
   @override
-  ConsumerState<FoodInnovationScreen> createState() => _FoodInnovationScreenState();
+  ConsumerState<FoodInnovationScreen> createState() =>
+      _FoodInnovationScreenState();
 }
 
 class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
@@ -27,32 +28,40 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
     {
       'title': 'Burger Tempe Vegan Krispi',
       'base': 'Tempe Kedelai',
-      'concept': 'Substitusi daging merah tinggi kolesterol dengan protein nabati kaya asam amino dan serat tempe.',
-      'ingredients': 'Tempe kukus tumbuk, bawang putih, oat, saus jamur, roti bun gandum.',
+      'concept':
+          'Substitusi daging merah tinggi kolesterol dengan protein nabati kaya asam amino dan serat tempe.',
+      'ingredients':
+          'Tempe kukus tumbuk, bawang putih, oat, saus jamur, roti bun gandum.',
       'icon': Icons.lunch_dining_rounded,
       'color': AppColors.primaryGreen,
     },
     {
       'title': 'Cheese Cake Peuyeum Bandung',
       'base': 'Tape Singkong (Peuyeum)',
-      'concept': 'Memanfaatkan rasa manis alami glukosa hasil sakarifikasi amilum untuk mengurangi penambahan gula pasir.',
-      'ingredients': 'Peuyeum manis lumat, cream cheese, biskuit gandum, kayu manis bubuk.',
+      'concept':
+          'Memanfaatkan rasa manis alami glukosa hasil sakarifikasi amilum untuk mengurangi penambahan gula pasir.',
+      'ingredients':
+          'Peuyeum manis lumat, cream cheese, biskuit gandum, kayu manis bubuk.',
       'icon': Icons.cake_rounded,
       'color': AppColors.warmTerracotta,
     },
     {
       'title': 'Pizza Oncom Saus Tomat Tatar Pasundan',
       'base': 'Oncom Merah Tradisional',
-      'concept': 'Kombinasi aroma khas miselium Neurospora sitophila dan pigmen karotenoid dengan keju mozzarella.',
-      'ingredients': 'Tumis oncom bumbu kencur, saus tomat rempah, adonan pizza gandum.',
+      'concept':
+          'Kombinasi aroma khas miselium Neurospora sitophila dan pigmen karotenoid dengan keju mozzarella.',
+      'ingredients':
+          'Tumis oncom bumbu kencur, saus tomat rempah, adonan pizza gandum.',
       'icon': Icons.local_pizza_rounded,
       'color': AppColors.goldenYellow,
     },
     {
       'title': 'Glaze Tauco Ikan Bakar Modern',
       'base': 'Tauco Cianjur',
-      'concept': 'Pemanfaatan asam glutamat alami hasil fermentasi garam moromi sebagai penyedap umami tanpa MSG sintetis.',
-      'ingredients': 'Pasta tauco murni, madu, jahe parut, kecap manis kelapa, air jeruk limau.',
+      'concept':
+          'Pemanfaatan asam glutamat alami hasil fermentasi garam moromi sebagai penyedap umami tanpa MSG sintetis.',
+      'ingredients':
+          'Pasta tauco murni, madu, jahe parut, kecap manis kelapa, air jeruk limau.',
       'icon': Icons.soup_kitchen_rounded,
       'color': AppColors.terracottaDark,
     },
@@ -62,7 +71,9 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(userProgressProvider.notifier).markModuleCompleted('inovasi_pangan', xpBonus: 30);
+      ref
+          .read(userProgressProvider.notifier)
+          .markModuleCompleted('inovasi_pangan', xpBonus: 30);
     });
   }
 
@@ -106,7 +117,8 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Ide kreasi inovasimu berhasil ditambahkan ke Idea Pad! (+75 XP)'),
+        content: Text(
+            'Ide kreasi inovasimu berhasil ditambahkan ke Idea Pad! (+75 XP)'),
         backgroundColor: AppColors.primaryGreen,
       ),
     );
@@ -120,7 +132,7 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
       title: 'Galeri Inovasi Pangan',
       subtitle: 'Slide Tambahan • Food Innovation Pad',
       currentSlide: 12,
-      totalSlides: 12,
+      totalSlides: 13,
       prevRoute: '/evaluasi-kearifan',
       nextRoute: '/literasi-sains-quiz',
       body: SingleChildScrollView(
@@ -138,17 +150,21 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.lightbulb_rounded, color: Colors.white, size: 28),
+                  const Icon(Icons.lightbulb_rounded,
+                      color: Colors.white, size: 28),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Inovasi Pangan Berkelanjutan', style: AppTextStyles.h3.copyWith(color: Colors.white, fontSize: 15)),
+                        Text('Inovasi Pangan Berkelanjutan',
+                            style: AppTextStyles.h3
+                                .copyWith(color: Colors.white, fontSize: 15)),
                         const SizedBox(height: 2),
                         Text(
                           'Transformasi makanan tradisional fermentasi menjadi kuliner modern bernilai ekonomi tinggi.',
-                          style: AppTextStyles.bodySmall.copyWith(color: Colors.white.withValues(alpha: 0.9)),
+                          style: AppTextStyles.bodySmall.copyWith(
+                              color: Colors.white.withValues(alpha: 0.9)),
                         ),
                       ],
                     ),
@@ -160,7 +176,8 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
             const SizedBox(height: 18),
 
             // Section 1: Preset Inspirations
-            Text('1. Inspirasi Produk Inovasi Modern', style: AppTextStyles.h2.copyWith(fontSize: 16)),
+            Text('1. Inspirasi Produk Inovasi Modern',
+                style: AppTextStyles.h2.copyWith(fontSize: 16)),
             const SizedBox(height: 10),
 
             ..._presetInnovations.map((item) {
@@ -176,27 +193,39 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: (item['color'] as Color).withValues(alpha: 0.12),
+                              color: (item['color'] as Color)
+                                  .withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Icon(item['icon'] as IconData, color: item['color'] as Color, size: 22),
+                            child: Icon(item['icon'] as IconData,
+                                color: item['color'] as Color, size: 22),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(item['title'] as String, style: AppTextStyles.bodyBold.copyWith(fontSize: 13, color: AppColors.primaryDark)),
-                                Text('Basis: ${item['base']}', style: AppTextStyles.tagText.copyWith(color: AppColors.warmTerracotta, fontSize: 10)),
+                                Text(item['title'] as String,
+                                    style: AppTextStyles.bodyBold.copyWith(
+                                        fontSize: 13,
+                                        color: AppColors.primaryDark)),
+                                Text('Basis: ${item['base']}',
+                                    style: AppTextStyles.tagText.copyWith(
+                                        color: AppColors.warmTerracotta,
+                                        fontSize: 10)),
                               ],
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
-                      Text(item['concept'] as String, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textPrimary, fontSize: 12)),
+                      Text(item['concept'] as String,
+                          style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.textPrimary, fontSize: 12)),
                       const SizedBox(height: 6),
-                      Text('Bahan: ${item['ingredients']}', style: AppTextStyles.bodySmall.copyWith(fontStyle: FontStyle.italic, fontSize: 11)),
+                      Text('Bahan: ${item['ingredients']}',
+                          style: AppTextStyles.bodySmall.copyWith(
+                              fontStyle: FontStyle.italic, fontSize: 11)),
                     ],
                   ),
                 ),
@@ -208,7 +237,8 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
             const SizedBox(height: 14),
 
             // Section 2: Student Submission Form
-            Text('2. Student Idea Pad: Tuliskan Kreasi Inovasimu', style: AppTextStyles.h2.copyWith(fontSize: 16)),
+            Text('2. Student Idea Pad: Tuliskan Kreasi Inovasimu',
+                style: AppTextStyles.h2.copyWith(fontSize: 16)),
             const SizedBox(height: 8),
 
             EthnoCard(
@@ -227,49 +257,53 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
                       prefixIcon: Icon(Icons.drive_file_rename_outline),
                     ),
                   ),
-
                   const SizedBox(height: 12),
-
-                  Text('Basis Bahan Fermentasi:', style: AppTextStyles.bodyBold),
+                  Text('Basis Bahan Fermentasi:',
+                      style: AppTextStyles.bodyBold),
                   const SizedBox(height: 4),
                   DropdownButtonFormField<String>(
                     initialValue: _baseProductCtrl.text,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.category_outlined),
                     ),
-                    items: ['Tempe', 'Tape Singkong', 'Tape Ketan', 'Tauco', 'Kecap', 'Oncom']
+                    items: [
+                      'Tempe',
+                      'Tape Singkong',
+                      'Tape Ketan',
+                      'Tauco',
+                      'Kecap',
+                      'Oncom'
+                    ]
                         .map((s) => DropdownMenuItem(value: s, child: Text(s)))
                         .toList(),
                     onChanged: (v) {
                       if (v != null) setState(() => _baseProductCtrl.text = v);
                     },
                   ),
-
                   const SizedBox(height: 12),
-
-                  Text('Konsep Bioteknologi & Keunggulan:', style: AppTextStyles.bodyBold),
+                  Text('Konsep Bioteknologi & Keunggulan:',
+                      style: AppTextStyles.bodyBold),
                   const SizedBox(height: 4),
                   TextField(
                     controller: _bioConceptCtrl,
                     decoration: const InputDecoration(
-                      hintText: 'Misal: Pemanfaatan asam amino alami sebagai flavor enhancer...',
+                      hintText:
+                          'Misal: Pemanfaatan asam amino alami sebagai flavor enhancer...',
                     ),
                   ),
-
                   const SizedBox(height: 12),
-
-                  Text('Deskripsi & Rencana Pembuatan:', style: AppTextStyles.bodyBold),
+                  Text('Deskripsi & Rencana Pembuatan:',
+                      style: AppTextStyles.bodyBold),
                   const SizedBox(height: 4),
                   TextField(
                     controller: _descCtrl,
                     maxLines: 3,
                     decoration: const InputDecoration(
-                      hintText: 'Jelaskan cara membuat dan target penikmat produkmu...',
+                      hintText:
+                          'Jelaskan cara membuat dan target penikmat produkmu...',
                     ),
                   ),
-
                   const SizedBox(height: 16),
-
                   CustomButton(
                     text: 'Simpan Ide Inovasi (+75 XP)',
                     icon: Icons.bookmark_add_rounded,
@@ -283,7 +317,8 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
 
             if (userIdeas.isNotEmpty) ...[
               const SizedBox(height: 20),
-              Text('Daftar Idemu (${userIdeas.length}):', style: AppTextStyles.h2.copyWith(fontSize: 15)),
+              Text('Daftar Idemu (${userIdeas.length}):',
+                  style: AppTextStyles.h2.copyWith(fontSize: 15)),
               const SizedBox(height: 8),
               ...userIdeas.map((idea) {
                 return Padding(
@@ -297,14 +332,21 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(idea.title, style: AppTextStyles.bodyBold.copyWith(fontSize: 13, color: AppColors.primaryDark)),
+                            Text(idea.title,
+                                style: AppTextStyles.bodyBold.copyWith(
+                                    fontSize: 13,
+                                    color: AppColors.primaryDark)),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(
                                 color: AppColors.sageLight,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Text(idea.baseProduct, style: AppTextStyles.tagText.copyWith(color: AppColors.primaryDark, fontSize: 10)),
+                              child: Text(idea.baseProduct,
+                                  style: AppTextStyles.tagText.copyWith(
+                                      color: AppColors.primaryDark,
+                                      fontSize: 10)),
                             ),
                           ],
                         ),

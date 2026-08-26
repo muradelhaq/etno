@@ -60,7 +60,9 @@ class FoodTraditionalDishesSection extends StatelessWidget {
                       ? 'OREK TEMPE'
                       : (food.id == 'tape'
                           ? 'COLENAK'
-                          : (food.id == 'tauco' ? 'SAYUR IKAN TAUCO' : 'OLAHAN 1')),
+                          : (food.id == 'tauco'
+                              ? 'SAYUR IKAN TAUCO'
+                              : 'OLAHAN 1')),
                   imageAsset: food.id == 'tempe'
                       ? 'assets/images/food_orek_tempe_slide.png'
                       : (food.id == 'tape'
@@ -93,11 +95,13 @@ class FoodTraditionalDishesSection extends StatelessWidget {
                       ? 'MENDOAN'
                       : (food.id == 'tape'
                           ? 'ES DOGER'
-                          : (food.id == 'tauco' ? 'TUMIS KANGKUNG' : 'OLAHAN 2')),
+                          : (food.id == 'tauco'
+                              ? 'TUMIS KANGKUNG'
+                              : 'OLAHAN 2')),
                   imageAsset: food.id == 'tempe'
-                      ? 'assets/images/food_mendoan_slide.png'
+                      ? 'assets/images/tempe-mendoan.jpg'
                       : (food.id == 'tape'
-                          ? 'assets/images/food_tape_singkong.jpg'
+                          ? 'assets/images/es-goyobod.jpg'
                           : (food.id == 'tauco'
                               ? 'assets/images/food_tauco.jpg'
                               : 'assets/images/food_oncom.jpg')),

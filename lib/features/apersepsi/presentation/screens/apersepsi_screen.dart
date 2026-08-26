@@ -22,7 +22,9 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(userProgressProvider.notifier).markModuleCompleted('apersepsi', xpBonus: 30);
+      ref
+          .read(userProgressProvider.notifier)
+          .markModuleCompleted('apersepsi', xpBonus: 30);
     });
   }
 
@@ -30,9 +32,9 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
   Widget build(BuildContext context) {
     return EthnoScaffold(
       title: 'Apersepsi & Brainstorming',
-      subtitle: 'Slide 2 / 12 • Mengaktifkan Pemikiran Awal',
+      subtitle: 'Slide 2 / 13 • Mengaktifkan Pemikiran Awal',
       currentSlide: 2,
-      totalSlides: 12,
+      totalSlides: 13,
       prevRoute: '/',
       nextRoute: '/peta-konsep',
       body: SingleChildScrollView(
@@ -47,17 +49,20 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
               decoration: BoxDecoration(
                 color: AppColors.sageLight,
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.3)),
+                border: Border.all(
+                    color: AppColors.primaryGreen.withValues(alpha: 0.3)),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.psychology_rounded, color: AppColors.primaryGreen, size: 28),
+                  const Icon(Icons.psychology_rounded,
+                      color: AppColors.primaryGreen, size: 28),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Pertanyaan Pemantik', style: AppTextStyles.h3.copyWith(fontSize: 15)),
+                        Text('Pertanyaan Pemantik',
+                            style: AppTextStyles.h3.copyWith(fontSize: 15)),
                         const SizedBox(height: 2),
                         Text(
                           'Manakah makanan di bawah ini yang lebih sering kalian santap?',
@@ -73,7 +78,8 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
             const SizedBox(height: 18),
 
             // 1. Galeri Kuliner Modern vs Tradisional
-            Text('1. Galeri Kuliner Modern vs Tradisional', style: AppTextStyles.h2.copyWith(fontSize: 16)),
+            Text('1. Galeri Kuliner Modern vs Tradisional',
+                style: AppTextStyles.h2.copyWith(fontSize: 16)),
             const SizedBox(height: 10),
             Text(
               'Klik kartu makanan di bawah untuk melihat rincian bahan dan proses fermentasinya:',
@@ -83,7 +89,8 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
 
             // Modern Foods
             Text('Makanan Cepat Saji Modern (Global):',
-                style: AppTextStyles.bodyBold.copyWith(color: AppColors.warmTerracotta)),
+                style: AppTextStyles.bodyBold
+                    .copyWith(color: AppColors.warmTerracotta)),
             const SizedBox(height: 8),
             _buildFoodGrid(ApersepsiData.modernFoods, isModern: true),
 
@@ -91,7 +98,8 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
 
             // Traditional Foods
             Text('Makanan Tradisional Nusantara (Lokal):',
-                style: AppTextStyles.bodyBold.copyWith(color: AppColors.primaryGreen)),
+                style: AppTextStyles.bodyBold
+                    .copyWith(color: AppColors.primaryGreen)),
             const SizedBox(height: 8),
             _buildFoodGrid(ApersepsiData.traditionalFoods, isModern: false),
 

@@ -7,6 +7,8 @@ class MicroorganismModel {
   final String biochemicalRole;
   final String microscopicFeature;
   final String imageUrl;
+  final String beforeZoomImage;
+  final String afterZoomImage;
 
   const MicroorganismModel({
     required this.id,
@@ -17,6 +19,8 @@ class MicroorganismModel {
     required this.biochemicalRole,
     required this.microscopicFeature,
     required this.imageUrl,
+    required this.beforeZoomImage,
+    required this.afterZoomImage,
   });
 }
 
@@ -33,7 +37,9 @@ class MicroorganismData {
           'Meningkatkan daya cerna protein hingga 85%, menurunkan asam fitat, serta mensintesis vitamin B12 dan antioksidan isoflavon aglikon.',
       microscopicFeature:
           'Hifa tidak bersekat (senositik), sporangiofor tegak berkoloni, sporangium bulat berisi sporangiospora kehitaman.',
-      imageUrl: 'assets/images/panel_tempe_tauco_tape_hd.jpeg',
+      imageUrl: 'assets/images/tempe_microscope_after_zoom.png',
+      beforeZoomImage: 'assets/images/tempe_microscope_before_zoom.png',
+      afterZoomImage: 'assets/images/tempe_microscope_after_zoom.png',
     ),
     MicroorganismModel(
       id: 'saccharomyces',
@@ -46,7 +52,9 @@ class MicroorganismData {
           'C6H12O6 (Glukosa) -> 2 C2H5OH (Etanol) + 2 CO2 + Energi (2 ATP). Menghasilkan sensasi manis-segar beraroma khas pada tape.',
       microscopicFeature:
           'Sel uniseluler berbentuk oval/bulat telur, bereproduksi vegetatif dengan pertunasan (budding).',
-      imageUrl: 'assets/images/panel_tempe_tauco_tape.jpeg',
+      imageUrl: 'assets/images/saccharomyces_after_zoom.png',
+      beforeZoomImage: 'assets/images/saccharomyces_before_zoom.png',
+      afterZoomImage: 'assets/images/saccharomyces_after_zoom.png',
     ),
     MicroorganismModel(
       id: 'aspergillus_sp',
@@ -59,7 +67,9 @@ class MicroorganismData {
           'Pati (Amilum) + H2O -> Glukosa + Maltosa. Menyediakan substrat glukosa manis yang memicu pertumbuhan ragi khamir.',
       microscopicFeature:
           'Konidiofor tegak berujung vesikel bulat dengan rantai konidiospora radial.',
-      imageUrl: 'assets/images/panel_tempe_tauco_tape_full.png',
+      imageUrl: 'assets/images/aspergillus_sp_after_zoom.png',
+      beforeZoomImage: 'assets/images/aspergillus_sp_before_zoom.png',
+      afterZoomImage: 'assets/images/aspergillus_sp_after_zoom.png',
     ),
     MicroorganismModel(
       id: 'aspergillus_oryzae',
@@ -72,7 +82,9 @@ class MicroorganismData {
           'Menghasilkan asam glutamat bebas (sumber rasa gurih alami / umami) dan prekursor aroma pada fermentasi lanjutan.',
       microscopicFeature:
           'Miselium berwarna hijau zaitun kekuningan dengan konidia bersel satu berdinding halus/kasar.',
-      imageUrl: 'assets/images/panel_oncom_kecap.jpeg',
+      imageUrl: 'assets/images/aspergillus_oryzae_after_zoom.png',
+      beforeZoomImage: 'assets/images/aspergillus_oryzae_before_zoom.png',
+      afterZoomImage: 'assets/images/aspergillus_oryzae_after_zoom.png',
     ),
     MicroorganismModel(
       id: 'tetragenococcus',
@@ -85,7 +97,9 @@ class MicroorganismData {
           'Menurunkan pH, mencegah kontaminasi bakteri pembusuk patogen, dan mematangkan aroma gurih sedap selama penjemuran sinar matahari.',
       microscopicFeature:
           'Bakteri Gram-positif berpasangan atau berkelompok empat (tetrad), tidak berspora.',
-      imageUrl: 'assets/images/panel_tempe_tauco_tape.jpeg',
+      imageUrl: 'assets/images/tetragenococcus_after_zoom.png',
+      beforeZoomImage: 'assets/images/tetragenococcus_before_zoom.png',
+      afterZoomImage: 'assets/images/tetragenococcus_after_zoom.png',
     ),
     MicroorganismModel(
       id: 'neurospora',
@@ -98,7 +112,9 @@ class MicroorganismData {
           'Meningkatkan nilai cerna ampas tahu, mendegradasi aflatoksin, dan memperkaya kandungan gizi vitamin B kompleks.',
       microscopicFeature:
           'Miselium cepat tumbuh berwarna jingga/oranye dengan rantai makrokonidia bersel satu oval.',
-      imageUrl: 'assets/images/panel_oncom_kecap_hd.jpeg',
+      imageUrl: 'assets/images/neurospora_after_zoom.png',
+      beforeZoomImage: 'assets/images/neurospora_before_zoom.png',
+      afterZoomImage: 'assets/images/neurospora_after_zoom.png',
     ),
   ];
 }
