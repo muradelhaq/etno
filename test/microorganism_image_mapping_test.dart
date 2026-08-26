@@ -9,24 +9,24 @@ void main() {
         'assets/images/tempe_microscope_after_zoom.png',
       ),
       'saccharomyces': (
-        'assets/images/saccharomyces_before_zoom.png',
-        'assets/images/saccharomyces_after_zoom.png',
+        'assets/images/image1.jpeg',
+        'assets/images/image2.jpeg',
       ),
       'aspergillus_sp': (
-        'assets/images/aspergillus_sp_before_zoom.png',
-        'assets/images/aspergillus_sp_after_zoom.png',
+        'assets/images/image3.jpeg',
+        'assets/images/image4.png',
       ),
       'aspergillus_oryzae': (
-        'assets/images/aspergillus_oryzae_before_zoom.png',
-        'assets/images/aspergillus_oryzae_after_zoom.png',
+        'assets/images/image5.png',
+        'assets/images/image6.jpeg',
       ),
       'tetragenococcus': (
-        'assets/images/tetragenococcus_before_zoom.png',
-        'assets/images/tetragenococcus_after_zoom.png',
+        'assets/images/image7.jpeg',
+        'assets/images/image8.jpeg',
       ),
       'neurospora': (
-        'assets/images/neurospora_before_zoom.png',
-        'assets/images/neurospora_after_zoom.png',
+        'assets/images/image9.png',
+        'assets/images/image10.jpeg',
       ),
     };
 

@@ -44,7 +44,7 @@ List<TreeBranch> getConceptTreeData() {
       imageAsset: 'assets/images/food_tempe.jpg',
       microbe: 'Rhizopus oligosporus & R. oryzae',
       description:
-          'Fermentasi biji kedelai oleh miselium kapang Rhizopus yang menghasilkan struktur padat, enzim protease, dan vitamin B12.',
+          'Fermentasi biji kedelai oleh miselium kapang Rhizopus yang menghasilkan struktur padat dan enzim protease. Vitamin B12 pada tempe lebih tepat dikaitkan dengan bakteri pendamping.',
       route: '/produk/tempe',
       children: [
         TreeChild(

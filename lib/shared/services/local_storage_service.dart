@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/services/supabase_service.dart';
 import '../models/user_progress_model.dart';
 
 class LocalStorageService {
@@ -36,6 +37,22 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
   UserProgressNotifier(this._storageService)
       : super(_storageService.loadUserProgress());
 
+  Future<void> _persistAndSync() async {
+    await _storageService.saveUserProgress(state);
+    if (SupabaseService.isInitialized &&
+        state.studentId.isNotEmpty &&
+        !state.studentId.startsWith('local-')) {
+      await SupabaseService.updateStudentProgress(
+        userId: state.studentId,
+        currentSlide: state.readSlides.isEmpty
+            ? 1
+            : state.readSlides.reduce((a, b) => a > b ? a : b),
+        totalXp: state.earnedXP,
+        isCompleted: state.completedModules.contains('pisa_quiz'),
+      );
+    }
+  }
+
   Future<void> updateStudentProfile({
     required String id,
     required String name,
@@ -50,18 +67,18 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
       studentSchool: school,
       role: role,
     );
-    await _storageService.saveUserProgress(state);
+    await _persistAndSync();
   }
 
   Future<void> updateStudentName(String name) async {
     state = state.copyWith(studentName: name);
-    await _storageService.saveUserProgress(state);
+    await _persistAndSync();
   }
 
   Future<void> addXP(int xp) async {
     final newXP = state.earnedXP + xp;
     state = state.copyWith(earnedXP: newXP);
-    await _storageService.saveUserProgress(state);
+    await _persistAndSync();
   }
 
   Future<void> markModuleCompleted(String moduleId,
@@ -71,7 +88,7 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
         ? state.earnedXP
         : state.earnedXP + xpBonus;
     state = state.copyWith(completedModules: updated, earnedXP: xp);
-    await _storageService.saveUserProgress(state);
+    await _persistAndSync();
   }
 
   Future<void> markSlideRead(int slideNumber) async {
@@ -79,12 +96,12 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
     state = state.copyWith(
       readSlides: Set<int>.from(state.readSlides)..add(slideNumber),
     );
-    await _storageService.saveUserProgress(state);
+    await _persistAndSync();
   }
 
   Future<void> saveApersepsiReflection(String text) async {
     state = state.copyWith(apersepsiReflection: text);
-    await _storageService.saveUserProgress(state);
+    await _persistAndSync();
   }
 
   Future<void> saveQuizAnswer(
@@ -96,7 +113,7 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
       quizSelectedAnswers: answers,
       totalQuizAnswered: answers.length,
     );
-    await _storageService.saveUserProgress(state);
+    await _persistAndSync();
   }
 
   Future<void> completeQuiz(int finalScore) async {
@@ -105,22 +122,26 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
     state = state.copyWith(
       quizScore: finalScore,
       completedModules: updated,
-      earnedXP: state.earnedXP + addedXP,
+      earnedXP: state.completedModules.contains('pisa_quiz')
+          ? state.earnedXP
+          : state.earnedXP + addedXP,
     );
-    await _storageService.saveUserProgress(state);
+    await _persistAndSync();
   }
 
   Future<void> saveLikertAnswers(
       Map<int, int> answers, double scoreIndex) async {
     final updated = Set<String>.from(state.completedModules)
       ..add('cultural_assessment');
+    final alreadyCompleted =
+        state.completedModules.contains('cultural_assessment');
     state = state.copyWith(
       likertAnswers: answers,
       culturalAwarenessScore: scoreIndex,
       completedModules: updated,
-      earnedXP: state.earnedXP + 100,
+      earnedXP: alreadyCompleted ? state.earnedXP : state.earnedXP + 100,
     );
-    await _storageService.saveUserProgress(state);
+    await _persistAndSync();
   }
 
   Future<void> addInnovationIdea(InnovationIdea idea) async {
@@ -140,7 +161,23 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
     final map = Map<String, String>.from(state.caseStudyAnswers);
     map[foodId] = answer;
     state = state.copyWith(caseStudyAnswers: map);
-    await _storageService.saveUserProgress(state);
+    await _persistAndSync();
+  }
+
+  Future<void> saveProjectSubmission({
+    required String title,
+    required String members,
+    required String link,
+    required String notes,
+  }) async {
+    state = state.copyWith(
+      projectTitle: title.trim(),
+      projectMembers: members.trim(),
+      projectLink: link.trim(),
+      projectNotes: notes.trim(),
+      projectSubmitted: true,
+    );
+    await _persistAndSync();
   }
 
   Future<void> resetAll() async {

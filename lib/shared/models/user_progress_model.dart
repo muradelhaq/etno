@@ -59,6 +59,11 @@ class UserProgressModel {
   final List<InnovationIdea> innovationIdeas;
   final Map<String, String> caseStudyAnswers; // foodId -> student answer
   final Set<int> readSlides;
+  final String projectTitle;
+  final String projectMembers;
+  final String projectLink;
+  final String projectNotes;
+  final bool projectSubmitted;
 
   UserProgressModel({
     this.studentId = '',
@@ -77,6 +82,11 @@ class UserProgressModel {
     this.innovationIdeas = const [],
     this.caseStudyAnswers = const {},
     this.readSlides = const {},
+    this.projectTitle = '',
+    this.projectMembers = '',
+    this.projectLink = '',
+    this.projectNotes = '',
+    this.projectSubmitted = false,
   });
 
   bool canProceedFromSlide(int slide) {
@@ -95,7 +105,8 @@ class UserProgressModel {
       case 8:
         return (caseStudyAnswers['kecap'] ?? '').trim().isNotEmpty;
       case 10:
-        return completedModules.contains('virtual_lab');
+        return completedModules.contains('virtual_lab') &&
+            completedModules.contains('virtual_lab_game');
       case 12:
         return completedModules.contains('cultural_assessment');
       case 13:
@@ -133,6 +144,9 @@ class UserProgressModel {
       studentName.trim().isNotEmpty &&
       studentName.trim() != 'Siswa Etnosains';
 
+  bool get isCertificateEligible =>
+      isRegistered && completedModules.contains('pisa_quiz');
+
   UserProgressModel copyWith({
     String? studentId,
     String? studentName,
@@ -150,6 +164,11 @@ class UserProgressModel {
     List<InnovationIdea>? innovationIdeas,
     Map<String, String>? caseStudyAnswers,
     Set<int>? readSlides,
+    String? projectTitle,
+    String? projectMembers,
+    String? projectLink,
+    String? projectNotes,
+    bool? projectSubmitted,
   }) {
     return UserProgressModel(
       studentId: studentId ?? this.studentId,
@@ -169,6 +188,11 @@ class UserProgressModel {
       innovationIdeas: innovationIdeas ?? this.innovationIdeas,
       caseStudyAnswers: caseStudyAnswers ?? this.caseStudyAnswers,
       readSlides: readSlides ?? this.readSlides,
+      projectTitle: projectTitle ?? this.projectTitle,
+      projectMembers: projectMembers ?? this.projectMembers,
+      projectLink: projectLink ?? this.projectLink,
+      projectNotes: projectNotes ?? this.projectNotes,
+      projectSubmitted: projectSubmitted ?? this.projectSubmitted,
     );
   }
 
@@ -191,6 +215,11 @@ class UserProgressModel {
       'innovationIdeas': innovationIdeas.map((e) => e.toMap()).toList(),
       'caseStudyAnswers': caseStudyAnswers,
       'readSlides': readSlides.toList(),
+      'projectTitle': projectTitle,
+      'projectMembers': projectMembers,
+      'projectLink': projectLink,
+      'projectNotes': projectNotes,
+      'projectSubmitted': projectSubmitted,
     };
   }
 
@@ -228,6 +257,11 @@ class UserProgressModel {
               ?.map((value) => (value as num).toInt())
               .toSet() ??
           {},
+      projectTitle: map['projectTitle']?.toString() ?? '',
+      projectMembers: map['projectMembers']?.toString() ?? '',
+      projectLink: map['projectLink']?.toString() ?? '',
+      projectNotes: map['projectNotes']?.toString() ?? '',
+      projectSubmitted: map['projectSubmitted'] == true,
     );
   }
 

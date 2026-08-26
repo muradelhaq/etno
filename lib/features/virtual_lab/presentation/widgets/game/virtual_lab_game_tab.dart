@@ -15,6 +15,7 @@ class VirtualLabGameTab extends StatefulWidget {
 
 class _VirtualLabGameTabState extends State<VirtualLabGameTab> {
   int _gameScore = 0;
+  final Set<String> _scoredMicrobes = {};
   final Map<String, String?> _microbeMatches = {
     'Rhizopus oligosporus': null,
     'Saccharomyces cerevisiae': null,
@@ -48,14 +49,17 @@ class _VirtualLabGameTabState extends State<VirtualLabGameTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Game Interaktif Etnosains',
-                        style: AppTextStyles.h3.copyWith(color: Colors.white, fontSize: 16)),
+                        style: AppTextStyles.h3
+                            .copyWith(color: Colors.white, fontSize: 16)),
                     const SizedBox(height: 2),
                     Text('Kumpulkan poin dan selesaikan seluruh misi!',
-                        style: AppTextStyles.bodySmall.copyWith(color: Colors.white70)),
+                        style: AppTextStyles.bodySmall
+                            .copyWith(color: Colors.white70)),
                   ],
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.black38,
                     borderRadius: BorderRadius.circular(12),
@@ -63,10 +67,12 @@ class _VirtualLabGameTabState extends State<VirtualLabGameTab> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.military_tech_rounded, color: AppColors.goldenYellow, size: 24),
+                      const Icon(Icons.military_tech_rounded,
+                          color: AppColors.goldenYellow, size: 24),
                       const SizedBox(width: 6),
                       Text('$_gameScore XP',
-                          style: AppTextStyles.h2.copyWith(color: Colors.white, fontSize: 16)),
+                          style: AppTextStyles.h2
+                              .copyWith(color: Colors.white, fontSize: 16)),
                     ],
                   ),
                 ),
@@ -100,17 +106,25 @@ class _VirtualLabGameTabState extends State<VirtualLabGameTab> {
                     const SizedBox(height: 8),
                     Wrap(
                       spacing: 8,
-                      children: ['Tempe Kedelai', 'Tape Singkong', 'Tauco Cianjur'].map((prod) {
+                      children: [
+                        'Tempe Kedelai',
+                        'Tape Singkong',
+                        'Tauco Cianjur'
+                      ].map((prod) {
                         final isThisSelected = selected == prod;
                         return ChoiceChip(
-                          label: Text(prod, style: const TextStyle(fontSize: 11)),
+                          label:
+                              Text(prod, style: const TextStyle(fontSize: 11)),
                           selected: isThisSelected,
-                          selectedColor: isCorrect ? AppColors.successGreen : AppColors.errorRed,
+                          selectedColor: isCorrect
+                              ? AppColors.successGreen
+                              : AppColors.errorRed,
                           onSelected: (sel) {
                             if (sel) {
                               setState(() {
                                 _microbeMatches[microbe] = prod;
-                                if (prod == _correctMicrobe[microbe]) {
+                                if (prod == _correctMicrobe[microbe] &&
+                                    _scoredMicrobes.add(microbe)) {
                                   _gameScore += 30;
                                 }
                               });
@@ -135,10 +149,27 @@ class _VirtualLabGameTabState extends State<VirtualLabGameTab> {
                 isFullWidth: true,
                 backgroundColor: AppColors.primaryGreen,
                 onPressed: () {
-                  ref.read(userProgressProvider.notifier).addXP(_gameScore);
+                  final allMatchesCorrect = _microbeMatches.entries.every(
+                    (entry) => entry.value == _correctMicrobe[entry.key],
+                  );
+                  if (!allMatchesCorrect) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Pasangkan semua mikroba dengan produk yang benar terlebih dahulu.'),
+                        backgroundColor: AppColors.warmTerracotta,
+                      ),
+                    );
+                    return;
+                  }
+                  ref.read(userProgressProvider.notifier).markModuleCompleted(
+                        'virtual_lab_game',
+                        xpBonus: _gameScore,
+                      );
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Poin game ($_gameScore XP) berhasil ditambahkan ke profil belajarmu!'),
+                      content: Text(
+                          'Mini games selesai. Poin game ($_gameScore XP) tersimpan di profil belajarmu!'),
                       backgroundColor: AppColors.primaryGreen,
                     ),
                   );

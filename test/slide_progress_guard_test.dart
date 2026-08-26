@@ -32,6 +32,7 @@ void main() {
       caseStudyAnswers: {'tempe': 'Hipotesis siswa'},
       completedModules: {
         'virtual_lab',
+        'virtual_lab_game',
         'challenge',
         'cultural_assessment',
       },

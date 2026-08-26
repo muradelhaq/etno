@@ -7,7 +7,7 @@ import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 
 class CoverMediaDialogs {
   static const String _introVideoUrl =
-      'https://www.youtube.com/watch?v=bWxPpK7t5lE';
+      'https://www.youtube.com/embed/bWxPpK7t5lE?si=SeV82ThOHxUfvsrn';
 
   static Future<void> _openIntroVideo(BuildContext context) async {
     final uri = Uri.parse(_introVideoUrl);
@@ -157,9 +157,10 @@ class _IntroVideoPlayerState extends State<_IntroVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayer(
+    return YoutubePlayerScaffold(
       controller: _controller,
       aspectRatio: 16 / 9,
+      builder: (context, player) => player,
     );
   }
 }

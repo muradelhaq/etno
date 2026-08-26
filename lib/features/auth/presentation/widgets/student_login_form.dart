@@ -24,10 +24,12 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final user = ref.read(userProgressProvider);
-      if (user.studentName != 'Siswa Etnosains' && user.studentName.isNotEmpty) {
+      if (user.studentName != 'Siswa Etnosains' &&
+          user.studentName.isNotEmpty) {
         _studentNameController.text = user.studentName;
       }
-      if (user.studentClass != 'Kelas Biologi' && user.studentClass.isNotEmpty) {
+      if (user.studentClass != 'Kelas Biologi' &&
+          user.studentClass.isNotEmpty) {
         _studentClassController.text = user.studentClass;
       }
       if (user.studentSchool != 'Sekolah Menengah Atas' &&
@@ -73,18 +75,32 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
           );
 
       if (mounted) {
+        final isOffline = supabaseUser?['sync_status'] == 'offline';
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.check_circle_rounded, color: Colors.white),
+                Icon(
+                  isOffline
+                      ? Icons.cloud_off_rounded
+                      : Icons.check_circle_rounded,
+                  color: Colors.white,
+                ),
                 const SizedBox(width: 10),
-                Expanded(child: Text('Selamat datang, $name! Selamat belajar.')),
+                Expanded(
+                  child: Text(
+                    isOffline
+                        ? 'Profil tersimpan di perangkat. Sinkronisasi cloud akan dicoba lagi saat online.'
+                        : 'Selamat datang, $name! Selamat belajar.',
+                  ),
+                ),
               ],
             ),
-            backgroundColor: AppColors.primaryGreen,
+            backgroundColor:
+                isOffline ? AppColors.warmTerracotta : AppColors.primaryGreen,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             duration: const Duration(seconds: 2),
           ),
         );
@@ -120,7 +136,8 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
                   color: const Color(0xFFE8F5E9),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.badge_outlined, size: 16, color: AppColors.primaryGreen),
+                child: const Icon(Icons.badge_outlined,
+                    size: 16, color: AppColors.primaryGreen),
               ),
               const SizedBox(width: 8),
               const Text(
@@ -142,7 +159,8 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
             decoration: InputDecoration(
               labelText: 'Nama Lengkap Siswa',
               hintText: 'Contoh: Dewi Sartika',
-              prefixIcon: const Icon(Icons.person_outline_rounded, color: AppColors.primaryGreen),
+              prefixIcon: const Icon(Icons.person_outline_rounded,
+                  color: AppColors.primaryGreen),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
@@ -153,14 +171,17 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: AppColors.primaryGreen, width: 1.8),
+                borderSide:
+                    const BorderSide(color: AppColors.primaryGreen, width: 1.8),
               ),
               filled: true,
               fillColor: const Color(0xFFF9FAF8),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
             ),
-            validator: (val) =>
-                (val == null || val.trim().isEmpty) ? 'Nama siswa wajib diisi' : null,
+            validator: (val) => (val == null || val.trim().isEmpty)
+                ? 'Nama siswa wajib diisi'
+                : null,
           ),
 
           const SizedBox(height: 12),
@@ -172,7 +193,8 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
             decoration: InputDecoration(
               labelText: 'Kelas / Rombel',
               hintText: 'Contoh: XII MIPA 1',
-              prefixIcon: const Icon(Icons.class_outlined, color: AppColors.primaryGreen),
+              prefixIcon: const Icon(Icons.class_outlined,
+                  color: AppColors.primaryGreen),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
@@ -183,14 +205,17 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: AppColors.primaryGreen, width: 1.8),
+                borderSide:
+                    const BorderSide(color: AppColors.primaryGreen, width: 1.8),
               ),
               filled: true,
               fillColor: const Color(0xFFF9FAF8),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
             ),
-            validator: (val) =>
-                (val == null || val.trim().isEmpty) ? 'Kelas wajib diisi' : null,
+            validator: (val) => (val == null || val.trim().isEmpty)
+                ? 'Kelas wajib diisi'
+                : null,
           ),
 
           const SizedBox(height: 12),
@@ -203,7 +228,8 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
             decoration: InputDecoration(
               labelText: 'Asal Sekolah',
               hintText: 'Contoh: SMAN 1 Bandung',
-              prefixIcon: const Icon(Icons.account_balance_outlined, color: AppColors.primaryGreen),
+              prefixIcon: const Icon(Icons.account_balance_outlined,
+                  color: AppColors.primaryGreen),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
@@ -214,14 +240,17 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: AppColors.primaryGreen, width: 1.8),
+                borderSide:
+                    const BorderSide(color: AppColors.primaryGreen, width: 1.8),
               ),
               filled: true,
               fillColor: const Color(0xFFF9FAF8),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
             ),
-            validator: (val) =>
-                (val == null || val.trim().isEmpty) ? 'Nama sekolah wajib diisi' : null,
+            validator: (val) => (val == null || val.trim().isEmpty)
+                ? 'Nama sekolah wajib diisi'
+                : null,
           ),
 
           const SizedBox(height: 20),
@@ -253,7 +282,8 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
                           ),
                         ),
                         SizedBox(width: 10),
-                        Text('Menghubungkan...', style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text('Menghubungkan...',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ],
                     )
                   : const Row(
@@ -263,7 +293,8 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
                         Flexible(
                           child: Text(
                             'Mulai Belajar E-Modul',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),

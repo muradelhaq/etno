@@ -191,6 +191,8 @@ class SupabaseService {
         'class_name': className,
         'school': school,
         'role': 'siswa',
+        'sync_status': 'offline',
+        'sync_error': e.toString(),
       };
     }
   }

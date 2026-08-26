@@ -63,6 +63,17 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    final project = ref.read(userProgressProvider);
+    _titleController.text = project.projectTitle;
+    _membersController.text = project.projectMembers;
+    _linkController.text = project.projectLink;
+    _notesController.text = project.projectNotes;
+    _isSubmitted = project.projectSubmitted;
+  }
+
+  @override
   void dispose() {
     _titleController.dispose();
     _membersController.dispose();
@@ -87,6 +98,12 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
       _isSubmitted = true;
     });
 
+    ref.read(userProgressProvider.notifier).saveProjectSubmission(
+          title: _titleController.text,
+          members: _membersController.text,
+          link: _linkController.text,
+          notes: _notesController.text,
+        );
     ref
         .read(userProgressProvider.notifier)
         .markModuleCompleted('challenge', xpBonus: 100);

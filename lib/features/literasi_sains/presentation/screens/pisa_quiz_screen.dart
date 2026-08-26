@@ -8,6 +8,7 @@ import 'package:e_modul_etnosains/core/widgets/custom_button.dart';
 import 'package:e_modul_etnosains/core/widgets/ethno_scaffold.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
 import 'package:e_modul_etnosains/features/literasi_sains/data/models/pisa_questions_data.dart';
+import 'package:e_modul_etnosains/features/literasi_sains/data/models/pisa_question_model.dart';
 import '../widgets/cards/pisa_option_item_card.dart';
 import '../widgets/cards/pisa_scenario_context_card.dart';
 import '../widgets/dialogs/pisa_result_dialog.dart';
@@ -24,6 +25,7 @@ class PisaQuizScreen extends ConsumerStatefulWidget {
 
 class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
   int _currentIndex = 0;
+  late final List<PisaQuestionModel> _questions;
   final Map<int, int> _userSelectedAnswers = {};
   final Set<int> _revealedHints = {};
   bool _quizFinished = false;
@@ -31,13 +33,67 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
   @override
   void initState() {
     super.initState();
-    final saved = ref.read(userProgressProvider).quizSelectedAnswers;
+    final user = ref.read(userProgressProvider);
+    final identity = user.studentId.isNotEmpty
+        ? user.studentId
+        : '${user.studentName}|${user.studentSchool}|${user.studentClass}';
+    _questions = _buildPersonalizedQuestions(identity);
+    final saved = user.quizSelectedAnswers;
     if (saved.isNotEmpty) {
       _userSelectedAnswers.addAll(saved);
       if (_userSelectedAnswers.length == PisaQuestionsData.questions.length) {
         _quizFinished = true;
       }
     }
+  }
+
+  int _stableSeed(String value) {
+    var seed = 0x45d9f3b;
+    for (final codeUnit in value.codeUnits) {
+      seed = ((seed * 31) + codeUnit) & 0x7fffffff;
+    }
+    return seed == 0 ? 1 : seed;
+  }
+
+  List<T> _shuffleForSeed<T>(List<T> source, int seed) {
+    final result = List<T>.from(source);
+    var state = seed;
+    for (var i = result.length - 1; i > 0; i--) {
+      state = (state * 1664525 + 1013904223) & 0x7fffffff;
+      final j = state % (i + 1);
+      final temp = result[i];
+      result[i] = result[j];
+      result[j] = temp;
+    }
+    return result;
+  }
+
+  List<PisaQuestionModel> _buildPersonalizedQuestions(String identity) {
+    final seed = _stableSeed(identity);
+    final questions = _shuffleForSeed(
+      List<PisaQuestionModel>.from(PisaQuestionsData.questions),
+      seed,
+    );
+    return questions.map((question) {
+      final options = _shuffleForSeed(
+        List<PisaQuestionOption>.from(question.options),
+        seed ^ (question.id * 7919),
+      );
+      return PisaQuestionModel(
+        id: question.id,
+        title: question.title,
+        competency: question.competency,
+        competencyLabel: question.competencyLabel,
+        scenarioContext: question.scenarioContext,
+        questionText: question.questionText,
+        tableDataSummary: question.tableDataSummary,
+        imageAsset: question.imageAsset,
+        options: options,
+        correctOptionIndex: options.indexWhere((option) => option.isCorrect),
+        scientificExplanation: question.scientificExplanation,
+        hint: question.hint,
+      );
+    }).toList();
   }
 
   void _handleOptionSelect(int questionId, int optionIndex) {
@@ -47,8 +103,7 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
       _userSelectedAnswers[questionId] = optionIndex;
     });
 
-    final q =
-        PisaQuestionsData.questions.firstWhere((item) => item.id == questionId);
+    final q = _questions.firstWhere((item) => item.id == questionId);
     final isCorrect = optionIndex == q.correctOptionIndex;
 
     ref
@@ -58,7 +113,7 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
 
   Future<void> _finishQuiz() async {
     int totalCorrect = 0;
-    for (var q in PisaQuestionsData.questions) {
+    for (var q in _questions) {
       if (_userSelectedAnswers[q.id] == q.correctOptionIndex) {
         totalCorrect++;
       }
@@ -77,7 +132,7 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
         quizType: 'Post-test Evaluasi PISA',
         score: finalScore.toDouble(),
         correctCount: totalCorrect,
-        totalQuestions: PisaQuestionsData.questions.length,
+        totalQuestions: _questions.length,
         answersDetail:
             _userSelectedAnswers.map((k, v) => MapEntry(k.toString(), v)),
       ),
@@ -100,7 +155,7 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const questions = PisaQuestionsData.questions;
+    final questions = _questions;
     final currentQ = questions[_currentIndex];
     final selectedOption = _userSelectedAnswers[currentQ.id];
     final isAnswered = selectedOption != null;

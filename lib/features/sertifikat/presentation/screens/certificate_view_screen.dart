@@ -22,44 +22,14 @@ class CertificateViewScreen extends ConsumerStatefulWidget {
 class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
   bool _isGenerating = false;
 
-  void _editNameDialog(BuildContext context) {
-    final currentName = ref.read(userProgressProvider).studentName;
-    final controller = TextEditingController(text: currentName);
-
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Edit Nama pada Sertifikat', style: AppTextStyles.h3),
-        content: TextField(
-          controller: controller,
-          decoration: const InputDecoration(
-            hintText: 'Nama Lengkap Siswa...',
-            prefixIcon: Icon(Icons.person_outline),
-          ),
-          autofocus: true,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Batal'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if (controller.text.trim().isNotEmpty) {
-                ref
-                    .read(userProgressProvider.notifier)
-                    .updateStudentName(controller.text.trim());
-              }
-              Navigator.pop(ctx);
-            },
-            child: const Text('Simpan'),
-          ),
-        ],
-      ),
-    );
-  }
-
   Future<void> _handlePrintOrDownload() async {
+    if (!ref.read(userProgressProvider).isCertificateEligible) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Selesaikan evaluasi PISA terlebih dahulu.')),
+      );
+      return;
+    }
     setState(() {
       _isGenerating = true;
     });
@@ -88,7 +58,9 @@ class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
   @override
   Widget build(BuildContext context) {
     final progress = ref.watch(userProgressProvider);
-    final dateFormatted = DateFormat('d MMMM yyyy', 'id_ID').format(DateTime.now());
+    final certificateReady = progress.isCertificateEligible;
+    final dateFormatted =
+        DateFormat('d MMMM yyyy', 'id_ID').format(DateTime.now());
 
     return EthnoScaffold(
       title: 'E-Sertifikat Kelulusan',
@@ -107,17 +79,27 @@ class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.workspace_premium_rounded, color: Colors.white, size: 36),
+                  const Icon(Icons.workspace_premium_rounded,
+                      color: Colors.white, size: 36),
                   const SizedBox(width: 14),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Selamat atas Kelulusanmu!', style: AppTextStyles.h3.copyWith(color: Colors.white, fontSize: 16)),
+                        Text(
+                          certificateReady
+                              ? 'Selamat atas Kelulusanmu!'
+                              : 'Sertifikat Belum Tersedia',
+                          style: AppTextStyles.h3
+                              .copyWith(color: Colors.white, fontSize: 16),
+                        ),
                         const SizedBox(height: 2),
                         Text(
-                          'Kamu telah menguasai konsep etnosains dan bioteknologi pangan tradisional.',
-                          style: AppTextStyles.bodySmall.copyWith(color: Colors.white.withValues(alpha: 0.95)),
+                          certificateReady
+                              ? 'Kamu telah menguasai konsep etnosains dan bioteknologi pangan tradisional.'
+                              : 'Selesaikan seluruh pembelajaran dan evaluasi PISA untuk membuka sertifikat.',
+                          style: AppTextStyles.bodySmall.copyWith(
+                              color: Colors.white.withValues(alpha: 0.95)),
                         ),
                       ],
                     ),
@@ -146,7 +128,8 @@ class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.school_rounded, color: AppColors.primaryGreen, size: 28),
+                        const Icon(Icons.school_rounded,
+                            color: AppColors.primaryGreen, size: 28),
                         const SizedBox(width: 8),
                         Text(
                           'SERTIFIKAT KELULUSAN',
@@ -171,45 +154,41 @@ class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
                     const SizedBox(height: 16),
                     Text(
                       'Diberikan dengan bangga kepada:',
-                      style: AppTextStyles.bodySmall.copyWith(fontStyle: FontStyle.italic),
+                      style: AppTextStyles.bodySmall
+                          .copyWith(fontStyle: FontStyle.italic),
                     ),
 
                     const SizedBox(height: 8),
 
                     // Student Name & School
-                    InkWell(
-                      onTap: () => _editNameDialog(context),
-                      borderRadius: BorderRadius.circular(8),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  progress.studentName.toUpperCase(),
-                                  style: AppTextStyles.h1.copyWith(
-                                    fontSize: 19,
-                                    color: AppColors.primaryDark,
-                                    decoration: TextDecoration.underline,
-                                  ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                progress.studentName.toUpperCase(),
+                                style: AppTextStyles.h1.copyWith(
+                                  fontSize: 19,
+                                  color: AppColors.primaryDark,
+                                  decoration: TextDecoration.underline,
                                 ),
-                                const SizedBox(width: 6),
-                                const Icon(Icons.edit_rounded, size: 16, color: AppColors.warmTerracotta),
-                              ],
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              '${progress.studentClass}  •  ${progress.studentSchool}',
-                              style: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF2D5A3C),
                               ),
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            '${progress.studentClass}  •  ${progress.studentSchool}',
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF2D5A3C),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
 
@@ -218,7 +197,8 @@ class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
                     Text(
                       'Telah menyelesaikan seluruh rangkaian modul rekonstruksi kearifan lokal (Tempe, Tape, Tauco, Kecap, Oncom) serta Uji Literasi Sains HOTS PISA.',
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.bodySmall.copyWith(fontSize: 11, height: 1.4),
+                      style: AppTextStyles.bodySmall
+                          .copyWith(fontSize: 11, height: 1.4),
                     ),
 
                     const SizedBox(height: 16),
@@ -228,7 +208,8 @@ class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _buildBadge('Skor PISA', '${progress.quizScore}/100'),
-                        _buildBadge('Kesadaran Budaya', '${progress.culturalAwarenessScore.toStringAsFixed(0)}%'),
+                        _buildBadge('Kesadaran Budaya',
+                            '${progress.culturalAwarenessScore.toStringAsFixed(0)}%'),
                         _buildBadge('Total XP', '${progress.earnedXP} XP'),
                       ],
                     ),
@@ -245,14 +226,22 @@ class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Tanggal: $dateFormatted', style: AppTextStyles.bodySmall.copyWith(fontSize: 10)),
-                            Text('ID: ETNO-${progress.earnedXP}', style: AppTextStyles.scientificFormula.copyWith(fontSize: 9)),
+                            Text('Tanggal: $dateFormatted',
+                                style: AppTextStyles.bodySmall
+                                    .copyWith(fontSize: 10)),
+                            Text('ID: ETNO-${progress.earnedXP}',
+                                style: AppTextStyles.scientificFormula
+                                    .copyWith(fontSize: 9)),
                           ],
                         ),
                         Column(
                           children: [
-                            const Icon(Icons.verified, color: AppColors.primaryGreen, size: 24),
-                            Text('Tim Pengembang Etnosains', style: AppTextStyles.tagText.copyWith(fontSize: 10, color: AppColors.primaryDark)),
+                            const Icon(Icons.verified,
+                                color: AppColors.primaryGreen, size: 24),
+                            Text('Tim Pengembang Etnosains',
+                                style: AppTextStyles.tagText.copyWith(
+                                    fontSize: 10,
+                                    color: AppColors.primaryDark)),
                           ],
                         ),
                       ],
@@ -266,11 +255,15 @@ class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
 
             // Print / Export PDF Action Button
             CustomButton(
-              text: _isGenerating ? 'Memproses Sertifikat...' : 'Unduh / Cetak Sertifikat (PDF)',
+              text: _isGenerating
+                  ? 'Memproses Sertifikat...'
+                  : 'Unduh / Cetak Sertifikat (PDF)',
               icon: Icons.print_rounded,
               isFullWidth: true,
               backgroundColor: AppColors.primaryGreen,
-              onPressed: _isGenerating ? null : _handlePrintOrDownload,
+              onPressed: _isGenerating || !certificateReady
+                  ? null
+                  : _handlePrintOrDownload,
             ),
 
             const SizedBox(height: 12),
@@ -279,13 +272,17 @@ class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
               onPressed: () => context.go('/'),
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 48),
-                side: const BorderSide(color: AppColors.primaryGreen, width: 1.5),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                side:
+                    const BorderSide(color: AppColors.primaryGreen, width: 1.5),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
               ),
-              icon: const Icon(Icons.home_rounded, color: AppColors.primaryGreen),
+              icon:
+                  const Icon(Icons.home_rounded, color: AppColors.primaryGreen),
               label: Text(
                 'Kembali ke Beranda Utama',
-                style: AppTextStyles.bodyBold.copyWith(color: AppColors.primaryGreen),
+                style: AppTextStyles.bodyBold
+                    .copyWith(color: AppColors.primaryGreen),
               ),
             ),
 
@@ -306,7 +303,9 @@ class _CertificateViewScreenState extends ConsumerState<CertificateViewScreen> {
       ),
       child: Column(
         children: [
-          Text(val, style: AppTextStyles.bodyBold.copyWith(color: AppColors.primaryGreen, fontSize: 13)),
+          Text(val,
+              style: AppTextStyles.bodyBold
+                  .copyWith(color: AppColors.primaryGreen, fontSize: 13)),
           const SizedBox(height: 2),
           Text(label, style: AppTextStyles.bodySmall.copyWith(fontSize: 9)),
         ],

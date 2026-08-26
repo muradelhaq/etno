@@ -45,7 +45,8 @@ class FermentedFoodsData {
               'Kedelai dihamparkan hingga dingin dan kering permukaannya, lalu ditaburi ragi Rhizopus secara merata.',
           biologicalContext:
               'Spora Rhizopus peka terhadap suhu panas; penaburan harus pada suhu kamar (28-30°C).',
-          tip: 'Jangan menaburkan ragi saat kedelai masih panas agar spora kapang tidak mati.',
+          tip:
+              'Jangan menaburkan ragi saat kedelai masih panas agar spora kapang tidak mati.',
         ),
         StepProcessModel(
           stepNumber: 4,
@@ -61,20 +62,21 @@ class FermentedFoodsData {
       ethnoscienceConcept:
           'Penggunaan daun pisang dan penempatan di ruang gelap merekonstruksi prinsip lingkungan mikroklimat aerob-terbatas: stomata daun menyediakan oksigen pasif, sementara suasana gelap dan hangat (30°C) merangsang enzim proteolitik Rhizopus bekerja maksimal tanpa paparan sinar UV yang dapat merusak hifa muda.',
       modernScienceValue:
-          'Kapang Rhizopus menghasilkan enzim protease yang memecah rantai protein kompleks kedelai menjadi asam amino bebas dan peptida sederhana. Hal ini meningkatkan daya cerna protein tempe hingga >85% (dibanding kedelai rebus biasa) dan menghasilkan vitamin B12 serta senyawa antioksidan isoflavon aglikon.',
+          'Kapang Rhizopus menghasilkan enzim protease yang memecah protein kedelai menjadi asam amino bebas dan peptida sederhana sehingga daya cerna meningkat. Vitamin B12 yang kadang terdeteksi pada tempe terutama berkaitan dengan bakteri pendamping, bukan produksi langsung oleh Rhizopus.',
       caseStudy: CaseStudyModel(
         title: 'Pengaruh Suhu & Musim Hujan terhadap Laju Fermentasi Tempe',
         storyContext:
-          'Seorang perajin tempe di Tasikmalaya menemukan bahwa pada musim hujan (suhu ruang turun ke 23°C), tempe membutuhkan waktu 56 jam untuk membentuk miselium putih padat, sedangkan pada musim kemarau (suhu 30°C) tempe sudah matang sempurna dalam 36 jam. Pada beberapa kemasan di musim hujan, tempe berbau asam dan berlendir.',
+            'Seorang perajin tempe di Tasikmalaya menemukan bahwa pada musim hujan (suhu ruang turun ke 23°C), tempe membutuhkan waktu 56 jam untuk membentuk miselium putih padat, sedangkan pada musim kemarau (suhu 30°C) tempe sudah matang sempurna dalam 36 jam. Pada beberapa kemasan di musim hujan, tempe berbau asam dan berlendir.',
         researchQuestion:
-          'Bagaimanakah pengaruh suhu lingkungan dan kelembapan terhadap waktu pemeraman serta kualitas miselium tempe?',
+            'Bagaimanakah pengaruh suhu lingkungan dan kelembapan terhadap waktu pemeraman serta kualitas miselium tempe?',
         manipulatedVariable: 'Suhu ruang pemeraman (23°C vs 30°C)',
         respondingVariable: 'Waktu pembentukan miselium padat (jam) & pH tempe',
-        controlledVariables: 'Jenis kedelai, konsentrasi ragi Rhizopus (2 g/kg), jenis pembungkus daun pisang.',
+        controlledVariables:
+            'Jenis kedelai, konsentrasi ragi Rhizopus (2 g/kg), jenis pembungkus daun pisang.',
         hypothesisHint:
-          'Suhu optimum Rhizopus oligosporus adalah 28–32°C. Pada suhu rendah laju metabolik enzim kapang melambat, memberi peluang bakteri pembusuk berkembang.',
+            'Suhu optimum Rhizopus oligosporus adalah 28–32°C. Pada suhu rendah laju metabolik enzim kapang melambat, memberi peluang bakteri pembusuk berkembang.',
         scientificExplanation:
-          'Rhizopus oligosporus adalah kapang mesofilik dengan suhu optimal pertumbuhan sekitar 30–35°C. Ketika suhu turun, aktivitas enzim protease dan laju pemanjangan hifa menurun drastis sehingga waktu inkubasi lebih lambat. Kelembapan tinggi tanpa ventilasi memicu bakteri asam pembusuk.',
+            'Rhizopus oligosporus adalah kapang mesofilik dengan suhu optimal pertumbuhan sekitar 30–35°C. Ketika suhu turun, aktivitas enzim protease dan laju pemanjangan hifa menurun drastis sehingga waktu inkubasi lebih lambat. Kelembapan tinggi tanpa ventilasi memicu bakteri asam pembusuk.',
       ),
     ),
 
@@ -84,10 +86,11 @@ class FermentedFoodsData {
       name: 'Tape Singkong & Peuyeum',
       localName: 'Peuyeum Bandung / Colenak / Es Doger',
       region: 'Bandung, Garut & Priangan Barat',
-      rawMaterial: 'Singkong Kuning Mentega (Manihot esculenta) + Ragi Tape Tradisional',
+      rawMaterial:
+          'Singkong Kuning Mentega (Manihot esculenta) + Ragi Tape Tradisional',
       heroImage: 'assets/images/panel_tempe_tauco_tape.jpeg',
       microorganisms: [
-        'Aspergillus sp. / Amylomyces rouxii (Menguraikan amilum pati menjadi glukosa manis)',
+        'Amylomyces rouxii (Menguraikan amilum pati menjadi glukosa manis pada tahap sakarifikasi)',
         'Saccharomyces cerevisiae (Khamir pengubah glukosa menjadi etanol & gas CO₂)',
         'Acetobacter aceti (Mengoksidasi sebagian etanol menjadi asam asetat bila fermentasi berlanjut)',
         'Bakteri Asam Laktat (Memberi sentuhan rasa asam segar)',
@@ -122,7 +125,8 @@ class FermentedFoodsData {
               'Singkong ditata di tampah beralas daun pisang hingga benar-benar dingin, lalu ditaburi serbuk ragi halus (1% b/b).',
           biologicalContext:
               'Suhu panas di atas 40°C dapat mendenaturasi enzim dan membunuh khamir Saccharomyces.',
-          tip: 'Pantangan lokal: Tidak boleh menabur ragi saat singkong masih beruap panas.',
+          tip:
+              'Pantangan lokal: Tidak boleh menabur ragi saat singkong masih beruap panas.',
         ),
         StepProcessModel(
           stepNumber: 4,
@@ -142,16 +146,18 @@ class FermentedFoodsData {
       caseStudy: CaseStudyModel(
         title: 'Optimasi Kadar Glukosa & Dinamika Fermentasi Tape Singkong',
         storyContext:
-          'Seorang siswa Biologi menguji kadar glukosa tape pada berbagai konsentrasi ragi (0,5%, 1,0%, 1,5%) selama 1 hingga 3 hari. Data laboratorium menunjukkan kadar glukosa tertinggi dicapai pada ragi 1,0% hari ke-2 (51,61%), namun menurun menjadi 41,71% pada hari ke-3.',
+            'Seorang siswa Biologi menguji kadar glukosa tape pada berbagai konsentrasi ragi (0,5%, 1,0%, 1,5%) selama 1 hingga 3 hari. Data laboratorium menunjukkan kadar glukosa tertinggi dicapai pada ragi 1,0% hari ke-2 (51,61%), namun menurun menjadi 41,71% pada hari ke-3.',
         researchQuestion:
-          'Mengapakah kadar glukosa tape singkong mengalami penurunan setelah fermentasi diperpanjang melebihi 2 hari?',
-        manipulatedVariable: 'Lama waktu fermentasi (1, 2, 3 hari) & konsentrasi ragi (0.5%, 1%, 1.5%)',
+            'Mengapakah kadar glukosa tape singkong mengalami penurunan setelah fermentasi diperpanjang melebihi 2 hari?',
+        manipulatedVariable:
+            'Lama waktu fermentasi (1, 2, 3 hari) & konsentrasi ragi (0.5%, 1%, 1.5%)',
         respondingVariable: 'Kadar glukosa tape (%) & kadar alkohol',
-        controlledVariables: 'Varietas singkong kuning mentega (900 g), waktu pengukusan (30 menit), jenis wadah daun pisang.',
+        controlledVariables:
+            'Varietas singkong kuning mentega (900 g), waktu pengukusan (30 menit), jenis wadah daun pisang.',
         hypothesisHint:
-          'Pada hari ke-3, laju sakarifikasi amilum melambat karena substrat habis, sedangkan khamir terus mengonsumsi glukosa untuk fermentasi etanol.',
+            'Pada hari ke-3, laju sakarifikasi amilum melambat karena substrat habis, sedangkan khamir terus mengonsumsi glukosa untuk fermentasi etanol.',
         scientificExplanation:
-          'Reaksi glikolisis berlanjut: C6H12O6 -> 2 C2H5OH + 2 CO2. Glukosa yang terbentuk di hari ke-2 dimanfaatkan Saccharomyces cerevisiae sebagai sumber energi dan substrat untuk sintesis etanol dan ester volatil, sehingga kadar glukosa menurun sedangkan aroma alkohol meningkat tajam.',
+            'Reaksi glikolisis berlanjut: C6H12O6 -> 2 C2H5OH + 2 CO2. Glukosa yang terbentuk di hari ke-2 dimanfaatkan Saccharomyces cerevisiae sebagai sumber energi dan substrat untuk sintesis etanol dan ester volatil, sehingga kadar glukosa menurun sedangkan aroma alkohol meningkat tajam.',
       ),
     ),
 
@@ -161,7 +167,8 @@ class FermentedFoodsData {
       name: 'Tape Ketan Hijau / Hitam',
       localName: 'Tape Ketan Kuningan / Es Tape Ketan',
       region: 'Kuningan, Cirebon & Jawa Barat',
-      rawMaterial: 'Beras Ketan Putih/Hitam (Oryza sativa var. glutinosa) + Daun Katuk/Pandan + Ragi',
+      rawMaterial:
+          'Beras Ketan Putih/Hitam (Oryza sativa var. glutinosa) + Daun Katuk/Pandan + Ragi',
       heroImage: 'assets/images/panel_tempe_tauco_tape_full.png',
       microorganisms: [
         'Aspergillus oryzae & Amylomyces rouxii (Hidrolisis amilopektin ketan)',
@@ -214,18 +221,22 @@ class FermentedFoodsData {
       modernScienceValue:
           'Amilopektin yang memiliki struktur rantai bercabang alfa-1,6 dan alfa-1,4 dihidrolisis cepat oleh glukoamilase ragi menghasilkan cairan glukosa tinggi, gliserol, dan asam amino bebas yang memberi rasa manis legit.',
       caseStudy: CaseStudyModel(
-        title: 'Perbandingan Media Pembungkus Daun Jambu vs Plastik pada Tape Ketan',
+        title:
+            'Perbandingan Media Pembungkus Daun Jambu vs Plastik pada Tape Ketan',
         storyContext:
-          'Sebuah UMKM tape ketan membandingkan kualitas tape yang dibungkus daun jambu air tradisional dengan kemasan mangkuk plastik tertutup. Hasilnya, tape kemasan daun jambu memiliki aroma lebih harum dan cairan tape tidak terlalu berbusa.',
+            'Sebuah UMKM tape ketan membandingkan kualitas tape yang dibungkus daun jambu air tradisional dengan kemasan mangkuk plastik tertutup. Hasilnya, tape kemasan daun jambu memiliki aroma lebih harum dan cairan tape tidak terlalu berbusa.',
         researchQuestion:
-          'Bagaimanakah pengaruh jenis kemasan (daun jambu air vs wadah plastik) terhadap profil sensori dan keawetan tape ketan?',
-        manipulatedVariable: 'Jenis bahan pembungkus (daun jambu air vs cup plastik)',
-        respondingVariable: 'Skor aroma, tekstur kelunakan, dan volume cairan manis',
-        controlledVariables: 'Massa ketan (50 g per porsi), dosis ragi (1%), lama fermentasi (48 jam pada 28°C).',
+            'Bagaimanakah pengaruh jenis kemasan (daun jambu air vs wadah plastik) terhadap profil sensori dan keawetan tape ketan?',
+        manipulatedVariable:
+            'Jenis bahan pembungkus (daun jambu air vs cup plastik)',
+        respondingVariable:
+            'Skor aroma, tekstur kelunakan, dan volume cairan manis',
+        controlledVariables:
+            'Massa ketan (50 g per porsi), dosis ragi (1%), lama fermentasi (48 jam pada 28°C).',
         hypothesisHint:
-          'Daun jambu air mengandung metabolit sekunder (tanin & flavonoid) yang menekan bakteri pembusuk.',
+            'Daun jambu air mengandung metabolit sekunder (tanin & flavonoid) yang menekan bakteri pembusuk.',
         scientificExplanation:
-          'Senyawa fenolik pada daun jambu bertindak sebagai antimikroba selektif yang mencegah over-fermentasi asam asetat oleh bakteri liar, menghasilkan profil rasa manis legit seimbang.',
+            'Senyawa fenolik pada daun jambu bertindak sebagai antimikroba selektif yang mencegah over-fermentasi asam asetat oleh bakteri liar, menghasilkan profil rasa manis legit seimbang.',
       ),
     ),
 
@@ -235,7 +246,8 @@ class FermentedFoodsData {
       name: 'Tauco Tradisional',
       localName: 'Tauco Cianjur / Sayur Ikan Tauco',
       region: 'Cianjur (Jawa Barat) & Wilayah Pesisir',
-      rawMaterial: 'Biji Kedelai Kuning (Glycine max) + Garam Laut (15-20%) + Ragi Koji',
+      rawMaterial:
+          'Biji Kedelai Kuning (Glycine max) + Garam Laut (15-20%) + Ragi Koji',
       heroImage: 'assets/images/panel_tempe_tauco_tape.jpeg',
       microorganisms: [
         'Aspergillus oryzae / Aspergillus sojae (Fermentasi Koji: Enzim Protease, Lipase, Amilase)',
@@ -285,22 +297,25 @@ class FermentedFoodsData {
       localWisdom:
           'Perajin tauco Cianjur menjemur tempayan tanah liat di halaman terbuka hanya pada musim kemarau. Tempayan tanah liat berpori membantu pelepasan uap air berlebih secara perlahan sambil mempertahankan panas matahari untuk inkubasi mikroba garam.',
       ethnoscienceConcept:
-          'Kearifan penjemuran matahari dan larutan garam tinggi merekonstruksi mekanisme seleksi osmotik biologis: garam 15–20% membunuh bakteri patogen/pembusuk, sementara energi termal matahari menjaga suhu optimal (35–40°C) bagi bakteri halotoleran penghasil asam glutamat.',
+          'Kearifan penjemuran matahari dan larutan garam tinggi merekonstruksi mekanisme seleksi osmotik biologis: garam 15–20% menghambat banyak mikroba pembusuk, sementara energi termal matahari membantu menjaga kondisi fermentasi bagi mikroba halotoleran penghasil asam glutamat.',
       modernScienceValue:
           'Enzim endopeptidase Aspergillus dan aktivitas Tetragenococcus halophilus memecah protein kedelai menjadi asam amino bebas berkonsentrasi tinggi, terutama asam glutamat, aspartat, dan alanin. Inilah molekul kimia alami penyumbang cita rasa gurih umami lezat.',
       caseStudy: CaseStudyModel(
         title: 'Penurunan Kualitas Tauco pada Periode Musim Hujan',
         storyContext:
-          'Pada musim penghujan yang berkepanjangan, beberapa perajin tauco di Cianjur mengeluhkan produk mereka berwarna pucat, aromanya masam menyengat, dan berjamur hitam di permukaan tempayan. Sebagian warga menduga karena melanggar pantangan adat.',
+            'Pada musim penghujan yang berkepanjangan, beberapa perajin tauco di Cianjur mengeluhkan produk mereka berwarna pucat, aromanya masam menyengat, dan berjamur hitam di permukaan tempayan. Sebagian warga menduga karena melanggar pantangan adat.',
         researchQuestion:
-          'Bagaimanakah pengaruh intensitas sinar matahari dan kadar garam terhadap fermentasi moromi tauco?',
-        manipulatedVariable: 'Intensitas paparan sinar matahari & konsentrasi garam larutan moromi (10% vs 20%)',
-        respondingVariable: 'Tingkat keasaman (pH), kadar asam glutamat, dan keberadaan jamur kontaminan',
-        controlledVariables: 'Jenis kedelai, strain Aspergillus oryzae, jenis tempayan tanah liat.',
+            'Bagaimanakah pengaruh intensitas sinar matahari dan kadar garam terhadap fermentasi moromi tauco?',
+        manipulatedVariable:
+            'Intensitas paparan sinar matahari & konsentrasi garam larutan moromi (10% vs 20%)',
+        respondingVariable:
+            'Tingkat keasaman (pH), kadar asam glutamat, dan keberadaan jamur kontaminan',
+        controlledVariables:
+            'Jenis kedelai, strain Aspergillus oryzae, jenis tempayan tanah liat.',
         hypothesisHint:
-          'Kurangnya panas matahari menurunkan suhu moromi di bawah 30°C, sehingga laju proteolisis halofilik terhambat dan jamur liar tumbuh.',
+            'Kurangnya panas matahari menurunkan suhu moromi di bawah 30°C, sehingga laju proteolisis halofilik terhambat dan jamur liar tumbuh.',
         scientificExplanation:
-          'Penjemuran sinar matahari berfungsi ganda: memberikan panas termal untuk aktivitas bakteri halofilik dan radiasi UV untuk mensterilkan permukaan atas tempayan. Tanpa matahari cukup, suhu rendah dan kelembapan tinggi memicu dominasi mikroba pembusuk dan penurunan degradasi protein.',
+            'Penjemuran sinar matahari berfungsi ganda: memberikan panas termal untuk aktivitas bakteri halofilik dan radiasi UV untuk mensterilkan permukaan atas tempayan. Tanpa matahari cukup, suhu rendah dan kelembapan tinggi memicu dominasi mikroba pembusuk dan penurunan degradasi protein.',
       ),
     ),
 
@@ -310,7 +325,8 @@ class FermentedFoodsData {
       name: 'Kecap Manis Tradisional & Oncom Merah',
       localName: 'Kecap Kedelai Hitam & Oncom Tatar Pasundan',
       region: 'Purwakarta, Majalengka, Tasikmalaya & Priangan',
-      rawMaterial: 'Kedelai Hitam (Kecap) / Ampas Tahu & Bungkil Kacang Tanah (Oncom) + Ragi Neurospora',
+      rawMaterial:
+          'Kedelai Hitam (Kecap) / Ampas Tahu & Bungkil Kacang Tanah (Oncom) + Ragi Neurospora',
       heroImage: 'assets/images/panel_oncom_kecap_hd.jpeg',
       microorganisms: [
         'Aspergillus oryzae (Tahap Koji Kedelai Hitam Kecap)',
@@ -331,7 +347,8 @@ class FermentedFoodsData {
               'Untuk kecap: kedelai hitam direbus dan ditiriskan. Untuk oncom: ampas tahu diperas kuat hingga kadar air turun di bawah 60%.',
           biologicalContext:
               'Kadar air berlebih pada ampas tahu dapat memicu pembusukan anaerob oleh bakteri berbau busuk.',
-          tip: 'Ampas tahu harus dikukus terlebih dahulu untuk sterilisasi sebelum ditaburi ragi oncom.',
+          tip:
+              'Ampas tahu harus dikukus terlebih dahulu untuk sterilisasi sebelum ditaburi ragi oncom.',
         ),
         StepProcessModel(
           stepNumber: 2,
@@ -367,16 +384,19 @@ class FermentedFoodsData {
       caseStudy: CaseStudyModel(
         title: 'Kontaminasi dan Perubahan Warna Hitam Kehijauan pada Oncom',
         storyContext:
-          'Dalam suatu produksi oncom di sebuah desa, sebagian cetakan oncom berubah warna menjadi hitam kehijauan berlendir dan berbau amonia menyengat alih-alih berwarna jingga cerah. Perajin menduga ampas tahunya "terkena guna-guna", namun petugas dinas kesehatan menduga akibat pemerasan ampas tahu yang kurang tuntas.',
+            'Dalam suatu produksi oncom di sebuah desa, sebagian cetakan oncom berubah warna menjadi hitam kehijauan berlendir dan berbau amonia menyengat alih-alih berwarna jingga cerah. Perajin menduga ampas tahunya "terkena guna-guna", namun petugas dinas kesehatan menduga akibat pemerasan ampas tahu yang kurang tuntas.',
         researchQuestion:
-          'Bagaimanakah pengaruh kadar air dan kebersihan sanitasi terhadap dominasi kapang Neurospora vs kapang/bakteri kontaminan?',
-        manipulatedVariable: 'Tingkat kelembapan/kadar air ampas tahu & sanitasi cetakan',
-        respondingVariable: 'Warna miselium (jingga vs hitam kehijauan), ada/tidaknya lendir, dan aroma oncom',
-        controlledVariables: 'Massa ampas tahu, dosis ragi Neurospora sitophila, suhu inkubasi (28°C).',
+            'Bagaimanakah pengaruh kadar air dan kebersihan sanitasi terhadap dominasi kapang Neurospora vs kapang/bakteri kontaminan?',
+        manipulatedVariable:
+            'Tingkat kelembapan/kadar air ampas tahu & sanitasi cetakan',
+        respondingVariable:
+            'Warna miselium (jingga vs hitam kehijauan), ada/tidaknya lendir, dan aroma oncom',
+        controlledVariables:
+            'Massa ampas tahu, dosis ragi Neurospora sitophila, suhu inkubasi (28°C).',
         hypothesisHint:
-          'Kelembapan air terlalu tinggi (>70%) memicu pertumbuhan kapang liar Aspergillus flavus/Mucor dan bakteri Pseudomonas.',
+            'Kelembapan air terlalu tinggi (>70%) memicu pertumbuhan kapang liar Aspergillus flavus/Mucor dan bakteri Pseudomonas.',
         scientificExplanation:
-          'Kondisi ampas tahu yang terlalu basah dan hangat menciptakan lingkungan anaerobik lokal yang disukai bakteri pembusuk penghasil lendir dan amonia, serta kapang liar Aspergillus. Kapang Neurospora memerlukan substrat padat dengan kelembapan seimbang agar dapat bersaing secara optimal.',
+            'Kondisi ampas tahu yang terlalu basah dan hangat menciptakan lingkungan anaerobik lokal yang disukai bakteri pembusuk penghasil lendir dan amonia, serta kapang liar Aspergillus. Kapang Neurospora memerlukan substrat padat dengan kelembapan seimbang agar dapat bersaing secara optimal.',
       ),
     ),
   ];
