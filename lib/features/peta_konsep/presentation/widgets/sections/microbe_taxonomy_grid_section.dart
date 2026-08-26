@@ -97,7 +97,8 @@ class MicrobeTaxonomyGridSection extends StatelessWidget {
                             Stack(
                               children: [
                                 AppImage(
-                                  microbe.imageUrl,
+                                  // Gunakan foto hasil zoom terbaru, bukan alias asset lama.
+                                  microbe.afterZoomImage,
                                   height: bannerHeight,
                                   width: double.infinity,
                                   fit: BoxFit.cover,

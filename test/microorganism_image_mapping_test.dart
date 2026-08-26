@@ -37,6 +37,7 @@ void main() {
       expect(microbe.beforeZoomImage, expected!.$1);
       expect(microbe.afterZoomImage, expected.$2);
       expect(microbe.imageUrl, expected.$2);
+      expect(microbe.afterZoomImage, microbe.imageUrl);
     }
   });
 }

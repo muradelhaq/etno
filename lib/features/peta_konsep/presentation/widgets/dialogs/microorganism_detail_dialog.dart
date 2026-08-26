@@ -51,7 +51,8 @@ class MicroorganismDetailDialog extends StatelessWidget {
               Stack(
                 children: [
                   AppImage(
-                    microbe.imageUrl,
+                    // Foto karakteristik selalu memakai pasangan resmi setelah zoom.
+                    microbe.afterZoomImage,
                     height: 150,
                     width: double.infinity,
                     fit: BoxFit.cover,

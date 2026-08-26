@@ -5,6 +5,8 @@ import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 import 'package:e_modul_etnosains/core/widgets/custom_button.dart';
 import 'package:e_modul_etnosains/core/widgets/ethno_card.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
+import 'package:e_modul_etnosains/core/widgets/app_image.dart';
+import 'package:e_modul_etnosains/features/peta_konsep/data/models/microorganism_model.dart';
 
 class VirtualLabGameTab extends StatefulWidget {
   const VirtualLabGameTab({super.key});
@@ -16,6 +18,17 @@ class VirtualLabGameTab extends StatefulWidget {
 class _VirtualLabGameTabState extends State<VirtualLabGameTab> {
   int _gameScore = 0;
   final Set<String> _scoredMicrobes = {};
+  final Map<String, String?> _imageAnswers = {
+    'rhizopus': null,
+    'saccharomyces': null,
+    'neurospora': null,
+  };
+  static const _imageOptionIds = [
+    'rhizopus',
+    'saccharomyces',
+    'aspergillus_oryzae',
+    'neurospora',
+  ];
   final Map<String, String?> _microbeMatches = {
     'Rhizopus oligosporus': null,
     'Saccharomyces cerevisiae': null,
@@ -26,6 +39,17 @@ class _VirtualLabGameTabState extends State<VirtualLabGameTab> {
     'Saccharomyces cerevisiae': 'Tape Singkong',
     'Aspergillus oryzae': 'Tauco Cianjur',
   };
+
+  MicroorganismModel _microbe(String id) =>
+      MicroorganismData.microbes.firstWhere((microbe) => microbe.id == id);
+
+  bool get _missionOneComplete => _microbeMatches.entries.every(
+        (entry) => entry.value == _correctMicrobe[entry.key],
+      );
+
+  bool get _missionTwoComplete => _imageAnswers.entries.every(
+        (entry) => entry.value == entry.key,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +165,79 @@ class _VirtualLabGameTabState extends State<VirtualLabGameTab> {
 
           const SizedBox(height: 16),
 
+          Text('Misi 2: Tebak Gambar Mikroorganisme',
+              style: AppTextStyles.h2.copyWith(fontSize: 15)),
+          const SizedBox(height: 6),
+          Text(
+            'Pilih gambar mikroskop yang sesuai dengan nama mikroorganisme pada setiap soal.',
+            style: AppTextStyles.bodySmall,
+          ),
+          const SizedBox(height: 10),
+          ..._imageAnswers.keys.map((targetId) {
+            final target = _microbe(targetId);
+            final selected = _imageAnswers[targetId];
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 14),
+              child: EthnoCard(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Mikroorganisme: ${target.scientificName}',
+                        style: AppTextStyles.bodyBold.copyWith(
+                            color: AppColors.primaryDark, fontSize: 13)),
+                    const SizedBox(height: 10),
+                    GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      childAspectRatio: 1.35,
+                      children: _imageOptionIds.map((optionId) {
+                        final option = _microbe(optionId);
+                        final isSelected = selected == optionId;
+                        final isCorrect = optionId == targetId;
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              _imageAnswers[targetId] = optionId;
+                              if (isCorrect &&
+                                  _scoredMicrobes.add('image:$targetId')) {
+                                _gameScore += 30;
+                              }
+                            });
+                          },
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: isSelected
+                                    ? (isCorrect
+                                        ? AppColors.successGreen
+                                        : AppColors.errorRed)
+                                    : AppColors.borderSubtle,
+                                width: isSelected ? 2 : 1,
+                              ),
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            child: AppImage(
+                              option.afterZoomImage,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+
+          const SizedBox(height: 6),
+
           Consumer(
             builder: (context, ref, _) {
               return CustomButton(
@@ -149,14 +246,11 @@ class _VirtualLabGameTabState extends State<VirtualLabGameTab> {
                 isFullWidth: true,
                 backgroundColor: AppColors.primaryGreen,
                 onPressed: () {
-                  final allMatchesCorrect = _microbeMatches.entries.every(
-                    (entry) => entry.value == _correctMicrobe[entry.key],
-                  );
-                  if (!allMatchesCorrect) {
+                  if (!_missionOneComplete || !_missionTwoComplete) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
-                            'Pasangkan semua mikroba dengan produk yang benar terlebih dahulu.'),
+                            'Selesaikan semua pasangan Misi 1 dan semua tebak gambar Misi 2 terlebih dahulu.'),
                         backgroundColor: AppColors.warmTerracotta,
                       ),
                     );
