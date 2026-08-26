@@ -27,27 +27,10 @@ class CoverHeroPoster extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: AppImage(
-                    AppAssets.panelTempeTaucoTapeHd,
-                    fit: BoxFit.cover,
-                    errorBuilder: (ctx, err, stack) => _fallbackImage(),
-                  ),
-                ),
-                const SizedBox(width: 2),
-                Expanded(
-                  flex: 2,
-                  child: AppImage(
-                    AppAssets.panelOncomKecapHd,
-                    fit: BoxFit.cover,
-                    errorBuilder: (ctx, err, stack) => _fallbackImage(),
-                  ),
-                ),
-              ],
+            AppImage(
+              AppAssets.coverEtnosainsGenerated,
+              fit: BoxFit.cover,
+              errorBuilder: (ctx, err, stack) => _fallbackImage(),
             ),
             Positioned(
               bottom: 0,

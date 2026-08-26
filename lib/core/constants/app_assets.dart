@@ -3,16 +3,26 @@ class AppAssets {
 
   // Major illustrations & panels
   static const String uiMockup12Slides = '$basePath/ui_mockup_12_slides.png';
-  static const String posterLearningModules = '$basePath/poster_learning_modules.png';
-  static const String flowchartFermentation = '$basePath/flowchart_fermentation_processes.jpeg';
-  static const String panelTempeTaucoTape = '$basePath/panel_tempe_tauco_tape.jpeg';
-  static const String panelTempeTaucoTapeHd = '$basePath/panel_tempe_tauco_tape_hd.jpeg';
-  static const String panelTempeTaucoTapeFull = '$basePath/panel_tempe_tauco_tape_full.png';
+  static const String posterLearningModules =
+      '$basePath/poster_learning_modules.png';
+  static const String flowchartFermentation =
+      '$basePath/flowchart_fermentation_processes.jpeg';
+  static const String panelTempeTaucoTape =
+      '$basePath/panel_tempe_tauco_tape.jpeg';
+  static const String panelTempeTaucoTapeHd =
+      '$basePath/panel_tempe_tauco_tape_hd.jpeg';
+  static const String panelTempeTaucoTapeFull =
+      '$basePath/panel_tempe_tauco_tape_full.png';
   static const String panelOncomKecap = '$basePath/panel_oncom_kecap.jpeg';
   static const String panelOncomKecapHd = '$basePath/panel_oncom_kecap_hd.jpeg';
-  static const String labTapeProcedure = '$basePath/lab_tape_glucose_procedure.jpeg';
-  static const String chartGlucoseResearch = '$basePath/chart_glucose_research_data.png';
-  static const String pisaLiteracyWorksheet = '$basePath/pisa_literacy_questions_worksheet.png';
+  static const String coverEtnosainsGenerated =
+      '$basePath/cover_etnosains_generated_v1.png';
+  static const String labTapeProcedure =
+      '$basePath/lab_tape_glucose_procedure.jpeg';
+  static const String chartGlucoseResearch =
+      '$basePath/chart_glucose_research_data.png';
+  static const String pisaLiteracyWorksheet =
+      '$basePath/pisa_literacy_questions_worksheet.png';
   static const String pisaQuestion6Ref = '$basePath/pisa_question_6_ref.png';
   static const String pisaQuestion10Ref = '$basePath/pisa_question_10_ref.png';
 
@@ -42,7 +52,8 @@ class AppAssets {
   static const String tempePerendaman = '$asetSedPath/perendaman-tempe.jpeg';
   static const String tempePerebusan = '$asetSedPath/perebusan-tempe.jpeg';
   static const String tempeRagi = '$asetSedPath/ragi-tempe.jpeg';
-  static const String tempePembungkusan = '$asetSedPath/pembungkusan-tempe.jpeg';
+  static const String tempePembungkusan =
+      '$asetSedPath/pembungkusan-tempe.jpeg';
   static const String tempeProsesFerm = '$asetSedPath/proses-ferm-tempe.jpeg';
   static const String tempeJadi = '$asetSedPath/jadi-tempe.jpeg';
 
@@ -57,8 +68,10 @@ class AppAssets {
   static const String tapeFase4Alt = '$asetSedPath/tapesing-fase-4.jpeg';
   static const String tapeFase5 = '$asetSedPath/fase-5-singkong.jpeg';
   static const String tapeFase5Alt = '$asetSedPath/tapesing-fase-5.jpeg';
-  static const String tapeSingkongFermentasi = '$asetSedPath/fermentasi-tapesing.jpeg';
-  static const String tapeSingkongSiap = '$asetSedPath/tape-singkong-fermentasi.jpeg';
+  static const String tapeSingkongFermentasi =
+      '$asetSedPath/fermentasi-tapesing.jpeg';
+  static const String tapeSingkongSiap =
+      '$asetSedPath/tape-singkong-fermentasi.jpeg';
 
   // Tauco Process & Traditional Dish
   static const String taucoFase1 = '$asetSedPath/ferm-tauco-1.jpeg';
@@ -69,7 +82,8 @@ class AppAssets {
   static const String taucoFase5a = '$asetSedPath/ferm-tauco-5.jpeg';
   static const String taucoFase5b = '$asetSedPath/ferm-tauco-5a.jpeg';
   static const String taucoSayurIkan = '$asetSedPath/sayur-ikan-tauco.jpeg';
-  static const String taucoIkanFermentasi = '$asetSedPath/fermentasi-taucoikan.jpeg';
+  static const String taucoIkanFermentasi =
+      '$asetSedPath/fermentasi-taucoikan.jpeg';
 
   /// Helper to get Supabase Storage public URL
   static String getSupabaseStorageUrl(String filename) {

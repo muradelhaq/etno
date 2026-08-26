@@ -7,7 +7,7 @@ import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 
 class CoverMediaDialogs {
   static const String _introVideoUrl =
-      'https://www.youtube.com/embed/bWxPpK7t5lE?si=SeV82ThOHxUfvsrn';
+      'https://www.youtube.com/watch?v=bWxPpK7t5lE';
 
   static Future<void> _openIntroVideo(BuildContext context) async {
     final uri = Uri.parse(_introVideoUrl);
@@ -161,7 +161,40 @@ class _IntroVideoPlayerState extends State<_IntroVideoPlayer> {
       child: YoutubePlayerScaffold(
         controller: _controller,
         aspectRatio: 16 / 9,
-        builder: (context, player) => player,
+        builder: (context, player) => YoutubeValueBuilder(
+          controller: _controller,
+          builder: (context, value) {
+            if (value.hasError) {
+              return Container(
+                color: AppColors.primaryDark,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.play_disabled_rounded,
+                        color: Colors.white, size: 30),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Video tidak tersedia di pemutar tersemat.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    const SizedBox(height: 8),
+                    TextButton(
+                      onPressed: () => launchUrl(
+                        Uri.parse(CoverMediaDialogs._introVideoUrl),
+                        mode: LaunchMode.externalApplication,
+                      ),
+                      child: const Text('Buka di YouTube'),
+                    ),
+                  ],
+                ),
+              );
+            }
+            return player;
+          },
+        ),
       ),
     );
   }
