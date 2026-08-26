@@ -42,10 +42,7 @@ class CoverMediaDialogs {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: const _IntroVideoPlayer(),
-            ),
+            const _IntroVideoPlayer(),
             const SizedBox(height: 14),
             Text(
               'Selamat Datang di E-Modul Etnosains Fermentasi!',
@@ -157,10 +154,15 @@ class _IntroVideoPlayerState extends State<_IntroVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayerScaffold(
-      controller: _controller,
-      aspectRatio: 16 / 9,
-      builder: (context, player) => player,
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final playerWidth = screenWidth > 624 ? 560.0 : screenWidth - 64;
+    return SizedBox(
+      width: playerWidth.clamp(280.0, 560.0),
+      child: YoutubePlayerScaffold(
+        controller: _controller,
+        aspectRatio: 16 / 9,
+        builder: (context, player) => player,
+      ),
     );
   }
 }

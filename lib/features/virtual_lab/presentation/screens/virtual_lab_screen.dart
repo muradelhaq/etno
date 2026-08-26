@@ -106,6 +106,9 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
 
   @override
   Widget build(BuildContext context) {
+    final progress = ref.watch(userProgressProvider);
+    final missionGameCompleted =
+        progress.completedModules.contains('virtual_lab_game');
     final simulation = GlucoseLabEngine.simulate(
       _yeastPercent,
       _fermentationDays,
@@ -140,21 +143,71 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildSimulatorTab(simulation, trendData),
+          _buildSimulatorTab(simulation, trendData, missionGameCompleted),
           const VirtualLabGameTab(),
         ],
       ),
     );
   }
 
+  Widget _buildMissionReminder() {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.warmCream,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.warmTerracotta, width: 1.2),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.warning_amber_rounded,
+              color: AppColors.warmTerracotta, size: 24),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Misi Sains belum selesai',
+                    style: AppTextStyles.bodyBold.copyWith(
+                        color: AppColors.terracottaDark, fontSize: 14)),
+                const SizedBox(height: 3),
+                Text(
+                  'Selesaikan Misi 1 dan Misi 2 pada tab Game Misi Sains sebelum melanjutkan ke slide berikutnya.',
+                  style: AppTextStyles.bodySmall.copyWith(height: 1.35),
+                ),
+                const SizedBox(height: 8),
+                TextButton.icon(
+                  onPressed: () => _tabController.animateTo(1),
+                  icon: const Icon(Icons.sports_esports_rounded, size: 17),
+                  label: const Text('Buka Game Misi Sains'),
+                  style: TextButton.styleFrom(
+                      foregroundColor: AppColors.terracottaDark),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSimulatorTab(
-      GlucoseExperimentPoint simulation, List<Map<String, dynamic>> trendData) {
+    GlucoseExperimentPoint simulation,
+    List<Map<String, dynamic>> trendData,
+    bool missionGameCompleted,
+  ) {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (!missionGameCompleted) ...[
+            _buildMissionReminder(),
+            const SizedBox(height: 14),
+          ],
+
           // Banner Intro
           Container(
             padding: const EdgeInsets.all(14),

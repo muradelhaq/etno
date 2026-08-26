@@ -129,6 +129,17 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
     await _persistAndSync();
   }
 
+  /// Clears the current answer set so a student can retake the final
+  /// evaluation from question one. The completion flag and latest score are
+  /// kept until the new attempt is submitted.
+  Future<void> resetQuizForRetry() async {
+    state = state.copyWith(
+      quizSelectedAnswers: <int, int>{},
+      totalQuizAnswered: 0,
+    );
+    await _persistAndSync();
+  }
+
   Future<void> saveLikertAnswers(
       Map<int, int> answers, double scoreIndex) async {
     final updated = Set<String>.from(state.completedModules)

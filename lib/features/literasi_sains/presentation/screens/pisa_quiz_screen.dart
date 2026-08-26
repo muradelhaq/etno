@@ -153,6 +153,17 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
     PisaResultDialog.show(context: context, finalScore: finalScore);
   }
 
+  Future<void> _restartQuiz() async {
+    await ref.read(userProgressProvider.notifier).resetQuizForRetry();
+    if (!mounted) return;
+    setState(() {
+      _currentIndex = 0;
+      _userSelectedAnswers.clear();
+      _revealedHints.clear();
+      _quizFinished = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final questions = _questions;
@@ -245,6 +256,14 @@ class _PisaQuizScreenState extends ConsumerState<PisaQuizScreen> {
 
             if (_quizFinished) ...[
               const SizedBox(height: 18),
+              CustomButton(
+                text: 'Ulangi Evaluasi dari Awal',
+                icon: Icons.restart_alt_rounded,
+                isFullWidth: true,
+                backgroundColor: AppColors.primaryGreen,
+                onPressed: _restartQuiz,
+              ),
+              const SizedBox(height: 10),
               CustomButton(
                 text: 'Buka E-Sertifikat Kelulusan Digital',
                 icon: Icons.workspace_premium_rounded,
