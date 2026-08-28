@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:video_player/video_player.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 
 class CoverMediaDialogs {
   static const String _introVideoUrl =
-      'https://www.youtube.com/watch?v=bWxPpK7t5lE';
+      'https://lumhlhxbmdtlqmlbcumc.supabase.co/storage/v1/object/public/media-assets/video-pengantar-etnosains-terbaru.mp4';
 
   static Future<void> _openIntroVideo(BuildContext context) async {
     final uri = Uri.parse(_introVideoUrl);
@@ -18,7 +18,7 @@ class CoverMediaDialogs {
     if (!opened && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Video YouTube tidak dapat dibuka pada perangkat ini.'),
+          content: Text('Video tidak dapat dibuka pada perangkat ini.'),
           backgroundColor: AppColors.warmTerracotta,
         ),
       );
@@ -130,26 +130,33 @@ class _IntroVideoPlayer extends StatefulWidget {
 }
 
 class _IntroVideoPlayerState extends State<_IntroVideoPlayer> {
-  late final YoutubePlayerController _controller;
+  late final VideoPlayerController _controller;
+  late final Future<void> _initialization;
 
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController.fromVideoId(
-      videoId: 'bWxPpK7t5lE',
-      autoPlay: false,
-      params: const YoutubePlayerParams(
-        showControls: true,
-        showFullscreenButton: true,
-        strictRelatedVideos: true,
-      ),
+    _controller = VideoPlayerController.networkUrl(
+      Uri.parse(CoverMediaDialogs._introVideoUrl),
     );
+    _initialization = _controller.initialize();
   }
 
   @override
   void dispose() {
-    _controller.close();
+    _controller.dispose();
     super.dispose();
+  }
+
+  void _togglePlayback() {
+    if (!_controller.value.isInitialized) return;
+    setState(() {
+      if (_controller.value.isPlaying) {
+        _controller.pause();
+      } else {
+        _controller.play();
+      }
+    });
   }
 
   @override
@@ -158,42 +165,101 @@ class _IntroVideoPlayerState extends State<_IntroVideoPlayer> {
     final playerWidth = screenWidth > 624 ? 560.0 : screenWidth - 64;
     return SizedBox(
       width: playerWidth.clamp(280.0, 560.0),
-      child: YoutubePlayerScaffold(
-        controller: _controller,
+      child: AspectRatio(
         aspectRatio: 16 / 9,
-        builder: (context, player) => YoutubeValueBuilder(
-          controller: _controller,
-          builder: (context, value) {
-            if (value.hasError) {
-              return Container(
+        child: FutureBuilder<void>(
+          future: _initialization,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const ColoredBox(
                 color: AppColors.primaryDark,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.play_disabled_rounded,
-                        color: Colors.white, size: 30),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Video tidak tersedia di pemutar tersemat.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(height: 8),
-                    TextButton(
-                      onPressed: () => launchUrl(
-                        Uri.parse(CoverMediaDialogs._introVideoUrl),
-                        mode: LaunchMode.externalApplication,
-                      ),
-                      child: const Text('Buka di YouTube'),
-                    ),
-                  ],
+                child: Center(
+                  child: CircularProgressIndicator(color: Colors.white),
                 ),
               );
             }
-            return player;
+            if (snapshot.hasError || !_controller.value.isInitialized) {
+              return _VideoLoadError(
+                onOpenExternally: () => launchUrl(
+                  Uri.parse(CoverMediaDialogs._introVideoUrl),
+                  mode: LaunchMode.externalApplication,
+                ),
+              );
+            }
+            return GestureDetector(
+              onTap: _togglePlayback,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Positioned.fill(child: VideoPlayer(_controller)),
+                  if (!_controller.value.isPlaying)
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: const BoxDecoration(
+                        color: Colors.black54,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.play_arrow_rounded,
+                        color: Colors.white,
+                        size: 38,
+                      ),
+                    ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: VideoProgressIndicator(
+                      _controller,
+                      allowScrubbing: true,
+                      padding: const EdgeInsets.only(top: 8),
+                      colors: const VideoProgressColors(
+                        playedColor: AppColors.warmTerracotta,
+                        bufferedColor: Colors.white54,
+                        backgroundColor: Colors.black38,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _VideoLoadError extends StatelessWidget {
+  final VoidCallback onOpenExternally;
+
+  const _VideoLoadError({required this.onOpenExternally});
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: AppColors.primaryDark,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.play_disabled_rounded,
+                  color: Colors.white, size: 30),
+              const SizedBox(height: 8),
+              const Text(
+                'Video tidak dapat dimuat dari penyimpanan cloud.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+              const SizedBox(height: 8),
+              TextButton(
+                onPressed: onOpenExternally,
+                child: const Text('Buka Video'),
+              ),
+            ],
+          ),
         ),
       ),
     );
