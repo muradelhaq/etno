@@ -505,6 +505,10 @@ class SupabaseService {
     required void Function(Map<String, dynamic> record) onNewQuiz,
     required void Function(Map<String, dynamic> record) onNewOpinion,
     required void Function(Map<String, dynamic> record) onUserChange,
+    required void Function(
+      RealtimeSubscribeStatus status,
+      Object? error,
+    ) onStatusChange,
   }) {
     if (!_isInitialized) return null;
     final channel = client.channel(
@@ -528,14 +532,24 @@ class SupabaseService {
         },
       )
       ..onPostgresChanges(
-        event: PostgresChangeEvent.all,
+        event: PostgresChangeEvent.insert,
         schema: 'public',
         table: 'users',
         callback: (payload) {
           onUserChange(payload.newRecord);
         },
       )
-      ..subscribe();
+      ..onPostgresChanges(
+        event: PostgresChangeEvent.update,
+        schema: 'public',
+        table: 'users',
+        callback: (payload) {
+          onUserChange(payload.newRecord);
+        },
+      )
+      ..subscribe((status, error) {
+        onStatusChange(status, error);
+      });
 
     return channel;
   }

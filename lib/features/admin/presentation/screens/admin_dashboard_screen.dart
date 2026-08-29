@@ -10,6 +10,14 @@ import '../widgets/tabs/admin_statistics_tab.dart';
 import '../widgets/tabs/admin_students_tab.dart';
 import '../widgets/tabs/admin_opinions_tab.dart';
 
+enum _DashboardRealtimeState {
+  connecting,
+  connected,
+  reconnecting,
+  error,
+  unavailable,
+}
+
 class AdminDashboardScreen extends ConsumerStatefulWidget {
   const AdminDashboardScreen({super.key});
 
@@ -30,6 +38,8 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
   List<Map<String, dynamic>> _opinions = [];
 
   RealtimeChannel? _realtimeChannel;
+  _DashboardRealtimeState _realtimeState = _DashboardRealtimeState.connecting;
+  String? _realtimeError;
   int _liveEventCount = 0;
 
   @override
@@ -57,7 +67,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
         onNewQuiz: (record) {
           if (!mounted) return;
           setState(() {
-            _quizzes.insert(0, record);
+            _insertOrReplaceById(_quizzes, record);
             _liveEventCount++;
           });
           _showLiveAlert(
@@ -70,7 +80,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
         onNewOpinion: (record) {
           if (!mounted) return;
           setState(() {
-            _opinions.insert(0, record);
+            _insertOrReplaceById(_opinions, record);
             _liveEventCount++;
           });
           _showLiveAlert(
@@ -83,19 +93,118 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
         onUserChange: (record) {
           if (!mounted) return;
           setState(() {
-            final idx = _students.indexWhere((s) => s['id'] == record['id']);
-            if (idx >= 0) {
-              _students[idx] = record;
-            } else {
-              _students.insert(0, record);
-            }
+            _insertOrReplaceById(_students, record);
             _liveEventCount++;
           });
         },
+        onStatusChange: _handleRealtimeStatus,
       );
+      if (_realtimeChannel == null && mounted) {
+        setState(() {
+          _realtimeState = _DashboardRealtimeState.unavailable;
+          _realtimeError = 'Layanan Supabase belum siap.';
+        });
+      }
     } catch (e) {
       debugPrint('Error setting up realtime subscription: $e');
+      if (mounted) {
+        setState(() {
+          _realtimeState = _DashboardRealtimeState.error;
+          _realtimeError = e.toString();
+        });
+      }
     }
+  }
+
+  void _handleRealtimeStatus(
+    RealtimeSubscribeStatus status,
+    Object? error,
+  ) {
+    if (!mounted) return;
+    setState(() {
+      switch (status) {
+        case RealtimeSubscribeStatus.subscribed:
+          _realtimeState = _DashboardRealtimeState.connected;
+          _realtimeError = null;
+        case RealtimeSubscribeStatus.closed:
+          _realtimeState = _DashboardRealtimeState.reconnecting;
+          _realtimeError = error?.toString();
+        case RealtimeSubscribeStatus.channelError:
+        case RealtimeSubscribeStatus.timedOut:
+          _realtimeState = _DashboardRealtimeState.error;
+          _realtimeError = error?.toString() ?? 'Koneksi Realtime gagal.';
+      }
+    });
+  }
+
+  void _insertOrReplaceById(
+    List<Map<String, dynamic>> records,
+    Map<String, dynamic> record,
+  ) {
+    final id = record['id'];
+    final index =
+        id == null ? -1 : records.indexWhere((item) => item['id'] == id);
+    if (index >= 0) {
+      records[index] = record;
+    } else {
+      records.insert(0, record);
+    }
+  }
+
+  Future<void> _retryRealtimeSubscription() async {
+    final oldChannel = _realtimeChannel;
+    _realtimeChannel = null;
+    if (oldChannel != null) {
+      try {
+        await SupabaseService.client.removeChannel(oldChannel);
+      } catch (error) {
+        debugPrint('Error removing realtime channel: $error');
+      }
+    }
+    if (!mounted) return;
+    setState(() {
+      _realtimeState = _DashboardRealtimeState.connecting;
+      _realtimeError = null;
+    });
+    _setupRealtimeSubscription();
+  }
+
+  Color get _realtimeColor => switch (_realtimeState) {
+        _DashboardRealtimeState.connected => const Color(0xFF4CAF50),
+        _DashboardRealtimeState.connecting ||
+        _DashboardRealtimeState.reconnecting =>
+          const Color(0xFFFFC107),
+        _DashboardRealtimeState.error => const Color(0xFFEF5350),
+        _DashboardRealtimeState.unavailable => Colors.grey,
+      };
+
+  String get _realtimeLabel => switch (_realtimeState) {
+        _DashboardRealtimeState.connected when _liveEventCount > 0 =>
+          'Live Sync • $_liveEventCount event baru',
+        _DashboardRealtimeState.connected => 'Real-time Live Connected',
+        _DashboardRealtimeState.connecting => 'Menghubungkan Real-time...',
+        _DashboardRealtimeState.reconnecting => 'Menyambungkan ulang...',
+        _DashboardRealtimeState.error => 'Real-time gagal • ketuk untuk ulang',
+        _DashboardRealtimeState.unavailable => 'Real-time belum tersedia',
+      };
+
+  Widget _buildRealtimeDot() {
+    final dot = Container(
+      width: 8,
+      height: 8,
+      decoration: BoxDecoration(
+        color: _realtimeColor,
+        shape: BoxShape.circle,
+      ),
+    );
+    if (_realtimeState != _DashboardRealtimeState.connected) return dot;
+    return dot
+        .animate(onPlay: (controller) => controller.repeat(reverse: true))
+        .scale(
+          begin: const Offset(0.8, 0.8),
+          end: const Offset(1.3, 1.3),
+          duration: 800.ms,
+        );
   }
 
   void _showLiveAlert(
@@ -238,40 +347,36 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                 fontSize: 16,
               ),
             ),
-            Row(
-              children: [
-                Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF4CAF50),
-                    shape: BoxShape.circle,
-                  ),
-                )
-                    .animate(
-                        onPlay: (controller) =>
-                            controller.repeat(reverse: true))
-                    .scale(
-                      begin: const Offset(0.8, 0.8),
-                      end: const Offset(1.3, 1.3),
-                      duration: 800.ms,
-                    ),
-                const SizedBox(width: 6),
-                Flexible(
-                  child: Text(
-                    _realtimeChannel == null
-                        ? 'Real-time belum tersedia'
-                        : _liveEventCount > 0
-                            ? 'Live Sync • $_liveEventCount event baru'
-                            : 'Real-time Live Connected',
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Color(0xFFB8D5C2),
-                      fontSize: 11,
-                    ),
+            Tooltip(
+              message: _realtimeError ??
+                  (_realtimeState == _DashboardRealtimeState.connected
+                      ? 'Sinkronisasi langsung aktif'
+                      : 'Ketuk untuk mencoba menyambungkan ulang'),
+              child: InkWell(
+                onTap: _realtimeState == _DashboardRealtimeState.connected
+                    ? null
+                    : _retryRealtimeSubscription,
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Row(
+                    children: [
+                      _buildRealtimeDot(),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          _realtimeLabel,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Color(0xFFB8D5C2),
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),
