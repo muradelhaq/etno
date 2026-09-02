@@ -88,6 +88,24 @@ class BackgroundAudioNotifier extends StateNotifier<BackgroundAudioState> {
     }
   }
 
+  bool _wasPlayingBeforeMedia = false;
+
+  /// Temporarily pauses background audio for video playback without resetting user preferences
+  Future<void> pauseForMedia() async {
+    if (state.isPlaying && !state.isMuted) {
+      _wasPlayingBeforeMedia = true;
+      await pause();
+    }
+  }
+
+  /// Resumes background audio when video finishes or stops playing
+  Future<void> resumeFromMedia() async {
+    if (_wasPlayingBeforeMedia && !state.isMuted) {
+      _wasPlayingBeforeMedia = false;
+      await resume();
+    }
+  }
+
   Future<void> resume() async {
     try {
       if (state.isMuted) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/app_colors.dart';
+import '../services/media_sync_service.dart';
 import '../theme/text_styles.dart';
 import '../providers/landscape_nav_provider.dart';
 import '../../shared/services/local_storage_service.dart';
@@ -55,6 +56,31 @@ class EthnoScaffold extends ConsumerStatefulWidget {
 
 class _EthnoScaffoldState extends ConsumerState<EthnoScaffold> {
   bool _markingRead = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _triggerMediaPrefetch();
+  }
+
+  @override
+  void didUpdateWidget(covariant EthnoScaffold oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.currentSlide != widget.currentSlide) {
+      _triggerMediaPrefetch();
+    }
+  }
+
+  void _triggerMediaPrefetch() {
+    final slide = widget.currentSlide;
+    if (slide != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          MediaSyncService.preloadUpcomingSlides(slide);
+        }
+      });
+    }
+  }
 
   bool _onScrollNotification(ScrollNotification notification) {
     if (widget.currentSlide == null ||

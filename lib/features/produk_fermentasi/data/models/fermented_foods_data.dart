@@ -1,3 +1,4 @@
+import 'package:e_modul_etnosains/core/constants/app_assets.dart';
 import '../../domain/entities/fermented_food_entity.dart';
 
 class FermentedFoodsData {
@@ -88,7 +89,7 @@ class FermentedFoodsData {
       region: 'Bandung, Garut & Priangan Barat',
       rawMaterial:
           'Singkong Kuning Mentega (Manihot esculenta) + Ragi Tape Tradisional',
-      heroImage: 'assets/images/panel_tempe_tauco_tape.jpeg',
+      heroImage: AppAssets.tapeSingkong,
       microorganisms: [
         'Amylomyces rouxii (Menguraikan amilum pati menjadi glukosa manis pada tahap sakarifikasi)',
         'Saccharomyces cerevisiae (Khamir pengubah glukosa menjadi etanol & gas CO₂)',
@@ -169,7 +170,7 @@ class FermentedFoodsData {
       region: 'Kuningan, Cirebon & Jawa Barat',
       rawMaterial:
           'Beras Ketan Putih/Hitam (Oryza sativa var. glutinosa) + Daun Katuk/Pandan + Ragi',
-      heroImage: 'assets/images/panel_tempe_tauco_tape_full.png',
+      heroImage: AppAssets.tapeKetan,
       microorganisms: [
         'Aspergillus oryzae & Amylomyces rouxii (Hidrolisis amilopektin ketan)',
         'Saccharomyces cerevisiae (Pembentukan aroma alkohol segar & cairan manis)',

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'app.dart';
+import 'core/services/media_sync_service.dart';
 import 'core/services/supabase_service.dart';
 import 'shared/services/local_storage_service.dart';
 import 'shared/services/offline_sync_queue.dart';
@@ -12,11 +13,11 @@ import 'shared/services/student_session_store.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Keep decoded remote images from consuming excessive memory while students
-  // move through image-heavy slides. Images remain cached by the Supabase CDN.
+  // Mobile Ops Image Cache: Allow 300 objects & 200 MB in RAM to prevent
+  // cache evictions and eliminate loading delays when switching between slides.
   final imageCache = PaintingBinding.instance.imageCache;
-  imageCache.maximumSize = 80;
-  imageCache.maximumSizeBytes = 40 << 20;
+  imageCache.maximumSize = 300;
+  imageCache.maximumSizeBytes = 200 << 20;
 
   // Set preferred orientations & status bar style
   try {
@@ -75,6 +76,9 @@ void main() async {
       }
     } catch (_) {}
   }
+
+  // Launch background media synchronization & caching (images + video)
+  MediaSyncService.initializeAndWarmup();
 
   runApp(
     ProviderScope(

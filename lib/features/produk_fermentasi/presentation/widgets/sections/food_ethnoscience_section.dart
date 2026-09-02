@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../peta_konsep/data/models/microorganism_model.dart';
+import '../../../../peta_konsep/presentation/widgets/dialogs/microorganism_detail_dialog.dart';
 import '../../../domain/entities/fermented_food_entity.dart';
 
 class FoodEthnoscienceSection extends StatelessWidget {
@@ -8,8 +10,36 @@ class FoodEthnoscienceSection extends StatelessWidget {
 
   const FoodEthnoscienceSection({super.key, required this.food});
 
+  List<MicroorganismModel> _getFoodMicrobes(String foodId) {
+    switch (foodId) {
+      case 'tempe':
+        return MicroorganismData.microbes
+            .where((m) => m.id == 'rhizopus')
+            .toList();
+      case 'tape':
+        return MicroorganismData.microbes
+            .where((m) => m.id == 'saccharomyces' || m.id == 'aspergillus_sp')
+            .toList();
+      case 'tape-ketan':
+        return MicroorganismData.microbes
+            .where((m) => m.id == 'saccharomyces' || m.id == 'aspergillus_sp')
+            .toList();
+      case 'tauco':
+        return MicroorganismData.microbes
+            .where((m) =>
+                m.id == 'aspergillus_oryzae' || m.id == 'tetragenococcus')
+            .toList();
+      default:
+        return MicroorganismData.microbes
+            .where((m) => m.id == 'rhizopus')
+            .toList();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final microbes = _getFoodMicrobes(food.id);
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -109,50 +139,45 @@ class FoodEthnoscienceSection extends StatelessWidget {
                               ? 'Kapang Rhizopus oligosporus tumbuh, membentuk miselium menyatukan biji kedelai.'
                               : food.ethnoscienceConcept)
                           : 'Rekonstruksi sains modern.'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 10),
 
-                      // Microbe Circular Diagram from Infographic
-                      Center(
+                      // Microorganisms section with After Zoom Photos from Concept Map
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF3F8F2),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: const Color(0xFFD6E8D0),
+                            width: 0.8,
+                          ),
+                        ),
                         child: Column(
                           children: [
-                            Container(
-                              width: 68,
-                              height: 68,
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: const Color(0xFFF3F8F2),
-                                border: Border.all(
-                                  color: const Color(0xFF2D5A3C),
-                                  width: 1.5,
-                                ),
-                              ),
-                              child: ClipOval(
-                                child: AppImage(
-                                  'assets/images/tempe_rhizopus_diagram.png',
-                                  fit: BoxFit.contain,
-                                  errorBuilder: (_, __, ___) => const Center(
-                                    child: Icon(Icons.biotech,
-                                        color: AppColors.primaryGreen),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('🔬', style: TextStyle(fontSize: 12)),
+                                SizedBox(width: 4),
+                                Text(
+                                  'Mikroorganisme Utama',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF2D5A3C),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              food.microorganisms.isNotEmpty
-                                  ? food.microorganisms.first
-                                      .split('(')
-                                      .first
-                                      .trim()
-                                  : 'Rhizopus oligosporus',
-                              style: const TextStyle(
-                                color: Color(0xFF1E3A2B),
-                                fontSize: 10.0,
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                              ),
-                              textAlign: TextAlign.center,
+                            const SizedBox(height: 6),
+                            Wrap(
+                              alignment: WrapAlignment.center,
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: microbes
+                                  .map((m) => _buildMicrobeItem(context, m))
+                                  .toList(),
                             ),
                           ],
                         ),
@@ -164,6 +189,90 @@ class FoodEthnoscienceSection extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMicrobeItem(BuildContext context, MicroorganismModel microbe) {
+    return InkWell(
+      onTap: () {
+        MicroorganismDetailDialog.show(
+          context,
+          microbe: microbe,
+          isCurrentInSimulator: false,
+          onSelectInMicroscope: (_, __) {},
+        );
+      },
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        constraints: const BoxConstraints(maxWidth: 130),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 54,
+              height: 54,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: const Color(0xFF2D5A3C),
+                  width: 1.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
+              ),
+              child: ClipOval(
+                child: AppImage(
+                  microbe.afterZoomImage,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => const ColoredBox(
+                    color: Color(0xFFE8F2E6),
+                    child: Center(
+                      child:
+                          Icon(Icons.biotech, color: AppColors.primaryGreen),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              microbe.scientificName.split('(').first.trim(),
+              style: const TextStyle(
+                color: Color(0xFF1E3A2B),
+                fontSize: 9.5,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              microbe.id == 'rhizopus'
+                  ? 'Kapang Tempe'
+                  : microbe.id == 'saccharomyces'
+                      ? 'Khamir Tape'
+                      : microbe.id == 'aspergillus_sp'
+                          ? 'Sakarifikasi'
+                          : microbe.id == 'aspergillus_oryzae'
+                              ? 'Kapang Koji'
+                              : 'Bakteri Halofilik',
+              style: const TextStyle(
+                color: Color(0xFF5A7363),
+                fontSize: 8.5,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

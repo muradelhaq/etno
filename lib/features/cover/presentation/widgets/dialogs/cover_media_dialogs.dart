@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
+import 'package:e_modul_etnosains/core/services/media_sync_service.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
+import 'package:e_modul_etnosains/shared/services/app_audio_service.dart';
 
 class CoverMediaDialogs {
   static const String _introVideoUrl =
@@ -136,40 +139,64 @@ String _formatDuration(Duration duration) {
   return '$minutes:$seconds';
 }
 
-class _IntroVideoPlayer extends StatefulWidget {
+class _IntroVideoPlayer extends ConsumerStatefulWidget {
   const _IntroVideoPlayer();
 
   @override
-  State<_IntroVideoPlayer> createState() => _IntroVideoPlayerState();
+  ConsumerState<_IntroVideoPlayer> createState() => _IntroVideoPlayerState();
 }
 
-class _IntroVideoPlayerState extends State<_IntroVideoPlayer> {
+class _IntroVideoPlayerState extends ConsumerState<_IntroVideoPlayer> {
   late final VideoPlayerController _controller;
   late final Future<void> _initialization;
   bool _showControls = true;
   Timer? _hideControlsTimer;
+  bool _hasPausedAudioForPlayback = false;
 
   static const List<double> _playbackSpeeds = [1.0, 1.25, 1.5, 2.0];
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(
-      Uri.parse(CoverMediaDialogs._introVideoUrl),
+    _initialization = _initVideoController();
+  }
+
+  Future<void> _initVideoController() async {
+    final cachedFile = await MediaSyncService.getLocalVideoFile(
+      CoverMediaDialogs._introVideoUrl,
     );
-    _initialization = _controller.initialize().then((_) {
-      if (mounted) setState(() {});
-    });
+    if (cachedFile != null && await cachedFile.exists()) {
+      _controller = VideoPlayerController.file(cachedFile);
+    } else {
+      _controller = VideoPlayerController.networkUrl(
+        Uri.parse(CoverMediaDialogs._introVideoUrl),
+      );
+      unawaited(MediaSyncService.cacheVideo(CoverMediaDialogs._introVideoUrl));
+    }
+    await _controller.initialize();
     _controller.addListener(_videoListener);
+    if (mounted) setState(() {});
   }
 
   void _videoListener() {
+    final isPlaying = _controller.value.isPlaying;
+    if (isPlaying && !_hasPausedAudioForPlayback) {
+      _hasPausedAudioForPlayback = true;
+      ref.read(backgroundAudioProvider.notifier).pauseForMedia();
+    } else if (!isPlaying && _hasPausedAudioForPlayback) {
+      _hasPausedAudioForPlayback = false;
+      ref.read(backgroundAudioProvider.notifier).resumeFromMedia();
+    }
     if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
     _hideControlsTimer?.cancel();
+    if (_hasPausedAudioForPlayback) {
+      _hasPausedAudioForPlayback = false;
+      ref.read(backgroundAudioProvider.notifier).resumeFromMedia();
+    }
     _controller.removeListener(_videoListener);
     _controller.dispose();
     super.dispose();

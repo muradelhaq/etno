@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../services/media_sync_service.dart';
 
 class AppImage extends StatelessWidget {
   const AppImage(
@@ -10,7 +12,7 @@ class AppImage extends StatelessWidget {
     this.alignment = Alignment.center,
     this.errorBuilder,
     this.maxPixelWidth = 1600,
-    this.quality = 72,
+    this.quality = 75,
   });
 
   static const _publicBaseUrl =
@@ -33,10 +35,20 @@ class AppImage extends StatelessWidget {
     return '$_publicBaseUrl/$encoded';
   }
 
+  /// Bucketizes target pixel width into discrete tiers (240, 480, 800, 1200, 1600)
+  /// to maximize cache hit rate across different screen sizes and orientations.
+  static int bucketizeWidth(int pixels) {
+    if (pixels <= 240) return 240;
+    if (pixels <= 480) return 480;
+    if (pixels <= 800) return 800;
+    if (pixels <= 1200) return 1200;
+    return 1600;
+  }
+
   static String optimizedUrl(
     String path, {
     required int width,
-    int quality = 72,
+    int quality = 75,
   }) {
     final original = publicUrl(path);
     final uri = Uri.parse(original);
@@ -44,6 +56,7 @@ class AppImage extends StatelessWidget {
         !uri.path.contains('/storage/v1/object/public/')) {
       return original;
     }
+    final bucketWidth = bucketizeWidth(width);
     return uri.replace(
       path: uri.path.replaceFirst(
         '/storage/v1/object/public/',
@@ -51,7 +64,7 @@ class AppImage extends StatelessWidget {
       ),
       queryParameters: {
         ...uri.queryParameters,
-        'width': width.toString(),
+        'width': bucketWidth.toString(),
         'quality': quality.clamp(20, 100).toString(),
         'resize': 'contain',
       },
@@ -65,7 +78,7 @@ class AppImage extends StatelessWidget {
     if (layoutWidth == null) return maxPixelWidth;
     final pixels =
         (layoutWidth * MediaQuery.devicePixelRatioOf(context)).ceil();
-    return pixels.clamp(160, maxPixelWidth);
+    return bucketizeWidth(pixels.clamp(160, maxPixelWidth));
   }
 
   @override
@@ -73,38 +86,46 @@ class AppImage extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final pixelWidth = _targetPixelWidth(context, constraints);
-        return Image.network(
-          optimizedUrl(assetPath, width: pixelWidth, quality: quality),
+        final finalUrl =
+            optimizedUrl(assetPath, width: pixelWidth, quality: quality);
+
+        return CachedNetworkImage(
+          imageUrl: finalUrl,
+          cacheManager: MediaSyncService.cacheManager,
           width: width,
           height: height,
           fit: fit,
-          alignment: alignment,
-          cacheWidth: pixelWidth,
-          filterQuality: FilterQuality.low,
-          gaplessPlayback: true,
-          errorBuilder: errorBuilder ??
-              (_, __, ___) => ColoredBox(
-                    color: Colors.grey.shade100,
-                    child: const Center(
-                      child:
-                          Icon(Icons.broken_image_rounded, color: Colors.grey),
-                    ),
-                  ),
-          loadingBuilder: (context, child, progress) {
-            if (progress == null) return child;
-            final expected = progress.expectedTotalBytes;
+          alignment: alignment is Alignment
+              ? (alignment as Alignment)
+              : Alignment.center,
+          memCacheWidth: pixelWidth,
+          fadeInDuration: const Duration(milliseconds: 150),
+          fadeOutDuration: const Duration(milliseconds: 100),
+          useOldImageOnUrlChange: true,
+          errorWidget: (context, url, error) {
+            if (errorBuilder != null) {
+              return errorBuilder!(context, error, null);
+            }
             return ColoredBox(
               color: Colors.grey.shade100,
-              child: Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  value: expected == null
-                      ? null
-                      : progress.cumulativeBytesLoaded / expected,
-                ),
+              child: const Center(
+                child: Icon(Icons.broken_image_rounded, color: Colors.grey),
               ),
             );
           },
+          placeholder: (context, url) => ColoredBox(
+            color: Colors.grey.shade100,
+            child: Center(
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.grey.shade400,
+                ),
+              ),
+            ),
+          ),
         );
       },
     );
