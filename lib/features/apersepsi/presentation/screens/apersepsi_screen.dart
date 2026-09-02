@@ -32,9 +32,9 @@ class _ApersepsiScreenState extends ConsumerState<ApersepsiScreen> {
   Widget build(BuildContext context) {
     return EthnoScaffold(
       title: 'Apersepsi & Brainstorming',
-      subtitle: 'Slide 2 / 13 • Mengaktifkan Pemikiran Awal',
+      subtitle: 'Slide 2 / 12 • Mengaktifkan Pemikiran Awal',
       currentSlide: 2,
-      totalSlides: 13,
+      totalSlides: 12,
       prevRoute: '/',
       nextRoute: '/peta-konsep',
       body: SingleChildScrollView(

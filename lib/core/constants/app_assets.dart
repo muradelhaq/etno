@@ -26,6 +26,18 @@ class AppAssets {
   static const String pisaQuestion6Ref = '$basePath/pisa_question_6_ref.png';
   static const String pisaQuestion10Ref = '$basePath/pisa_question_10_ref.png';
 
+  // Supabase Storage Uploaded Food Images (aset-sed bucket)
+  static const String colenak =
+      'https://lumhlhxbmdtlqmlbcumc.supabase.co/storage/v1/object/public/aset-sed/colenak.png';
+  static const String kimchi =
+      'https://lumhlhxbmdtlqmlbcumc.supabase.co/storage/v1/object/public/aset-sed/kimchi.png';
+  static const String orekTempe =
+      'https://lumhlhxbmdtlqmlbcumc.supabase.co/storage/v1/object/public/aset-sed/orek-tempe.png';
+  static const String tapeKetan =
+      'https://lumhlhxbmdtlqmlbcumc.supabase.co/storage/v1/object/public/aset-sed/tape-ketan.png';
+  static const String tapeSingkong =
+      'https://lumhlhxbmdtlqmlbcumc.supabase.co/storage/v1/object/public/aset-sed/tape-singkong.png';
+
   // Image numbering references
   static const String image1 = '$basePath/image1.jpeg';
   static const String image2 = '$basePath/image2.jpeg';

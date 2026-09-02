@@ -139,9 +139,9 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
   Widget build(BuildContext context) {
     return EthnoScaffold(
       title: 'Proyek Challenge Inovasi',
-      subtitle: 'Slide 11 / 13 • Kampanye Edukasi Media Sosial',
-      currentSlide: 11,
-      totalSlides: 13,
+      subtitle: 'Slide 10 / 12 • Kampanye Edukasi Media Sosial',
+      currentSlide: 10,
+      totalSlides: 12,
       prevRoute: '/virtual-lab',
       nextRoute: '/evaluasi-kearifan',
       body: SingleChildScrollView(

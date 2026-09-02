@@ -41,7 +41,7 @@ class _CoverScreenState extends ConsumerState<CoverScreen> {
   Widget build(BuildContext context) {
     return EthnoScaffold(
       title: AppStrings.appName,
-      subtitle: 'Slide 1 / 13 • Beranda Utama',
+      subtitle: 'Slide 1 / 12 • Beranda Utama',
       showBackButton: false,
       currentSlide: 1,
       nextRoute: '/apersepsi',

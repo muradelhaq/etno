@@ -127,9 +127,9 @@ class _CulturalAssessmentScreenState
 
     return EthnoScaffold(
       title: 'Asesmen Kesadaran Budaya',
-      subtitle: 'Slide 12 / 13 • Skala Sikap & Kearifan Etnosains',
-      currentSlide: 12,
-      totalSlides: 13,
+      subtitle: 'Slide 11 / 12 • Skala Sikap & Kearifan Etnosains',
+      currentSlide: 11,
+      totalSlides: 12,
       prevRoute: '/challenge-proyek',
       nextRoute: '/literasi-sains-quiz',
       body: SingleChildScrollView(

@@ -58,8 +58,6 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
         return 6;
       case 'tauco':
         return 7;
-      case 'kecap':
-        return 8;
       default:
         return 4;
     }
@@ -75,8 +73,6 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
         return '/produk/tape';
       case 'tauco':
         return '/produk/tape-ketan';
-      case 'kecap':
-        return '/produk/tauco';
       default:
         return '/peta-konsep';
     }
@@ -91,8 +87,6 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
       case 'tape-ketan':
         return '/produk/tauco';
       case 'tauco':
-        return '/produk/kecap';
-      case 'kecap':
         return '/jelajah-budaya';
       default:
         return '/jelajah-budaya';
@@ -114,9 +108,9 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
 
     return EthnoScaffold(
       title: '${food.name.toUpperCase()} & MAKANAN TRADISIONAL',
-      subtitle: 'Slide $slideNum / 13 • Modul Pembelajaran Etnosains',
+      subtitle: 'Slide $slideNum / 12 • Modul Pembelajaran Etnosains',
       currentSlide: slideNum,
-      totalSlides: 13,
+      totalSlides: 12,
       prevRoute: prevRoute,
       nextRoute: nextRoute,
       body: SingleChildScrollView(

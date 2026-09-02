@@ -1,3 +1,5 @@
+import 'package:e_modul_etnosains/core/constants/app_assets.dart';
+
 class RegionalCultureItem {
   final String id;
   final String regionName;
@@ -85,16 +87,16 @@ class JelajahBudayaData {
       province: 'Jawa Barat',
       latitude: -6.5569,
       longitude: 107.4433,
-      foodTitle: 'Sate Maranggi Bumbu Kecap',
+      foodTitle: 'Sate Maranggi Bumbu Rempah',
       localTermOrigin:
           'Dinamai dari Mak Ranggi, seorang peracik legendaris sate bumbu rempah di Purwakarta.',
       funFact:
-          'Berbeda dengan sate biasa yang disiram kuah kacang setelah matang, daging Sate Maranggi direndam (dimarinasi) terlebih dahulu dengan racikan kecap manis, ketumbar, gula kelapa, dan jahe sebelum dibakar.',
+          'Daging Sate Maranggi direndam (dimarinasi) terlebih dahulu dengan racikan bumbu rempah, ketumbar, gula kelapa, dan jahe sebelum dibakar.',
       ethnoscienceStory:
-          'Enzim protease pada kedelai fermentasi dalam kecap serta asam amino glutamat meresap ke serat daging sapi/kambing, menghasilkan rasa umami alami dan tekstur daging yang empuk.',
-      imageAsset: 'assets/images/food_kecap.jpg',
+          'Enzim protease dan bumbu rempah meresap ke serat daging sapi/kambing, menghasilkan rasa umami alami dan tekstur daging yang empuk.',
+      imageAsset: 'assets/images/food_burger.jpg',
       audioNarrationText:
-          'Sate Maranggi Purwakarta dimarinasi dengan kecap fermentasi kedelai hitam sebelum dipanggang di atas arang.',
+          'Sate Maranggi Purwakarta dimarinasi dengan rempah alami sebelum dipanggang di atas arang.',
     ),
     RegionalCultureItem(
       id: 'bandung',
@@ -109,7 +111,7 @@ class JelajahBudayaData {
           'Peuyeum Bandung terkenal bertekstur lebih kokoh di luar namun legit manis di dalam, sangat nikmat dibakar di atas arang lalu disiram saus kinca kelapa (Colenak).',
       ethnoscienceStory:
           'Penggunaan ragi tape dengan khamir Saccharomyces cerevisiae mengubah pati singkong menjadi glukosa manis dalam waktu 48 jam sebelum berubah menjadi aroma alkohol segar.',
-      imageAsset: 'assets/images/es-goyobod.jpg',
+      imageAsset: AppAssets.colenak,
       audioNarrationText:
           'Peuyeum Bandung dan Es Doger memadukan kesegaran manis alami hasil hidrolisis pati singkong oleh ragi tradisional.',
     ),
@@ -143,7 +145,7 @@ class JelajahBudayaData {
           'Kearifan lokal masyarakat Melayu dan Sumatera dalam mengawetkan surplus buah durian saat musim panen raya agar tidak terbuang sia-sia.',
       ethnoscienceStory:
           'Fermentasi asam laktat anaerob fakultatif oleh Fructobacillus & Lactobacillus menekan pH hingga <4.0, menciptakan rasa asam gurih yang berpadu sempurna dengan lemak ikan patin.',
-      imageAsset: 'assets/images/food_tauco.jpg',
+      imageAsset: 'assets/images/sayur_tauco.jpg',
       audioNarrationText:
           'Tempoyak adalah wujud kearifan mengawetkan durian menjadi bumbu asam gurih kaya antioksidan dan probiotik.',
     ),
@@ -160,7 +162,7 @@ class JelajahBudayaData {
           'Dalam tradisi upacara adat Hindu Bali (Tabuh Rah), cairan fermentasi beras ketan telah digunakan selama berabad-abad sebagai simbol keharmonisan alam.',
       ethnoscienceStory:
           'Kombinasi kapang Amylomyces rouxii dan khamir Saccharomyces cerevisiae mengubah zat pati amilopektin ketan menjadi gula cair manis dengan aroma ester aromatik khas.',
-      imageAsset: 'assets/images/food_tape_ketan.jpg',
+      imageAsset: AppAssets.tapeKetan,
       audioNarrationText:
           'Brem Bali memadukan hidrolisis pati ketan dan fermentasi khamir menghasilkan cita rasa manis asam khas tradisi dewata.',
     ),

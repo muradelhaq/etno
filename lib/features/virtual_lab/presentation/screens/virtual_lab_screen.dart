@@ -120,7 +120,7 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
     return EthnoScaffold(
       customAppBar: CustomAppBar(
         title: 'Virtual Lab & Game Interaktif',
-        subtitle: 'Slide 10 / 13 • Simulasi Glukosa & Tantangan Misi',
+        subtitle: 'Slide 9 / 12 • Simulasi Glukosa & Tantangan Misi',
         bottom: TabBar(
           controller: _tabController,
           labelColor: AppColors.primaryGreen,
@@ -136,8 +136,8 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
           ],
         ),
       ),
-      currentSlide: 10,
-      totalSlides: 13,
+      currentSlide: 9,
+      totalSlides: 12,
       prevRoute: '/jelajah-budaya',
       nextRoute: '/challenge-proyek',
       body: TabBarView(

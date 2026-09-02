@@ -37,7 +37,7 @@ class EthnoScaffold extends ConsumerStatefulWidget {
     this.actions,
     this.customAppBar,
     this.currentSlide,
-    this.totalSlides = 13,
+    this.totalSlides = 12,
     this.prevRoute,
     this.nextRoute,
     this.onNext,

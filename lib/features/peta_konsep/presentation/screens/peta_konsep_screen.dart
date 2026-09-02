@@ -71,9 +71,9 @@ class _PetaKonsepScreenState extends ConsumerState<PetaKonsepScreen> {
   Widget build(BuildContext context) {
     return EthnoScaffold(
       title: 'Peta Konsep & Mikroorganisme',
-      subtitle: 'Slide 3 / 13 • Taksonomi Hayati',
+      subtitle: 'Slide 3 / 12 • Taksonomi Hayati',
       currentSlide: 3,
-      totalSlides: 13,
+      totalSlides: 12,
       prevRoute: '/apersepsi',
       nextRoute: '/produk/tempe',
       body: SingleChildScrollView(

@@ -118,7 +118,7 @@ class ReportExportService {
         isPassedKkm,
         gain != null ? (gain >= 0 ? '+${gain.toStringAsFixed(1)}' : gain.toStringAsFixed(1)) : '-',
         (s['total_xp'] ?? 0).toString(),
-        (s['is_completed'] == true) ? 'Selesai 100%' : 'Dalam Proses (${s['current_slide'] ?? 1}/13)',
+        (s['is_completed'] == true) ? 'Selesai 100%' : 'Dalam Proses (${s['current_slide'] ?? 1}/12)',
         lastActive,
         createdAt,
       ];
@@ -291,7 +291,7 @@ class ReportExportService {
         kkm,
         gain != null ? (gain >= 0 ? '+${gain.toStringAsFixed(1)}' : gain.toStringAsFixed(1)) : '-',
         (s['total_xp'] ?? 0).toString(),
-        (s['is_completed'] == true) ? 'Selesai' : 'Dalam Proses (${s['current_slide'] ?? 1}/13)',
+        (s['is_completed'] == true) ? 'Selesai' : 'Dalam Proses (${s['current_slide'] ?? 1}/12)',
       ];
       buffer.writeln(row.map(_escapeCsv).join(','));
     }

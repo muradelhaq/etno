@@ -1,3 +1,5 @@
+import 'package:e_modul_etnosains/core/constants/app_assets.dart';
+
 class FoodItemModel {
   final String id;
   final String name;
@@ -40,7 +42,7 @@ class ApersepsiData {
       id: 'kimchi',
       name: 'Kimchi',
       category: 'Modern',
-      imageAsset: 'assets/images/food_kimchi.jpg',
+      imageAsset: AppAssets.kimchi,
       baseFermentationProduct: 'Bakteri Asam Laktat (Leuconostoc)',
       description: 'Sayuran fermentasi khas Korea dengan bakteri asam laktat.',
     ),
@@ -60,7 +62,7 @@ class ApersepsiData {
       id: 'orek_tempe',
       name: 'Orek Tempe',
       category: 'Tradisional',
-      imageAsset: 'assets/images/food_orek_tempe_slide.png',
+      imageAsset: AppAssets.orekTempe,
       baseFermentationProduct: 'Tempe (Rhizopus)',
       description:
           'Olahan tempe bumbu kecap gurih untuk memperpanjang daya simpan.',
@@ -75,10 +77,19 @@ class ApersepsiData {
           'Tempe kedelai khas Banyumas digoreng setengah matang (mendo).',
     ),
     FoodItemModel(
+      id: 'colenak',
+      name: 'Colenak (Peuyeum Bakar)',
+      category: 'Tradisional',
+      imageAsset: AppAssets.colenak,
+      baseFermentationProduct: 'Tape Singkong',
+      description:
+          'Peuyeum singkong bakar legit dengan cocolan kinca gula merah kelapa.',
+    ),
+    FoodItemModel(
       id: 'goyobod',
       name: 'Es Goyobod / Peuyeum',
       category: 'Tradisional',
-      imageAsset: 'assets/images/es-goyobod.jpg',
+      imageAsset: AppAssets.tapeSingkong,
       baseFermentationProduct: 'Tape Singkong',
       description:
           'Minuman dingin segar khas Jawa Barat dengan isian peuyeum singkong manis.',
@@ -87,7 +98,7 @@ class ApersepsiData {
       id: 'es_tape_ketan',
       name: 'Es Tape Ketan',
       category: 'Tradisional',
-      imageAsset: 'assets/images/es_tape.jpg',
+      imageAsset: AppAssets.tapeKetan,
       baseFermentationProduct: 'Tape Ketan',
       description: 'Sajian manis asam khas fermentasi beras ketan hijau/hitam.',
     ),

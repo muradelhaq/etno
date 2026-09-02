@@ -75,14 +75,6 @@ class AppDrawer extends ConsumerWidget {
       },
       {
         'slide': 8,
-        'title': 'Kecap & Oncom Tradisional',
-        'subtitle': 'Neurospora & Ampas Tahu',
-        'route': '/produk/kecap',
-        'icon': Icons.restaurant_menu_rounded,
-        'id': 'kecap',
-      },
-      {
-        'slide': 9,
         'title': 'Jelajah Budaya Nusantara',
         'subtitle': 'Peta Interaktif Priangan & Jawa',
         'route': '/jelajah-budaya',
@@ -90,7 +82,7 @@ class AppDrawer extends ConsumerWidget {
         'id': 'jelajah',
       },
       {
-        'slide': 10,
+        'slide': 9,
         'title': 'Virtual Lab Uji Glukosa',
         'subtitle': 'Simulasi Ragi & Durasi Fermentasi',
         'route': '/virtual-lab',
@@ -98,7 +90,7 @@ class AppDrawer extends ConsumerWidget {
         'id': 'virtual_lab',
       },
       {
-        'slide': 11,
+        'slide': 10,
         'title': 'Proyek Challenge Etnosains',
         'subtitle': 'Investigasi & Video Edukasi',
         'route': '/challenge-proyek',
@@ -106,7 +98,7 @@ class AppDrawer extends ConsumerWidget {
         'id': 'challenge',
       },
       {
-        'slide': 12,
+        'slide': 11,
         'title': 'Refleksi & Asesmen Budaya',
         'subtitle': 'Skala Likert Kesadaran Kearifan',
         'route': '/evaluasi-kearifan',
@@ -114,7 +106,7 @@ class AppDrawer extends ConsumerWidget {
         'id': 'cultural_assessment',
       },
       {
-        'slide': 13,
+        'slide': 12,
         'title': 'Evaluasi Literasi Sains (PISA)',
         'subtitle': '10 Soal HOTS & E-Sertifikat',
         'route': '/literasi-sains-quiz',

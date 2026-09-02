@@ -131,8 +131,8 @@ class _FoodInnovationScreenState extends ConsumerState<FoodInnovationScreen> {
     return EthnoScaffold(
       title: 'Galeri Inovasi Pangan',
       subtitle: 'Slide Tambahan • Food Innovation Pad',
-      currentSlide: 12,
-      totalSlides: 13,
+      currentSlide: 11,
+      totalSlides: 12,
       prevRoute: '/evaluasi-kearifan',
       nextRoute: '/literasi-sains-quiz',
       body: SingleChildScrollView(

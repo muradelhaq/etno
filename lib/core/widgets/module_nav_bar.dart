@@ -16,7 +16,7 @@ class ModuleNavBar extends ConsumerWidget {
   const ModuleNavBar({
     super.key,
     required this.currentSlide,
-    this.totalSlides = 13,
+    this.totalSlides = 12,
     this.prevRoute,
     this.nextRoute,
     this.onNext,

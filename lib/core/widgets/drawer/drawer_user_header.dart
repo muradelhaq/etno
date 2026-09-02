@@ -160,7 +160,7 @@ class DrawerUserHeader extends StatelessWidget {
                           color: AppColors.sageLight, size: 18),
                       const SizedBox(width: 6),
                       Text(
-                        '${progress.completedModules.length}/13 Modul',
+                        '${progress.completedModules.length}/12 Modul',
                         style: AppTextStyles.bodyBold.copyWith(
                           color: Colors.white,
                           fontSize: 13,
