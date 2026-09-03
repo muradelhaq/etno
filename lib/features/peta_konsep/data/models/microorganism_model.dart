@@ -1,3 +1,5 @@
+import 'package:e_modul_etnosains/core/constants/app_assets.dart';
+
 class MicroorganismModel {
   final String id;
   final String scientificName;
@@ -53,7 +55,7 @@ class MicroorganismData {
       microscopicFeature:
           'Sel uniseluler berbentuk oval/bulat telur, bereproduksi vegetatif dengan pertunasan (budding).',
       imageUrl: 'assets/images/saccharomyces_after_zoom.png',
-      beforeZoomImage: 'assets/images/saccharomyces_before_zoom.png',
+      beforeZoomImage: AppAssets.tapeSingkong,
       afterZoomImage: 'assets/images/saccharomyces_after_zoom.png',
     ),
     MicroorganismModel(
@@ -68,7 +70,7 @@ class MicroorganismData {
       microscopicFeature:
           'Konidiofor tegak berujung vesikel bulat dengan rantai konidiospora radial.',
       imageUrl: 'assets/images/aspergillus_sp_after_zoom.png',
-      beforeZoomImage: 'assets/images/aspergillus_sp_before_zoom.png',
+      beforeZoomImage: AppAssets.tapeKetan,
       afterZoomImage: 'assets/images/aspergillus_sp_after_zoom.png',
     ),
     MicroorganismModel(
@@ -83,7 +85,7 @@ class MicroorganismData {
       microscopicFeature:
           'Miselium berwarna hijau zaitun kekuningan dengan konidia bersel satu berdinding halus/kasar.',
       imageUrl: 'assets/images/aspergillus_oryzae_after_zoom.png',
-      beforeZoomImage: 'assets/images/aspergillus_oryzae_before_zoom.png',
+      beforeZoomImage: AppAssets.taucoFase3,
       afterZoomImage: 'assets/images/aspergillus_oryzae_after_zoom.png',
     ),
     MicroorganismModel(
@@ -98,7 +100,7 @@ class MicroorganismData {
       microscopicFeature:
           'Bakteri Gram-positif berpasangan atau berkelompok empat (tetrad), tidak berspora.',
       imageUrl: 'assets/images/tetragenococcus_after_zoom.png',
-      beforeZoomImage: 'assets/images/tetragenococcus_before_zoom.png',
+      beforeZoomImage: AppAssets.taucoFase4a,
       afterZoomImage: 'assets/images/tetragenococcus_after_zoom.png',
     ),
     MicroorganismModel(
@@ -113,7 +115,7 @@ class MicroorganismData {
       microscopicFeature:
           'Miselium cepat tumbuh berwarna jingga/oranye dengan rantai makrokonidia bersel satu oval.',
       imageUrl: 'assets/images/neurospora_after_zoom.png',
-      beforeZoomImage: 'assets/images/neurospora_before_zoom.png',
+      beforeZoomImage: AppAssets.panelOncomKecapHd,
       afterZoomImage: 'assets/images/neurospora_after_zoom.png',
     ),
   ];
