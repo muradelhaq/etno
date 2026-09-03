@@ -66,7 +66,7 @@ final appRouter = GoRouter(
       path: '/produk/:foodId',
       builder: (context, state) {
         final foodId = state.pathParameters['foodId'] ?? 'tempe';
-        return FoodDetailScreen(foodId: foodId);
+        return FoodDetailScreen(key: ValueKey(foodId), foodId: foodId);
       },
     ),
     GoRoute(

@@ -212,6 +212,50 @@ class FoodProcessStepsProvider {
     ];
   }
 
+  static List<ProcessStepItem> getTapeKetanSteps() {
+    return const [
+      ProcessStepItem(
+        title: 'Perendaman & Pewarnaan Alami Beras Ketan',
+        imageAsset: AppAssets.tapeKetanFase1,
+        iconType: StepIconType.perendaman,
+        description:
+            'Beras ketan direndam selama 4–6 jam bersama perasan daun katuk/pandan alami untuk menghasilkan warna hijau segar dan aroma harum.',
+        biologicalExplanation:
+            'Klorofil daun katuk bertindak sebagai pewarna alami dan antioksidan.',
+      ),
+      ProcessStepItem(
+        title: 'Pengukusan Beras Ketan',
+        subtitle: '(Gelatinisasi Amilopektin)',
+        imageAsset: AppAssets.tapeKetanFase2,
+        iconType: StepIconType.perebusan,
+        description:
+            'Ketan dikukus, disiram air panas mendidih (diaron), lalu dikukus kembali hingga pulen dan matang merata.',
+        biologicalExplanation:
+            'Gelatinisasi amilopektin rantai bercabang pada beras ketan mempermudah kerja enzim hidrolisis ragi.',
+      ),
+      ProcessStepItem(
+        title: 'Penirisan, Pendinginan & Penaburan Ragi',
+        subtitle: '(Amylomyces & Saccharomyces)',
+        imageAsset: AppAssets.tapeKetanFase3,
+        iconType: StepIconType.ragi,
+        description:
+            'Ketan didinginkan di tampah bambu, lalu ditaburi ragi tape halus yang dicampur sedikit gula halus.',
+        biologicalExplanation:
+            'Gula awal memberikan energi permulaan (starter kick) bagi pertumbuhan khamir.',
+      ),
+      ProcessStepItem(
+        title: 'Pemeraman dalam Daun Jambu Air / Wadah',
+        subtitle: '(Fermentasi 2–3 Hari)',
+        imageAsset: AppAssets.tapeKetanFase4,
+        iconType: StepIconType.fermentasi,
+        description:
+            'Ketan dibungkus kecil-kecil dengan daun jambu air atau disimpan di ember tertutup selama 2–3 hari.',
+        biologicalExplanation:
+            'Daun jambu air memberikan tanin aromatik dan menjaga kelembapan mikroklimat.',
+      ),
+    ];
+  }
+
   static List<ProcessStepItem> getGenericSteps(FermentedFoodEntity food) {
     return food.processSteps.map((s) {
       return ProcessStepItem(
@@ -230,6 +274,7 @@ class FoodProcessStepsProvider {
   static List<ProcessStepItem> getStepsForFood(FermentedFoodEntity food) {
     if (food.id == 'tempe') return getTempeSteps();
     if (food.id == 'tape') return getTapeSteps();
+    if (food.id == 'tape-ketan') return getTapeKetanSteps();
     if (food.id == 'tauco') return getTaucoSteps();
     return getGenericSteps(food);
   }

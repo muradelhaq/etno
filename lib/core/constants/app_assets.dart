@@ -87,6 +87,12 @@ class AppAssets {
   static const String tapeSingkongSiap =
       '$asetSedPath/tape-singkong-fermentasi.jpeg';
 
+  // Tape Ketan Process
+  static const String tapeKetanFase1 = '$basePath/tape_ketan_fase1.jpg';
+  static const String tapeKetanFase2 = '$basePath/tape_ketan_fase2.jpg';
+  static const String tapeKetanFase3 = '$basePath/tape_ketan_fase3.jpg';
+  static const String tapeKetanFase4 = '$basePath/tape_ketan_fase4.jpg';
+
   // Tauco Process & Traditional Dish
   static const String taucoFase1 = '$asetSedPath/ferm-tauco-1.jpeg';
   static const String taucoFase2 = '$asetSedPath/ferm-tauco-2.jpeg';

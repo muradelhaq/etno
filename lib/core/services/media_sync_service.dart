@@ -94,11 +94,10 @@ class MediaSyncService {
       case 6: // Tape Ketan
         return [
           AppAssets.tapeKetan,
-          AppAssets.tapeFase1Alt,
-          AppAssets.tapeFase2Alt,
-          AppAssets.tapeFase3Alt,
-          AppAssets.tapeFase4Alt,
-          AppAssets.tapeFase5Alt,
+          AppAssets.tapeKetanFase1,
+          AppAssets.tapeKetanFase2,
+          AppAssets.tapeKetanFase3,
+          AppAssets.tapeKetanFase4,
           'assets/images/saccharomyces_after_zoom.png',
           'assets/images/aspergillus_sp_after_zoom.png',
         ];

@@ -26,10 +26,15 @@ class FoodDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(0.0);
+      }
       ref
           .read(userProgressProvider.notifier)
           .markModuleCompleted(widget.foodId, xpBonus: 40);
@@ -40,12 +45,24 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
   void didUpdateWidget(covariant FoodDetailScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.foodId != widget.foodId) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(0.0);
+      }
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(0.0);
+        }
         ref
             .read(userProgressProvider.notifier)
             .markModuleCompleted(widget.foodId, xpBonus: 40);
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   int _getSlideNumber(String id) {
@@ -114,6 +131,8 @@ class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
       prevRoute: prevRoute,
       nextRoute: nextRoute,
       body: SingleChildScrollView(
+        key: ValueKey('food_detail_scroll_${widget.foodId}'),
+        controller: _scrollController,
         padding: EdgeInsets.symmetric(
           horizontal: isLandscape ? 20 : 12,
           vertical: 12,
