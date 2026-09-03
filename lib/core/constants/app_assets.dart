@@ -29,6 +29,8 @@ class AppAssets {
   // Supabase Storage Uploaded Food Images (aset-sed bucket)
   static const String colenak =
       'https://lumhlhxbmdtlqmlbcumc.supabase.co/storage/v1/object/public/aset-sed/colenak.png';
+  static const String esGoyobod =
+      'https://lumhlhxbmdtlqmlbcumc.supabase.co/storage/v1/object/public/media-assets/images/es-goyobod.jpg';
   static const String kimchi =
       'https://lumhlhxbmdtlqmlbcumc.supabase.co/storage/v1/object/public/aset-sed/kimchi.png';
   static const String orekTempe =

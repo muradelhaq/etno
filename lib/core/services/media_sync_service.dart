@@ -46,6 +46,7 @@ class MediaSyncService {
           AppAssets.kimchi,
           AppAssets.orekTempe,
           AppAssets.colenak,
+          AppAssets.esGoyobod,
           AppAssets.tapeSingkong,
           AppAssets.tapeKetan,
           'assets/images/tempe-mendoan.jpg',

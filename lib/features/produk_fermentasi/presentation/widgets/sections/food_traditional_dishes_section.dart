@@ -89,7 +89,7 @@ class FoodTraditionalDishesSection extends StatelessWidget {
             : food.id == 'tape'
                 ? (first
                     ? AppAssets.colenak
-                    : AppAssets.tapeSingkong)
+                    : AppAssets.esGoyobod)
                 : food.id == 'tauco'
                     ? (first
                         ? 'assets/images/aset_sed/sayur-ikan-tauco.jpeg'

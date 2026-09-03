@@ -1,3 +1,5 @@
+import 'package:e_modul_etnosains/core/constants/app_assets.dart';
+
 class TreeBranch {
   final String id;
   final String title;
@@ -41,7 +43,7 @@ List<TreeBranch> getConceptTreeData() {
     TreeBranch(
       id: 'tempe',
       title: 'Tempe',
-      imageAsset: 'assets/images/food_tempe.jpg',
+      imageAsset: AppAssets.tempeJadi,
       microbe: 'Rhizopus oligosporus & R. oryzae',
       description:
           'Fermentasi biji kedelai oleh miselium kapang Rhizopus yang menghasilkan struktur padat dan enzim protease. Vitamin B12 pada tempe lebih tepat dikaitkan dengan bakteri pendamping.',
@@ -50,7 +52,7 @@ List<TreeBranch> getConceptTreeData() {
         TreeChild(
           id: 'orek_tempe',
           title: 'Orek Tempe',
-          imageAsset: 'assets/images/food_orek_tempe_slide.png',
+          imageAsset: AppAssets.orekTempe,
           parentProduct: 'Tempe Kedelai (Rhizopus)',
           description:
               'Potongan tempe yang ditumis gurih manis dengan kecap dan bumbu rempah aromatik.',
@@ -70,16 +72,25 @@ List<TreeBranch> getConceptTreeData() {
     TreeBranch(
       id: 'tape_singkong',
       title: 'Tape Singkong',
-      imageAsset: 'assets/images/food_tape_singkong.jpg',
+      imageAsset: AppAssets.tapeSingkong,
       microbe: 'Saccharomyces cerevisiae & Aspergillus',
       description:
           'Fermentasi umbi singkong kukus dengan ragi yang mengubah pati menjadi glukosa manis beraroma alkohol lembut.',
       route: '/produk/tape',
       children: [
         TreeChild(
+          id: 'colenak',
+          title: 'Colenak',
+          imageAsset: AppAssets.colenak,
+          parentProduct: 'Tape Singkong / Peuyeum',
+          description:
+              'Peuyeum singkong bakar disajikan dengan saus kinca gula merah kelapa parut manis harum.',
+          route: '/produk/tape',
+        ),
+        TreeChild(
           id: 'goyobod',
           title: 'Goyobod',
-          imageAsset: 'assets/images/es-goyobod.jpg',
+          imageAsset: AppAssets.esGoyobod,
           parentProduct: 'Tape Singkong / Peuyeum',
           description:
               'Minuman es tradisional khas Sunda Jawa Barat berisi potongan peuyeum legit, santan, dan serutan es segar.',
@@ -90,7 +101,7 @@ List<TreeBranch> getConceptTreeData() {
     TreeBranch(
       id: 'tape_ketan',
       title: 'Tape Ketan',
-      imageAsset: 'assets/images/food_tape_ketan.jpg',
+      imageAsset: AppAssets.tapeKetan,
       microbe: 'Amylomyces rouxii & S. cerevisiae',
       description:
           'Fermentasi beras ketan putih atau hitam menghasilkan rasa manis berair yang khas kaya senyawa antioksidan antosianin.',
@@ -99,7 +110,7 @@ List<TreeBranch> getConceptTreeData() {
         TreeChild(
           id: 'es_tape_ketan',
           title: 'Es Tape Ketan',
-          imageAsset: 'assets/images/es_tape.jpg',
+          imageAsset: AppAssets.tapeKetan,
           parentProduct: 'Tape Ketan (Amylomyces)',
           description:
               'Sajian es pelepas dahaga dari paduan sari manis tape ketan hijau, santan, dan es serut.',
@@ -119,7 +130,7 @@ List<TreeBranch> getConceptTreeData() {
     TreeBranch(
       id: 'tauco',
       title: 'Tauco',
-      imageAsset: 'assets/images/food_tauco.jpg',
+      imageAsset: AppAssets.taucoFase5a,
       microbe: 'Aspergillus oryzae & Tetragenococcus',
       description:
           'Bumbu fermentasi kedelai kuning khas Cianjur melalui dua tahap fermentasi: kapang (koji) dan larutan garam pekat.',
@@ -128,7 +139,7 @@ List<TreeBranch> getConceptTreeData() {
         TreeChild(
           id: 'sayur_tauco',
           title: 'Sayur Ikan Tauco',
-          imageAsset: 'assets/images/sayur_tauco.jpg',
+          imageAsset: AppAssets.taucoSayurIkan,
           parentProduct: 'Tauco Cianjur (A. oryzae)',
           description:
               'Olahan sayur kuah ikan gurih khas dengan aroma dan cita rasa tauco fermentasi kedelai yang khas.',

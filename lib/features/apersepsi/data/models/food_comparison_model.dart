@@ -89,7 +89,7 @@ class ApersepsiData {
       id: 'goyobod',
       name: 'Es Goyobod / Peuyeum',
       category: 'Tradisional',
-      imageAsset: AppAssets.tapeSingkong,
+      imageAsset: AppAssets.esGoyobod,
       baseFermentationProduct: 'Tape Singkong',
       description:
           'Minuman dingin segar khas Jawa Barat dengan isian peuyeum singkong manis.',
