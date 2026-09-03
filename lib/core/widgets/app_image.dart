@@ -103,6 +103,30 @@ class AppImage extends StatelessWidget {
           fadeOutDuration: const Duration(milliseconds: 100),
           useOldImageOnUrlChange: true,
           errorWidget: (context, url, error) {
+            final localPath = assetPath.startsWith('assets/')
+                ? assetPath
+                : (assetPath.startsWith('http') ? null : 'assets/$assetPath');
+            if (localPath != null) {
+              return Image.asset(
+                localPath,
+                width: width,
+                height: height,
+                fit: fit,
+                alignment: alignment,
+                errorBuilder: (ctx, err, stack) {
+                  if (errorBuilder != null) {
+                    return errorBuilder!(context, err, stack);
+                  }
+                  return ColoredBox(
+                    color: Colors.grey.shade100,
+                    child: const Center(
+                      child:
+                          Icon(Icons.broken_image_rounded, color: Colors.grey),
+                    ),
+                  );
+                },
+              );
+            }
             if (errorBuilder != null) {
               return errorBuilder!(context, error, null);
             }

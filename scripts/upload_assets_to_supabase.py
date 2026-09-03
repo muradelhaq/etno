@@ -192,6 +192,44 @@ ASSET_METADATA = [
         "biological_context": "Kaya akan probiotik alami dan asam organik hasil fermentasi khamir.",
     },
 
+    # TAPE KETAN HIJAU (4 steps)
+    {
+        "filename": "tape_ketan_fase1.jpg",
+        "module_id": "tape-ketan",
+        "category": "process_step",
+        "step_number": 1,
+        "title": "Perendaman & Pewarnaan Alami Beras Ketan",
+        "description": "Beras ketan direndam selama 4–6 jam bersama perasan daun katuk/pandan alami untuk menghasilkan warna hijau segar.",
+        "biological_context": "Klorofil daun katuk bertindak sebagai pewarna alami dan antioksidan.",
+    },
+    {
+        "filename": "tape_ketan_fase2.jpg",
+        "module_id": "tape-ketan",
+        "category": "process_step",
+        "step_number": 2,
+        "title": "Pengukusan Beras Ketan (Gelatinisasi)",
+        "description": "Ketan dikukus hingga pulen dan matang merata.",
+        "biological_context": "Gelatinisasi amilopektin rantai bercabang pada beras ketan mempermudah kerja enzim hidrolisis ragi.",
+    },
+    {
+        "filename": "tape_ketan_fase3.jpg",
+        "module_id": "tape-ketan",
+        "category": "process_step",
+        "step_number": 3,
+        "title": "Penirisan, Pendinginan & Penaburan Ragi Tape",
+        "description": "Ketan didinginkan di tampah bambu, lalu ditaburi ragi tape halus yang dicampur sedikit gula.",
+        "biological_context": "Gula awal memberikan energi permulaan (starter kick) bagi pertumbuhan khamir.",
+    },
+    {
+        "filename": "tape_ketan_fase4.jpg",
+        "module_id": "tape-ketan",
+        "category": "process_step",
+        "step_number": 4,
+        "title": "Pemeraman dalam Daun Jambu Air / Wadah",
+        "description": "Ketan dibungkus kecil-kecil dengan daun jambu air atau disimpan di wadah tertutup selama 2–3 hari.",
+        "biological_context": "Daun jambu air memberikan tanin aromatik dan menjaga kelembapan mikroklimat.",
+    },
+
     # TAUCO & OLAHAN TRADISIONAL (9 assets)
     {
         "filename": "ferm-tauco-1.jpeg",
