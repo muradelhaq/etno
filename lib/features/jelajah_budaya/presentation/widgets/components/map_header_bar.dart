@@ -17,23 +17,30 @@ class MapHeaderBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            const Icon(Icons.public_rounded,
-                color: AppColors.primaryGreen, size: 20),
-            const SizedBox(width: 8),
-            Text(
-              viewMode == MapViewMode.indonesia
-                  ? 'Peta Nusantara (Indonesia)'
-                  : 'Peta Fokus Pulau Jawa',
-              style: const TextStyle(
-                color: Color(0xFF1E3A2B),
-                fontWeight: FontWeight.bold,
-                fontSize: 13.5,
+        Expanded(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.public_rounded,
+                  color: AppColors.primaryGreen, size: 18),
+              const SizedBox(width: 6),
+              Flexible(
+                child: Text(
+                  viewMode == MapViewMode.indonesia
+                      ? 'Peta Nusantara'
+                      : 'Peta Fokus Jawa',
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Color(0xFF1E3A2B),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13.0,
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+        const SizedBox(width: 8),
 
         // Toggle view mode buttons
         Container(
@@ -44,6 +51,7 @@ class MapHeaderBar extends StatelessWidget {
             border: Border.all(color: const Color(0xFFC8E6C9)),
           ),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               _buildToggleTab(
                 label: 'Indonesia',

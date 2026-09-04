@@ -56,16 +56,16 @@ class _IndonesiaMapWidgetState extends State<IndonesiaMapWidget>
 
         // Interactive Map Canvas Container
         Container(
-          height: 220,
+          height: 235,
           width: double.infinity,
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xFFD0EAF5), // Nusantara ocean light blue
-                Color(0xFFB8DEEF),
-                Color(0xFFA2D2EB),
+                Color(0xFFD4EDF8), // Nusantara ocean light blue
+                Color(0xFFBCE3F5),
+                Color(0xFFA5D7EE),
               ],
             ),
             borderRadius: BorderRadius.circular(16),
@@ -123,17 +123,26 @@ class _IndonesiaMapWidgetState extends State<IndonesiaMapWidget>
                                 r.id == 'bandung')
                             .toList();
 
+                    // Sort so selected pin is on top
+                    final sortedRegions = List.of(regionsToRender)
+                      ..sort((a, b) {
+                        if (a.id == widget.selectedRegionId) return 1;
+                        if (b.id == widget.selectedRegionId) return -1;
+                        return 0;
+                      });
+
                     return Stack(
-                      children: regionsToRender.map((region) {
+                      children: sortedRegions.map((region) {
                         final pos = getPinPosition(region.id, _viewMode, w, h);
                         final isSelected = region.id == widget.selectedRegionId;
 
                         return Positioned(
-                          left: pos.dx - 18,
+                          left: pos.dx - 22,
                           top: pos.dy - 28,
                           child: MapRegionPin(
                             region: region,
                             isSelected: isSelected,
+                            viewMode: _viewMode,
                             pulseAnimation: _pulseController,
                             onTap: () => widget.onRegionSelected(region.id),
                           ),
