@@ -126,13 +126,15 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
           labelColor: AppColors.primaryGreen,
           unselectedLabelColor: AppColors.textSecondary,
           indicatorColor: AppColors.primaryGreen,
-          tabs: const [
-            Tab(
+          tabs: [
+            const Tab(
                 icon: Icon(Icons.science_rounded),
                 text: 'Simulasi Lab Glukosa'),
             Tab(
-                icon: Icon(Icons.sports_esports_rounded),
-                text: 'Game Misi Sains'),
+                icon: const Icon(Icons.sports_esports_rounded),
+                text: missionGameCompleted
+                    ? 'Game Misi Sains ✓'
+                    : 'Game Misi Sains'),
           ],
         ),
       ),
@@ -197,9 +199,17 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
     List<Map<String, dynamic>> trendData,
     bool missionGameCompleted,
   ) {
+    final isLandscape =
+        MediaQuery.orientationOf(context) == Orientation.landscape;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final isWide = screenWidth >= 720 || isLandscape;
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+      padding: EdgeInsets.symmetric(
+        horizontal: isLandscape ? 24 : 18,
+        vertical: 16,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -278,44 +288,98 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
 
           const SizedBox(height: 18),
 
-          // Section 1: Digital Glucometer Display
-          DigitalGlucometerDisplay(
-            yeastPercent: _yeastPercent,
-            fermentationDays: _fermentationDays,
-            simulation: simulation,
-            isSavingLab: _isSavingLab,
-            onSave: () => _recordLabExperiment(simulation),
-          ),
+          // Responsive Laboratory Section: Dual-Column in Landscape/Wide, Single Column in Portrait
+          if (isWide) ...[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Left Column: Instrument Readout & Formula Box
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      DigitalGlucometerDisplay(
+                        yeastPercent: _yeastPercent,
+                        fermentationDays: _fermentationDays,
+                        simulation: simulation,
+                        isSavingLab: _isSavingLab,
+                        onSave: () => _recordLabExperiment(simulation),
+                      ),
+                      const SizedBox(height: 16),
+                      const ChemicalReactionFormulaBox(),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 16),
+                // Right Column: Experiment Sliders & Dynamic Graph
+                Expanded(
+                  flex: 6,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Pengaturan Variabel Eksperimen',
+                          style: AppTextStyles.h2.copyWith(fontSize: 16)),
+                      const SizedBox(height: 10),
+                      LabControlSliders(
+                        yeastPercent: _yeastPercent,
+                        fermentationDays: _fermentationDays,
+                        isBananaLeaf: _isBananaLeaf,
+                        onYeastChanged: (v) =>
+                            setState(() => _yeastPercent = v),
+                        onDaysChanged: (v) =>
+                            setState(() => _fermentationDays = v),
+                        onLeafChanged: (v) =>
+                            setState(() => _isBananaLeaf = v),
+                      ),
+                      const SizedBox(height: 16),
+                      DynamicGlucoseLineChart(
+                        yeastPercent: _yeastPercent,
+                        fermentationDays: _fermentationDays,
+                        trendData: trendData,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ] else ...[
+            // Single Column Layout for Portrait Mode
+            DigitalGlucometerDisplay(
+              yeastPercent: _yeastPercent,
+              fermentationDays: _fermentationDays,
+              simulation: simulation,
+              isSavingLab: _isSavingLab,
+              onSave: () => _recordLabExperiment(simulation),
+            ),
 
-          const SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-          // Section 2: Interactive Controls
-          Text('Pengaturan Variabel Eksperimen',
-              style: AppTextStyles.h2.copyWith(fontSize: 16)),
-          const SizedBox(height: 10),
+            Text('Pengaturan Variabel Eksperimen',
+                style: AppTextStyles.h2.copyWith(fontSize: 16)),
+            const SizedBox(height: 10),
 
-          LabControlSliders(
-            yeastPercent: _yeastPercent,
-            fermentationDays: _fermentationDays,
-            isBananaLeaf: _isBananaLeaf,
-            onYeastChanged: (v) => setState(() => _yeastPercent = v),
-            onDaysChanged: (v) => setState(() => _fermentationDays = v),
-            onLeafChanged: (v) => setState(() => _isBananaLeaf = v),
-          ),
+            LabControlSliders(
+              yeastPercent: _yeastPercent,
+              fermentationDays: _fermentationDays,
+              isBananaLeaf: _isBananaLeaf,
+              onYeastChanged: (v) => setState(() => _yeastPercent = v),
+              onDaysChanged: (v) => setState(() => _fermentationDays = v),
+              onLeafChanged: (v) => setState(() => _isBananaLeaf = v),
+            ),
 
-          const SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-          // Section 3: Dynamic Line Chart & Visual Comparison
-          DynamicGlucoseLineChart(
-            yeastPercent: _yeastPercent,
-            fermentationDays: _fermentationDays,
-            trendData: trendData,
-          ),
+            DynamicGlucoseLineChart(
+              yeastPercent: _yeastPercent,
+              fermentationDays: _fermentationDays,
+              trendData: trendData,
+            ),
 
-          const SizedBox(height: 18),
+            const SizedBox(height: 18),
 
-          // Biochemical Equation Banner
-          const ChemicalReactionFormulaBox(),
+            const ChemicalReactionFormulaBox(),
+          ],
 
           const SizedBox(height: 24),
 

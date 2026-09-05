@@ -23,7 +23,7 @@ void main() {
     );
 
     expect(url, contains('/storage/v1/render/image/public/media-assets/'));
-    expect(url, contains('width=960'));
+    expect(url, contains('width=1200'));
     expect(url, contains('quality=70'));
     expect(url, contains('resize=contain'));
   });

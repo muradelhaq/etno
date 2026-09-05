@@ -20,12 +20,12 @@ void main() {
 
   test('case study, lab, and assessment remain mandatory', () {
     final progress = UserProgressModel(
-      readSlides: {4, 10, 11, 12},
+      readSlides: {4, 9, 11, 12},
     );
 
     expect(progress.canProceedFromSlide(4), isFalse);
-    expect(progress.canProceedFromSlide(10), isFalse);
-    expect(progress.canProceedFromSlide(11), isTrue);
+    expect(progress.canProceedFromSlide(9), isFalse);
+    expect(progress.canProceedFromSlide(11), isFalse);
     expect(progress.canProceedFromSlide(12), isFalse);
 
     final completed = progress.copyWith(
@@ -35,10 +35,11 @@ void main() {
         'virtual_lab_game',
         'challenge',
         'cultural_assessment',
+        'pisa_quiz',
       },
     );
     expect(completed.canProceedFromSlide(4), isTrue);
-    expect(completed.canProceedFromSlide(10), isTrue);
+    expect(completed.canProceedFromSlide(9), isTrue);
     expect(completed.canProceedFromSlide(11), isTrue);
     expect(completed.canProceedFromSlide(12), isTrue);
   });

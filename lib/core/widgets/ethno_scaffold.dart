@@ -230,7 +230,10 @@ class _EthnoScaffoldState extends ConsumerState<EthnoScaffold> {
                       child: Material(
                         color: Colors.transparent,
                         elevation: 0.5,
-                        child: effectiveAppBar,
+                        child: SizedBox(
+                          height: effectiveAppBar.preferredSize.height,
+                          child: effectiveAppBar,
+                        ),
                       ),
                     ),
                   ),
