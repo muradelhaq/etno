@@ -4,7 +4,9 @@ import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/services/supabase_service.dart';
 
 class AdminLoginForm extends StatefulWidget {
-  const AdminLoginForm({super.key});
+  final bool isLandscape;
+
+  const AdminLoginForm({super.key, this.isLandscape = false});
 
   @override
   State<AdminLoginForm> createState() => _AdminLoginFormState();
@@ -62,47 +64,54 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final landscapeMode = widget.isLandscape ||
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(landscapeMode ? 8 : 12),
             decoration: BoxDecoration(
               color: const Color(0xFFFFFBEB),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: const Color(0xFFFDE68A)),
             ),
-            child: const Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(Icons.admin_panel_settings_rounded,
-                    color: Color(0xFFD97706), size: 20),
-                SizedBox(width: 10),
+                    color: const Color(0xFFD97706),
+                    size: landscapeMode ? 16 : 20),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Masuk menggunakan akun guru yang telah terdaftar dan memiliki hak akses admin.',
+                    'Masuk menggunakan akun guru yang telah terdaftar dengan hak akses admin.',
                     style: TextStyle(
-                      fontSize: 11.5,
-                      color: Color(0xFF78350F),
-                      height: 1.4,
+                      fontSize: landscapeMode ? 10.5 : 11.5,
+                      color: const Color(0xFF78350F),
+                      height: 1.3,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: landscapeMode ? 8 : 16),
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             autocorrect: false,
+            style: TextStyle(fontSize: landscapeMode ? 13 : 14),
             decoration: _decoration(
               label: 'Email Guru',
               hint: 'guru@sekolah.id',
               icon: Icons.email_outlined,
+              compact: landscapeMode,
             ),
             validator: (value) {
               final email = value?.trim() ?? '';
@@ -111,23 +120,25 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
               return null;
             },
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: landscapeMode ? 8 : 12),
           TextFormField(
             controller: _passwordController,
             obscureText: _obscurePassword,
             textInputAction: TextInputAction.done,
             onFieldSubmitted: (_) => _handleSubmit(),
+            style: TextStyle(fontSize: landscapeMode ? 13 : 14),
             decoration: _decoration(
               label: 'Kata Sandi',
               hint: 'Masukkan kata sandi akun guru',
               icon: Icons.lock_outline_rounded,
+              compact: landscapeMode,
             ).copyWith(
               suffixIcon: IconButton(
                 icon: Icon(
                   _obscurePassword
                       ? Icons.visibility_off_rounded
                       : Icons.visibility_rounded,
-                  size: 20,
+                  size: landscapeMode ? 18 : 20,
                 ),
                 onPressed: () => setState(
                   () => _obscurePassword = !_obscurePassword,
@@ -138,9 +149,9 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
                 ? 'Kata sandi wajib diisi'
                 : null,
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: landscapeMode ? 12 : 20),
           SizedBox(
-            height: 48,
+            height: landscapeMode ? 44 : 48,
             child: ElevatedButton(
               onPressed: _isLoading ? null : _handleSubmit,
               style: ElevatedButton.styleFrom(
@@ -159,9 +170,11 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
                         color: Colors.white,
                       ),
                     )
-                  : const Text(
+                  : Text(
                       'Masuk ke Dashboard Guru',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: landscapeMode ? 13.5 : 14),
                     ),
             ),
           ),
@@ -174,18 +187,23 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
     required String label,
     required String hint,
     required IconData icon,
+    bool compact = false,
   }) {
     return InputDecoration(
       labelText: label,
       hintText: hint,
-      prefixIcon: Icon(icon, color: AppColors.primaryDark),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+      prefixIcon: Icon(icon,
+          color: AppColors.primaryDark, size: compact ? 20 : 24),
+      isDense: compact,
+      contentPadding: EdgeInsets.symmetric(
+          horizontal: 14, vertical: compact ? 10 : 13),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: AppColors.primaryDark, width: 1.8),
       ),
       filled: true,

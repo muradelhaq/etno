@@ -14,8 +14,20 @@ class AuthCompactHeader extends StatelessWidget {
           width: 68,
           height: 68,
           decoration: BoxDecoration(
-            gradient: AppColors.primaryGradient,
             shape: BoxShape.circle,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF52B788),
+                Color(0xFF2D6A4F),
+                Color(0xFF1B4332),
+              ],
+            ),
+            border: Border.all(
+              color: AppColors.goldenYellow,
+              width: 2,
+            ),
             boxShadow: [
               BoxShadow(
                 color: AppColors.primaryDark.withValues(alpha: 0.25),
@@ -24,12 +36,32 @@ class AuthCompactHeader extends StatelessWidget {
               ),
             ],
           ),
-          child: const Center(
-            child: Icon(
-              Icons.biotech_rounded,
-              size: 34,
-              color: AppColors.goldenYellow,
-            ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              const Icon(
+                Icons.spa_rounded,
+                size: 34,
+                color: Color(0xFFFEFAE0),
+              ),
+              Positioned(
+                bottom: 8,
+                right: 8,
+                child: Container(
+                  padding: const EdgeInsets.all(2.5),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.warmTerracotta,
+                    border: Border.all(color: Colors.white, width: 1.2),
+                  ),
+                  child: const Icon(
+                    Icons.biotech_rounded,
+                    size: 10,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
         ).animate().scale(duration: 400.ms),
         const SizedBox(height: 12),

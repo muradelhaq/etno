@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import '../widgets/auth_hero_branding_column.dart';
+import '../widgets/auth_landscape_branding.dart';
 import '../widgets/auth_compact_header.dart';
 import '../widgets/auth_cloud_status_badge.dart';
 import '../widgets/auth_segmented_tab_bar.dart';
@@ -35,9 +36,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     final isDesktop = size.width >= 900;
+    final useDualPane = isLandscape || isDesktop;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           // 1. Decorative Ambient Gradient Background
@@ -85,21 +90,34 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 padding: EdgeInsets.symmetric(
-                  horizontal: isDesktop ? 48 : 20,
-                  vertical: 24,
+                  horizontal: isDesktop
+                      ? 48
+                      : (isLandscape ? 24 : 20),
+                  vertical: isLandscape ? 12 : 24,
                 ),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxWidth: isDesktop ? 960 : 480,
+                    maxWidth: isDesktop ? 960 : (isLandscape ? 840 : 480),
                   ),
-                  child: isDesktop
+                  child: useDualPane
                       ? Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Expanded(child: AuthHeroBrandingColumn()),
-                            const SizedBox(width: 48),
-                            Expanded(child: _buildAuthCard()),
+                            Expanded(
+                              flex: isDesktop ? 5 : 4,
+                              child: (isDesktop && size.height >= 550)
+                                  ? const AuthHeroBrandingColumn()
+                                  : const AuthLandscapeBranding(),
+                            ),
+                            SizedBox(width: isDesktop ? 48 : 24),
+                            Expanded(
+                              flex: isDesktop ? 5 : 6,
+                              child: _buildAuthCard(isLandscape: true),
+                            ),
                           ],
                         )
                       : Column(
@@ -107,7 +125,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
                           children: [
                             const AuthCompactHeader(),
                             const SizedBox(height: 20),
-                            _buildAuthCard(),
+                            _buildAuthCard(isLandscape: false),
                             const SizedBox(height: 16),
                             const AuthCloudStatusBadge(),
                           ],
@@ -121,21 +139,21 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
     );
   }
 
-  Widget _buildAuthCard() {
+  Widget _buildAuthCard({bool isLandscape = false}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(isLandscape ? 18 : 24),
         border: Border.all(color: const Color(0xFFE2EBE2), width: 1.2),
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF1E3A2B).withValues(alpha: 0.08),
-            blurRadius: 28,
-            offset: const Offset(0, 10),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
-      padding: const EdgeInsets.all(22),
+      padding: EdgeInsets.all(isLandscape ? 16 : 22),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -148,13 +166,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
               });
             },
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: isLandscape ? 12 : 20),
           AnimatedBuilder(
             animation: _tabController,
             builder: (context, _) {
               return _tabController.index == 0
-                  ? const StudentLoginForm()
-                  : const AdminLoginForm();
+                  ? StudentLoginForm(isLandscape: isLandscape)
+                  : AdminLoginForm(isLandscape: isLandscape);
             },
           ),
         ],

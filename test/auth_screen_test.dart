@@ -77,4 +77,44 @@ void main() {
 
     expect(find.text('Format email tidak valid'), findsOneWidget);
   });
+
+  testWidgets('AuthScreen landscape responsive layout test',
+      (WidgetTester tester) async {
+    // Standard phone in landscape mode (e.g. 800 x 380)
+    tester.view.physicalSize = const Size(800, 380);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() => tester.view.resetPhysicalSize());
+
+    SharedPreferences.setMockInitialValues({});
+    final sharedPrefs = await SharedPreferences.getInstance();
+
+    final router = GoRouter(
+      initialLocation: '/auth',
+      routes: [
+        GoRoute(
+          path: '/auth',
+          builder: (context, state) => const AuthScreen(),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(sharedPrefs),
+        ],
+        child: MaterialApp.router(
+          routerConfig: router,
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // Verify dual pane layout in landscape
+    expect(find.text('E-MODUL ETNOSAINS'), findsWidgets);
+    expect(find.text('Masuk Siswa'), findsOneWidget);
+    expect(find.text('Mulai Belajar E-Modul'), findsOneWidget);
+    expect(find.text('5 Modul Fermentasi'), findsOneWidget);
+  });
 }

@@ -6,7 +6,9 @@ import 'package:e_modul_etnosains/core/services/supabase_service.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
 
 class StudentLoginForm extends ConsumerStatefulWidget {
-  const StudentLoginForm({super.key});
+  final bool isLandscape;
+
+  const StudentLoginForm({super.key, this.isLandscape = false});
 
   @override
   ConsumerState<StudentLoginForm> createState() => _StudentLoginFormState();
@@ -123,141 +125,66 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final landscapeMode = widget.isLandscape ||
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Form(
       key: _studentFormKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(6),
+                padding: EdgeInsets.all(landscapeMode ? 4 : 6),
                 decoration: BoxDecoration(
                   color: const Color(0xFFE8F5E9),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.badge_outlined,
-                    size: 16, color: AppColors.primaryGreen),
+                child: Icon(Icons.badge_outlined,
+                    size: landscapeMode ? 14 : 16,
+                    color: AppColors.primaryGreen),
               ),
               const SizedBox(width: 8),
-              const Text(
+              Text(
                 'Identitas Belajar Siswa',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 13,
-                  color: Color(0xFF1E3A2B),
+                  fontSize: landscapeMode ? 12 : 13,
+                  color: const Color(0xFF1E3A2B),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          SizedBox(height: landscapeMode ? 8 : 14),
 
           // Field 1: Nama Lengkap
-          TextFormField(
-            controller: _studentNameController,
-            textInputAction: TextInputAction.next,
-            decoration: InputDecoration(
-              labelText: 'Nama Lengkap Siswa',
-              hintText: 'Contoh: Dewi Sartika',
-              prefixIcon: const Icon(Icons.person_outline_rounded,
-                  color: AppColors.primaryGreen),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide:
-                    const BorderSide(color: AppColors.primaryGreen, width: 1.8),
-              ),
-              filled: true,
-              fillColor: const Color(0xFFF9FAF8),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-            ),
-            validator: (val) => (val == null || val.trim().isEmpty)
-                ? 'Nama siswa wajib diisi'
-                : null,
-          ),
+          _buildNameField(compact: landscapeMode),
 
-          const SizedBox(height: 12),
+          SizedBox(height: landscapeMode ? 8 : 12),
 
-          // Field 2: Kelas
-          TextFormField(
-            controller: _studentClassController,
-            textInputAction: TextInputAction.next,
-            decoration: InputDecoration(
-              labelText: 'Kelas / Rombel',
-              hintText: 'Contoh: XII MIPA 1',
-              prefixIcon: const Icon(Icons.class_outlined,
-                  color: AppColors.primaryGreen),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide:
-                    const BorderSide(color: AppColors.primaryGreen, width: 1.8),
-              ),
-              filled: true,
-              fillColor: const Color(0xFFF9FAF8),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-            ),
-            validator: (val) => (val == null || val.trim().isEmpty)
-                ? 'Kelas wajib diisi'
-                : null,
-          ),
+          // In landscape: Kelas & Asal Sekolah in a clean side-by-side Row
+          if (landscapeMode)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: _buildClassField(compact: true)),
+                const SizedBox(width: 10),
+                Expanded(child: _buildSchoolField(compact: true)),
+              ],
+            )
+          else ...[
+            _buildClassField(compact: false),
+            const SizedBox(height: 12),
+            _buildSchoolField(compact: false),
+          ],
 
-          const SizedBox(height: 12),
-
-          // Field 3: Sekolah
-          TextFormField(
-            controller: _studentSchoolController,
-            textInputAction: TextInputAction.done,
-            onFieldSubmitted: (_) => _handleStudentSubmit(),
-            decoration: InputDecoration(
-              labelText: 'Asal Sekolah',
-              hintText: 'Contoh: SMAN 1 Bandung',
-              prefixIcon: const Icon(Icons.account_balance_outlined,
-                  color: AppColors.primaryGreen),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide:
-                    const BorderSide(color: AppColors.primaryGreen, width: 1.8),
-              ),
-              filled: true,
-              fillColor: const Color(0xFFF9FAF8),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-            ),
-            validator: (val) => (val == null || val.trim().isEmpty)
-                ? 'Nama sekolah wajib diisi'
-                : null,
-          ),
-
-          const SizedBox(height: 20),
+          SizedBox(height: landscapeMode ? 14 : 20),
 
           // Submit Button
           SizedBox(
-            height: 48,
+            height: landscapeMode ? 44 : 48,
             child: ElevatedButton(
               onPressed: _isLoading ? null : _handleStudentSubmit,
               style: ElevatedButton.styleFrom(
@@ -294,7 +221,7 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
                           child: Text(
                             'Mulai Belajar E-Modul',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 14),
+                                fontWeight: FontWeight.bold, fontSize: 13.5),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -306,6 +233,110 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildNameField({required bool compact}) {
+    return TextFormField(
+      controller: _studentNameController,
+      textInputAction: TextInputAction.next,
+      style: TextStyle(fontSize: compact ? 13 : 14),
+      decoration: InputDecoration(
+        labelText: 'Nama Lengkap Siswa',
+        hintText: 'Contoh: Dewi Sartika',
+        prefixIcon: Icon(Icons.person_outline_rounded,
+            size: compact ? 20 : 24, color: AppColors.primaryGreen),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide:
+              const BorderSide(color: AppColors.primaryGreen, width: 1.8),
+        ),
+        filled: true,
+        fillColor: const Color(0xFFF9FAF8),
+        isDense: compact,
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 14, vertical: compact ? 10 : 13),
+      ),
+      validator: (val) => (val == null || val.trim().isEmpty)
+          ? 'Nama siswa wajib diisi'
+          : null,
+    );
+  }
+
+  Widget _buildClassField({required bool compact}) {
+    return TextFormField(
+      controller: _studentClassController,
+      textInputAction: TextInputAction.next,
+      style: TextStyle(fontSize: compact ? 13 : 14),
+      decoration: InputDecoration(
+        labelText: 'Kelas / Rombel',
+        hintText: 'Contoh: XII MIPA 1',
+        prefixIcon: Icon(Icons.class_outlined,
+            size: compact ? 20 : 24, color: AppColors.primaryGreen),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide:
+              const BorderSide(color: AppColors.primaryGreen, width: 1.8),
+        ),
+        filled: true,
+        fillColor: const Color(0xFFF9FAF8),
+        isDense: compact,
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 14, vertical: compact ? 10 : 13),
+      ),
+      validator: (val) =>
+          (val == null || val.trim().isEmpty) ? 'Kelas wajib diisi' : null,
+    );
+  }
+
+  Widget _buildSchoolField({required bool compact}) {
+    return TextFormField(
+      controller: _studentSchoolController,
+      textInputAction: TextInputAction.done,
+      onFieldSubmitted: (_) => _handleStudentSubmit(),
+      style: TextStyle(fontSize: compact ? 13 : 14),
+      decoration: InputDecoration(
+        labelText: 'Asal Sekolah',
+        hintText: 'Contoh: SMAN 1 Bandung',
+        prefixIcon: Icon(Icons.account_balance_outlined,
+            size: compact ? 20 : 24, color: AppColors.primaryGreen),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFD6E6D6)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide:
+              const BorderSide(color: AppColors.primaryGreen, width: 1.8),
+        ),
+        filled: true,
+        fillColor: const Color(0xFFF9FAF8),
+        isDense: compact,
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 14, vertical: compact ? 10 : 13),
+      ),
+      validator: (val) =>
+          (val == null || val.trim().isEmpty) ? 'Sekolah wajib diisi' : null,
     );
   }
 }

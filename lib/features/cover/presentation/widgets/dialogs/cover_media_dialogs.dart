@@ -33,98 +33,362 @@ class CoverMediaDialogs {
   static void showVideoPengantarDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Row(
-          children: [
-            const Icon(Icons.movie_filter_rounded,
-                color: AppColors.warmTerracotta),
-            const SizedBox(width: 10),
-            Text('Pengantar E-Modul', style: AppTextStyles.h3),
-          ],
-        ),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+      builder: (ctx) {
+        final isLandscape =
+            MediaQuery.of(ctx).orientation == Orientation.landscape;
+        final size = MediaQuery.of(ctx).size;
+
+        if (isLandscape) {
+          return Dialog(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            insetPadding: const EdgeInsets.symmetric(
+              horizontal: 24,
+              vertical: 14,
+            ),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 780,
+                maxHeight: size.height - 28,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Left Column: Video Player
+                    Expanded(
+                      flex: 5,
+                      child: Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: const _IntroVideoPlayer(isLandscape: true),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    // Right Column: Info & Actions
+                    Expanded(
+                      flex: 5,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Header: Title & Close Button
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.movie_filter_rounded,
+                                color: AppColors.warmTerracotta,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  'Pengantar E-Modul',
+                                  style:
+                                      AppTextStyles.h3.copyWith(fontSize: 16),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () => Navigator.pop(ctx),
+                                icon: const Icon(Icons.close_rounded, size: 20),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                tooltip: 'Tutup',
+                              ),
+                            ],
+                          ),
+                          const Divider(height: 14),
+                          // Scrollable description
+                          Expanded(
+                            child: SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Selamat Datang di E-Modul Etnosains Fermentasi!',
+                                    style: AppTextStyles.bodyBold.copyWith(
+                                      fontSize: 12.5,
+                                      color: AppColors.primaryDark,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Melalui media interaktif ini, kamu akan mengeksplorasi bagaimana kearifan nenek moyang dalam mengolah tempe, tape, tauco, kecap, dan oncom sebenarnya merupakan penerapan bioteknologi mikroba yang sangat canggih.',
+                                    style: AppTextStyles.bodySmall.copyWith(
+                                      fontSize: 11.5,
+                                      height: 1.35,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          // Actions footer
+                          Row(
+                            children: [
+                              Expanded(
+                                child: OutlinedButton.icon(
+                                  onPressed: () => _openIntroVideo(context),
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 8,
+                                    ),
+                                    side: const BorderSide(
+                                      color: AppColors.primaryGreen,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  icon: const Icon(
+                                    Icons.open_in_new_rounded,
+                                    size: 14,
+                                    color: AppColors.primaryGreen,
+                                  ),
+                                  label: const Text(
+                                    'Di Browser',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.primaryGreen,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.pop(ctx);
+                                    context.go('/apersepsi');
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.primaryGreen,
+                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 8,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  icon: const Icon(
+                                    Icons.arrow_forward_rounded,
+                                    size: 14,
+                                  ),
+                                  label: const Text(
+                                    'Mulai Bab 1',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
+        // Portrait: Vertically stacked modal
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          insetPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          title: Row(
             children: [
-              const _IntroVideoPlayer(),
-              const SizedBox(height: 14),
-              Text(
-                'Selamat Datang di E-Modul Etnosains Fermentasi!',
-                style: AppTextStyles.bodyBold.copyWith(fontSize: 14),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                'Melalui media interaktif ini, kamu akan mengeksplorasi bagaimana kearifan nenek moyang dalam mengolah tempe, tape, tauco, kecap, dan oncom sebenarnya merupakan penerapan bioteknologi mikroba yang sangat canggih.',
-                style: AppTextStyles.bodySmall.copyWith(fontSize: 12),
-              ),
+              const Icon(Icons.movie_filter_rounded,
+                  color: AppColors.warmTerracotta),
+              const SizedBox(width: 10),
+              Text('Pengantar E-Modul', style: AppTextStyles.h3),
             ],
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Tutup'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _IntroVideoPlayer(),
+                const SizedBox(height: 14),
+                Text(
+                  'Selamat Datang di E-Modul Etnosains Fermentasi!',
+                  style: AppTextStyles.bodyBold.copyWith(fontSize: 14),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Melalui media interaktif ini, kamu akan mengeksplorasi bagaimana kearifan nenek moyang dalam mengolah tempe, tape, tauco, kecap, dan oncom sebenarnya merupakan penerapan bioteknologi mikroba yang sangat canggih.',
+                  style: AppTextStyles.bodySmall.copyWith(fontSize: 12),
+                ),
+              ],
+            ),
           ),
-          ElevatedButton.icon(
-            onPressed: () => _openIntroVideo(context),
-            icon: const Icon(Icons.open_in_new_rounded),
-            label: const Text('Buka di Browser'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              context.go('/apersepsi');
-            },
-            child: const Text('Mulai Bab 1'),
-          ),
-        ],
-      ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Tutup'),
+            ),
+            ElevatedButton.icon(
+              onPressed: () => _openIntroVideo(context),
+              icon: const Icon(Icons.open_in_new_rounded),
+              label: const Text('Buka di Browser'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                context.go('/apersepsi');
+              },
+              child: const Text('Mulai Bab 1'),
+            ),
+          ],
+        );
+      },
     );
   }
 
   static void showQrDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Row(
-          children: [
-            const Icon(Icons.qr_code_scanner_rounded,
-                color: AppColors.primaryGreen),
-            const SizedBox(width: 10),
-            Text('Akses Cepat Modul', style: AppTextStyles.h3),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.borderSubtle),
+      builder: (ctx) {
+        final isLandscape =
+            MediaQuery.of(ctx).orientation == Orientation.landscape;
+        final size = MediaQuery.of(ctx).size;
+
+        if (isLandscape) {
+          return Dialog(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            insetPadding: const EdgeInsets.symmetric(
+              horizontal: 24,
+              vertical: 14,
+            ),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 540,
+                maxHeight: size.height - 32,
               ),
-              child: const Icon(Icons.qr_code_2,
-                  size: 140, color: AppColors.primaryDark),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.borderSubtle),
+                      ),
+                      child: const Icon(Icons.qr_code_2,
+                          size: 100, color: AppColors.primaryDark),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.qr_code_scanner_rounded,
+                                  color: AppColors.primaryGreen, size: 18),
+                              const SizedBox(width: 8),
+                              Text('Akses Cepat Modul',
+                                  style:
+                                      AppTextStyles.h3.copyWith(fontSize: 16)),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Scan QR Code ini untuk membuka e-modul di perangkat ponsel atau tablet teman sekelasmu.',
+                            style: AppTextStyles.bodySmall
+                                .copyWith(fontSize: 11.5),
+                          ),
+                          const SizedBox(height: 12),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: ElevatedButton(
+                              onPressed: () => Navigator.pop(ctx),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryGreen,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: const Text('Tutup'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 12),
-            Text(
-              'Scan QR Code ini untuk membuka e-modul di perangkat ponsel atau tablet teman sekelasmu.',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.bodySmall,
+          );
+        }
+
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          insetPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          title: Row(
+            children: [
+              const Icon(Icons.qr_code_scanner_rounded,
+                  color: AppColors.primaryGreen),
+              const SizedBox(width: 10),
+              Text('Akses Cepat Modul', style: AppTextStyles.h3),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.borderSubtle),
+                ),
+                child: const Icon(Icons.qr_code_2,
+                    size: 140, color: AppColors.primaryDark),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Scan QR Code ini untuk membuka e-modul di perangkat ponsel atau tablet teman sekelasmu.',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.bodySmall,
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Tutup'),
             ),
           ],
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Tutup'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -140,14 +404,16 @@ String _formatDuration(Duration duration) {
 }
 
 class _IntroVideoPlayer extends ConsumerStatefulWidget {
-  const _IntroVideoPlayer();
+  final bool isLandscape;
+
+  const _IntroVideoPlayer({this.isLandscape = false});
 
   @override
   ConsumerState<_IntroVideoPlayer> createState() => _IntroVideoPlayerState();
 }
 
 class _IntroVideoPlayerState extends ConsumerState<_IntroVideoPlayer> {
-  late final VideoPlayerController _controller;
+  VideoPlayerController? _controller;
   late final Future<void> _initialization;
   bool _showControls = true;
   Timer? _hideControlsTimer;
@@ -165,21 +431,28 @@ class _IntroVideoPlayerState extends ConsumerState<_IntroVideoPlayer> {
     final cachedFile = await MediaSyncService.getLocalVideoFile(
       CoverMediaDialogs._introVideoUrl,
     );
-    if (cachedFile != null && await cachedFile.exists()) {
-      _controller = VideoPlayerController.file(cachedFile);
-    } else {
-      _controller = VideoPlayerController.networkUrl(
-        Uri.parse(CoverMediaDialogs._introVideoUrl),
-      );
+    final controller = (cachedFile != null && await cachedFile.exists())
+        ? VideoPlayerController.file(cachedFile)
+        : VideoPlayerController.networkUrl(
+            Uri.parse(CoverMediaDialogs._introVideoUrl),
+          );
+    if (cachedFile == null || !(await cachedFile.exists())) {
       unawaited(MediaSyncService.cacheVideo(CoverMediaDialogs._introVideoUrl));
     }
-    await _controller.initialize();
-    _controller.addListener(_videoListener);
-    if (mounted) setState(() {});
+    await controller.initialize();
+    if (!mounted) {
+      await controller.dispose();
+      return;
+    }
+    controller.addListener(_videoListener);
+    _controller = controller;
+    setState(() {});
   }
 
   void _videoListener() {
-    final isPlaying = _controller.value.isPlaying;
+    final controller = _controller;
+    if (controller == null) return;
+    final isPlaying = controller.value.isPlaying;
     if (isPlaying && !_hasPausedAudioForPlayback) {
       _hasPausedAudioForPlayback = true;
       ref.read(backgroundAudioProvider.notifier).pauseForMedia();
@@ -197,16 +470,17 @@ class _IntroVideoPlayerState extends ConsumerState<_IntroVideoPlayer> {
       _hasPausedAudioForPlayback = false;
       ref.read(backgroundAudioProvider.notifier).resumeFromMedia();
     }
-    _controller.removeListener(_videoListener);
-    _controller.dispose();
+    _controller?.removeListener(_videoListener);
+    _controller?.dispose();
     super.dispose();
   }
 
   void _startHideControlsTimer() {
     _hideControlsTimer?.cancel();
-    if (_controller.value.isPlaying) {
+    final controller = _controller;
+    if (controller != null && controller.value.isPlaying) {
       _hideControlsTimer = Timer(const Duration(seconds: 3), () {
-        if (mounted && _controller.value.isPlaying) {
+        if (mounted && (_controller?.value.isPlaying ?? false)) {
           setState(() {
             _showControls = false;
           });
@@ -216,48 +490,52 @@ class _IntroVideoPlayerState extends ConsumerState<_IntroVideoPlayer> {
   }
 
   void _togglePlayback() {
-    if (!_controller.value.isInitialized) return;
+    final controller = _controller;
+    if (controller == null || !controller.value.isInitialized) return;
     setState(() {
-      if (_controller.value.isPlaying) {
-        _controller.pause();
+      if (controller.value.isPlaying) {
+        controller.pause();
         _showControls = true;
         _hideControlsTimer?.cancel();
       } else {
-        _controller.play();
+        controller.play();
         _startHideControlsTimer();
       }
     });
   }
 
   void _seekRelative(int seconds) {
-    if (!_controller.value.isInitialized) return;
-    final current = _controller.value.position;
+    final controller = _controller;
+    if (controller == null || !controller.value.isInitialized) return;
+    final current = controller.value.position;
     final target = current + Duration(seconds: seconds);
     final clamped = target < Duration.zero
         ? Duration.zero
-        : target > _controller.value.duration
-            ? _controller.value.duration
+        : target > controller.value.duration
+            ? controller.value.duration
             : target;
-    _controller.seekTo(clamped);
+    controller.seekTo(clamped);
     _startHideControlsTimer();
   }
 
   void _cycleSpeed() {
-    if (!_controller.value.isInitialized) return;
-    final currentSpeed = _controller.value.playbackSpeed;
+    final controller = _controller;
+    if (controller == null || !controller.value.isInitialized) return;
+    final currentSpeed = controller.value.playbackSpeed;
     int currentIndex = _playbackSpeeds.indexOf(currentSpeed);
     int nextIndex = (currentIndex + 1) % _playbackSpeeds.length;
     final nextSpeed = _playbackSpeeds[nextIndex];
-    _controller.setPlaybackSpeed(nextSpeed);
+    controller.setPlaybackSpeed(nextSpeed);
     setState(() {});
     _startHideControlsTimer();
   }
 
   Future<void> _openFullscreen() async {
-    if (!_controller.value.isInitialized) return;
+    final controller = _controller;
+    if (controller == null || !controller.value.isInitialized) return;
     await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder: (_) => _FullscreenVideoPlayerPage(controller: _controller),
+        builder: (_) => _FullscreenVideoPlayerPage(controller: controller),
       ),
     );
     if (mounted) {
@@ -272,9 +550,7 @@ class _IntroVideoPlayerState extends ConsumerState<_IntroVideoPlayer> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final playerWidth = screenWidth > 624 ? 560.0 : screenWidth - 64;
-    return SizedBox(
-      width: playerWidth.clamp(280.0, 560.0),
-      child: ClipRRect(
+    final content = ClipRRect(
         borderRadius: BorderRadius.circular(14),
         child: Container(
           decoration: BoxDecoration(
@@ -295,7 +571,8 @@ class _IntroVideoPlayerState extends ConsumerState<_IntroVideoPlayer> {
                     ),
                   );
                 }
-                if (snapshot.hasError || !_controller.value.isInitialized) {
+                final controller = _controller;
+                if (snapshot.hasError || controller == null || !controller.value.isInitialized) {
                   return _VideoLoadError(
                     onOpenExternally: () => launchUrl(
                       Uri.parse(CoverMediaDialogs._introVideoUrl),
@@ -304,10 +581,10 @@ class _IntroVideoPlayerState extends ConsumerState<_IntroVideoPlayer> {
                   );
                 }
 
-                final isPlaying = _controller.value.isPlaying;
-                final position = _controller.value.position;
-                final duration = _controller.value.duration;
-                final speed = _controller.value.playbackSpeed;
+                final isPlaying = controller.value.isPlaying;
+                final position = controller.value.position;
+                final duration = controller.value.duration;
+                final speed = controller.value.playbackSpeed;
 
                 return GestureDetector(
                   onTap: () {
@@ -324,8 +601,8 @@ class _IntroVideoPlayerState extends ConsumerState<_IntroVideoPlayer> {
                       Positioned.fill(
                         child: Center(
                           child: AspectRatio(
-                            aspectRatio: _controller.value.aspectRatio,
-                            child: VideoPlayer(_controller),
+                            aspectRatio: controller.value.aspectRatio,
+                            child: VideoPlayer(controller),
                           ),
                         ),
                       ),
@@ -504,7 +781,7 @@ class _IntroVideoPlayerState extends ConsumerState<_IntroVideoPlayer> {
                                       ),
                                       const SizedBox(height: 2),
                                       VideoProgressIndicator(
-                                        _controller,
+                                        controller,
                                         allowScrubbing: true,
                                         padding: const EdgeInsets.only(
                                             top: 4, bottom: 4),
@@ -529,7 +806,14 @@ class _IntroVideoPlayerState extends ConsumerState<_IntroVideoPlayer> {
             ),
           ),
         ),
-      ),
+      );
+
+    if (widget.isLandscape) {
+      return content;
+    }
+    return SizedBox(
+      width: playerWidth.clamp(280.0, 560.0),
+      child: content,
     );
   }
 }
