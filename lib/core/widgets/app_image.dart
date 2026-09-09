@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../constants/app_assets.dart';
 import '../services/media_sync_service.dart';
 
 class AppImage extends StatelessWidget {
@@ -83,6 +84,28 @@ class AppImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (assetPath == AppAssets.tempeProsesFerm ||
+        assetPath.startsWith('assets/images/fermentasi_tempe')) {
+      return Image.asset(
+        assetPath,
+        width: width,
+        height: height,
+        fit: fit,
+        alignment: alignment,
+        errorBuilder: (ctx, err, stack) {
+          if (errorBuilder != null) {
+            return errorBuilder!(context, err, stack);
+          }
+          return ColoredBox(
+            color: Colors.grey.shade100,
+            child: const Center(
+              child: Icon(Icons.broken_image_rounded, color: Colors.grey),
+            ),
+          );
+        },
+      );
+    }
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final pixelWidth = _targetPixelWidth(context, constraints);

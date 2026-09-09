@@ -103,8 +103,11 @@ void main() {
     expect(find.text('Pengaturan Variabel Eksperimen'), findsOneWidget);
     expect(find.text('DIGITAL GLUCOMETER PRO'), findsOneWidget);
 
-    // Switch to Game Misi Sains tab via the reminder button inside the simulator tab
-    await tester.tap(find.text('Buka Game Misi Sains'));
+    // Switch to Game Misi Sains tab via the continue button inside the simulator tab
+    final continueButton = find.text('Lanjut ke Game Misi Sains');
+    await tester.ensureVisible(continueButton);
+    await tester.pumpAndSettle();
+    await tester.tap(continueButton);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
 

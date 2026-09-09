@@ -68,7 +68,9 @@ class AppAssets {
   static const String tempeRagi = '$asetSedPath/ragi-tempe.jpeg';
   static const String tempePembungkusan =
       '$asetSedPath/pembungkusan-tempe.jpeg';
-  static const String tempeProsesFerm = '$asetSedPath/proses-ferm-tempe.jpeg';
+  static const String tempeProsesFerm = '$basePath/fermentasi_tempe.jpeg';
+  static const String tempePosterProsesFerm =
+      '$asetSedPath/proses-ferm-tempe.jpeg';
   static const String tempeJadi = '$asetSedPath/jadi-tempe.jpeg';
 
   // Tape Singkong Process

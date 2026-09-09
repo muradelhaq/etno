@@ -7,6 +7,7 @@ import 'package:e_modul_etnosains/core/widgets/ethno_card.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
 import 'package:e_modul_etnosains/core/widgets/app_image.dart';
 import 'package:e_modul_etnosains/features/peta_konsep/data/models/microorganism_model.dart';
+import 'package:e_modul_etnosains/core/utils/slide_navigation_guard.dart';
 
 class VirtualLabGameTab extends ConsumerStatefulWidget {
   const VirtualLabGameTab({super.key});
@@ -1014,6 +1015,21 @@ class _VirtualLabGameTabState extends ConsumerState<VirtualLabGameTab> {
               );
             },
           ),
+          if (alreadySaved) ...[
+            const SizedBox(height: 10),
+            CustomButton(
+              text: 'Lanjut ke Tantangan Proyek Etnosains',
+              icon: Icons.arrow_forward_rounded,
+              isFullWidth: true,
+              backgroundColor: AppColors.terracottaDark,
+              onPressed: () => navigateToNextSlide(
+                context,
+                ref,
+                currentSlide: 10,
+                route: '/challenge-proyek',
+              ),
+            ),
+          ],
         ],
       );
     }
