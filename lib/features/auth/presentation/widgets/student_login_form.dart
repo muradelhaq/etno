@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/services/supabase_service.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
+import 'package:e_modul_etnosains/shared/services/student_session_store.dart';
 
 class StudentLoginForm extends ConsumerStatefulWidget {
   final bool isLandscape;
@@ -123,10 +124,72 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
     }
   }
 
+  Future<void> _confirmResetProfile() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        title: const Row(
+          children: [
+            Icon(Icons.warning_amber_rounded, color: AppColors.errorRed),
+            SizedBox(width: 8),
+            Text('Hapus Profil Belajar?'),
+          ],
+        ),
+        content: const Text(
+          'Tindakan ini akan menghapus data profil Anda (nama, kelas, sekolah) serta mereset seluruh skor kuis, poin XP, dan kemajuan modul yang tersimpan di perangkat ini.\n\nApakah Anda yakin ingin melanjutkan?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Batal'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.errorRed,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Ya, Hapus Data'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      setState(() => _isLoading = true);
+      try {
+        await ref.read(userProgressProvider.notifier).resetAll();
+        await StudentSessionStore.clear();
+        _studentNameController.clear();
+        _studentClassController.clear();
+        _studentSchoolController.clear();
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text(
+                  'Profil dan seluruh riwayat belajar berhasil direset.'),
+              backgroundColor: AppColors.primaryGreen,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+            ),
+          );
+        }
+      } finally {
+        if (mounted) setState(() => _isLoading = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final landscapeMode = widget.isLandscape ||
         MediaQuery.of(context).orientation == Orientation.landscape;
+    final user = ref.watch(userProgressProvider);
+    final hasExistingProfile = user.studentName != 'Siswa Etnosains' &&
+        user.studentName.trim().isNotEmpty;
 
     return Form(
       key: _studentFormKey,
@@ -231,6 +294,31 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
                     ),
             ),
           ),
+
+          if (hasExistingProfile) ...[
+            const SizedBox(height: 10),
+            OutlinedButton.icon(
+              onPressed: _isLoading ? null : _confirmResetProfile,
+              icon: const Icon(Icons.delete_sweep_outlined,
+                  size: 16, color: AppColors.errorRed),
+              label: const Text(
+                'Hapus Profil & Reset Riwayat Belajar',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.errorRed,
+                ),
+              ),
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                    color: AppColors.errorRed.withValues(alpha: 0.4)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 9),
+              ),
+            ),
+          ],
         ],
       ),
     );

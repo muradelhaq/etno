@@ -5,6 +5,7 @@ import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/theme/text_styles.dart';
 import 'package:e_modul_etnosains/shared/services/app_update_service.dart';
 import 'package:e_modul_etnosains/shared/widgets/app_update_dialog.dart';
+import 'package:e_modul_etnosains/shared/widgets/privacy_policy_dialog.dart';
 
 class DrawerVersionFooter extends ConsumerWidget {
   const DrawerVersionFooter({super.key});
@@ -60,42 +61,76 @@ class DrawerVersionFooter extends ConsumerWidget {
           top: BorderSide(color: AppColors.borderSubtle),
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          FutureBuilder<PackageInfo>(
-            future: PackageInfo.fromPlatform(),
-            builder: (context, snapshot) {
-              final version = snapshot.data?.version ?? '1.0.3';
-              return Text(
-                'v$version (Etnosains)',
-                style: AppTextStyles.bodySmall.copyWith(
-                  fontSize: 11,
-                  color: AppColors.textLight,
-                ),
-              );
-            },
-          ),
-          InkWell(
-            onTap: () => _handleManualUpdateCheck(context, ref),
-            borderRadius: BorderRadius.circular(8),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.sync_rounded,
-                      size: 14, color: AppColors.primaryGreen),
-                  const SizedBox(width: 4),
-                  Text(
-                    'Cek Update',
-                    style: AppTextStyles.tagText.copyWith(
-                      color: AppColors.primaryGreen,
-                      fontSize: 11,
-                    ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () => PrivacyPolicyDialog.show(context),
+                borderRadius: BorderRadius.circular(6),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.shield_outlined,
+                          size: 13, color: AppColors.textSecondary),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Kebijakan Privasi',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          fontSize: 11,
+                          color: AppColors.textSecondary,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
+              InkWell(
+                onTap: () => _handleManualUpdateCheck(context, ref),
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.sync_rounded,
+                          size: 13, color: AppColors.primaryGreen),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Cek Update',
+                        style: AppTextStyles.tagText.copyWith(
+                          color: AppColors.primaryGreen,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: FutureBuilder<PackageInfo>(
+              future: PackageInfo.fromPlatform(),
+              builder: (context, snapshot) {
+                final version = snapshot.data?.version ?? '1.2.15';
+                return Text(
+                  'v$version (Etnosains)',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    fontSize: 10.5,
+                    color: AppColors.textLight,
+                  ),
+                );
+              },
             ),
           ),
         ],
