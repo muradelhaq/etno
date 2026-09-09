@@ -24,38 +24,69 @@ class FermentedFoodsData {
       processSteps: [
         StepProcessModel(
           stepNumber: 1,
-          title: 'Pembersihan & Perendaman Kedelai',
+          title: 'Biji Kedelai Pilihan',
           description:
-              'Kedelai dicuci bersih dan direndam selama 12-24 jam. Terjadi fermentasi asam laktat spontan yang menurunkan pH kedelai menjadi 4,5–5,0.',
+              'Pemilihan biji kedelai kuning berkualitas tinggi yang utuh, bernas, dan dicuci bersih dari kotoran.',
           biologicalContext:
-              'Kondisi asam alami mencegah pertumbuhan bakteri pembusuk patogen sebelum ragi kapang diinokulasikan.',
-          tip: 'Gunakan air bersih mengalir dan buang kedelai yang mengapung.',
+              'Biji kedelai kaya protein globulin dan lipid sebagai substrat utama kapang Rhizopus.',
+          tip: 'Gunakan air bersih mengalir dan buang biji kedelai yang mengapung.',
         ),
         StepProcessModel(
           stepNumber: 2,
-          title: 'Pengupasan Kulit & Perebusan',
+          title: 'Perendaman 1 (Hidrasi Awal)',
           description:
-              'Kulit ari kedelai dikupas dengan cara diremas, lalu kedelai direbus hingga matang empuk.',
+              'Kedelai direndam dalam air bersih selama 8–12 jam hingga biji mengembang sempurna.',
           biologicalContext:
-              'Perebusan mendegradasi senyawa antigizi (seperti antitripsin) dan melunakkan struktur biji agar mudah ditembus hifa kapang.',
+              'Proses hidrasi imbibisi air melonggarkan dinding sel kedelai dan memulai pelunakan biji.',
         ),
         StepProcessModel(
           stepNumber: 3,
-          title: 'Penirisan, Pendinginan & Inokulasi Ragi',
+          title: 'Perebusan & Pengupasan Kulit Ari',
           description:
-              'Kedelai dihamparkan hingga dingin dan kering permukaannya, lalu ditaburi ragi Rhizopus secara merata.',
+              'Kedelai direbus dalam air mendidih hingga setengah matang, lalu kulit arinya dikupas bersih.',
           biologicalContext:
-              'Spora Rhizopus peka terhadap suhu panas; penaburan harus pada suhu kamar (28-30°C).',
-          tip:
-              'Jangan menaburkan ragi saat kedelai masih panas agar spora kapang tidak mati.',
+              'Perebusan mendegradasi senyawa antigizi (seperti antitripsin) dan melunakkan struktur biji.',
         ),
         StepProcessModel(
           stepNumber: 4,
-          title: 'Pembungkusan & Fermentasi Ruang',
+          title: 'Perendaman 2 & Penirisan',
           description:
-              'Kedelai dibungkus daun pisang atau plastik yang diberi lubang-lubang ventilasi mikro, lalu diperam selama 36–48 jam.',
+              'Keping kedelai direndam kembali semalaman untuk proses pengasaman alami, lalu ditiriskan hingga kering.',
           biologicalContext:
-              'Kapang bersifat aerob obligat dan memerlukan pasokan oksigen mikro untuk menjalin miselium putih kompak.',
+              'Fermentasi bakteri asam laktat alami menurunkan pH kedelai ke 4.5–5.0, menghambat bakteri pembusuk.',
+        ),
+        StepProcessModel(
+          stepNumber: 5,
+          title: 'Pendinginan & Inokulasi Ragi',
+          description:
+              'Kedelai dipastikan dingin dan kering permukaannya, lalu diinokulasi spora Rhizopus oligosporus.',
+          biologicalContext:
+              'Inokulasi harus pada suhu kamar (<32°C) agar spora kapang tidak rusak oleh panas sisa.',
+          tip: 'Jangan menaburkan ragi saat kedelai masih panas agar spora kapang tidak mati.',
+        ),
+        StepProcessModel(
+          stepNumber: 6,
+          title: 'Pembungkusan (Daun / Plastik Berlubang)',
+          description:
+              'Kedelai beragi dibungkus daun pisang atau plastik dengan lubang ventilasi mikro.',
+          biologicalContext:
+              'Rhizopus bersifat aerob obligat; pori mikro menyediakan suplai oksigen yang terkendali.',
+        ),
+        StepProcessModel(
+          stepNumber: 7,
+          title: 'Fermentasi & Pemeraman (36–48 Jam)',
+          description:
+              'Paket tempe diperam di tempat hangat dan gelap (28–32°C) selama 36–48 jam hingga miselium merajut kedelai.',
+          biologicalContext:
+              'Hifa kapang tumbuh lebat menghasilkan enzim protease yang memecah protein kedelai.',
+        ),
+        StepProcessModel(
+          stepNumber: 8,
+          title: 'Tempe Matang Siap Konsumsi',
+          description:
+              'Tempe matang dengan miselium putih padat beraroma khas segar jamur siap dikonsumsi.',
+          biologicalContext:
+              'Daya cerna protein meningkat drastis (>85%) dan kaya vitamin B12 serta antioksidan isoflavon.',
         ),
       ],
       localWisdom:

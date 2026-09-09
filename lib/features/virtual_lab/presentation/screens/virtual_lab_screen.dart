@@ -384,17 +384,27 @@ class _VirtualLabScreenState extends ConsumerState<VirtualLabScreen>
           const SizedBox(height: 24),
 
           CustomButton(
-            text: 'Lanjut ke Tantangan Proyek Etnosains',
-            icon: Icons.arrow_forward_rounded,
+            text: 'Lanjut ke Game Misi Sains',
+            icon: Icons.sports_esports_rounded,
             isFullWidth: true,
             backgroundColor: AppColors.primaryGreen,
-            onPressed: () => navigateToNextSlide(
-              context,
-              ref,
-              currentSlide: 10,
-              route: '/challenge-proyek',
-            ),
+            onPressed: () => _tabController.animateTo(1),
           ),
+          if (missionGameCompleted) ...[
+            const SizedBox(height: 10),
+            CustomButton(
+              text: 'Lanjut ke Tantangan Proyek Etnosains',
+              icon: Icons.arrow_forward_rounded,
+              isFullWidth: true,
+              backgroundColor: AppColors.terracottaDark,
+              onPressed: () => navigateToNextSlide(
+                context,
+                ref,
+                currentSlide: 10,
+                route: '/challenge-proyek',
+              ),
+            ),
+          ],
 
           const SizedBox(height: 24),
         ],

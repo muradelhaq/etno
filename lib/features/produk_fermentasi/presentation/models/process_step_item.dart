@@ -34,30 +34,43 @@ class FoodProcessStepsProvider {
     return const [
       ProcessStepItem(
         title: 'Biji Kedelai',
+        subtitle: '(Bahan Baku Pilihan)',
         imageAsset: AppAssets.tempeKedelai,
         iconType: StepIconType.kedelai,
         description:
-            'Pemilihan biji kedelai kuning (Glycine max) berkualitas tinggi yang utuh dan bersih.',
+            'Pemilihan biji kedelai kuning (Glycine max) berkualitas tinggi yang utuh, bernas, dan bersih dari kotoran.',
         biologicalExplanation:
-            'Biji kedelai kaya akan protein globulin (glisinin & konglisinin) dan lipid yang menjadi substrat utama kapang.',
+            'Biji kedelai kaya akan protein globulin (glisinin & konglisinin) dan lipid yang menjadi substrat utama kapang Rhizopus.',
       ),
       ProcessStepItem(
-        title: 'Perendaman Kedelai',
+        title: 'Perendaman 1',
+        subtitle: '(Hidrasi Awal 8–12 Jam)',
         imageAsset: AppAssets.tempePerendaman,
         iconType: StepIconType.perendaman,
         description:
-            'Kedelai direndam dalam air bersih selama 12–24 jam pada suhu ruang.',
+            'Kedelai dicuci bersih lalu direndam dalam air bersih selama 8–12 jam hingga biji mengembang.',
         biologicalExplanation:
-            'Terjadi hidrasi biji dan fermentasi asam laktat alami yang menurunkan pH kedelai ke 4.5–5.0, menghambat bakteri patogen pembusuk.',
+            'Proses hidrasi imbibisi air melonggarkan dinding sel kedelai dan memulai pelunakan struktur biji.',
       ),
       ProcessStepItem(
         title: 'Perebusan & Kupas Kulit',
+        subtitle: '(Inaktivasi Antinutrisi)',
         imageAsset: AppAssets.tempePerebusan,
         iconType: StepIconType.perebusan,
         description:
-            'Kedelai direbus dalam air mendidih hingga melunak, lalu kulit ari dikupas.',
+            'Kedelai direbus dalam air mendidih hingga setengah matang, lalu kulit arinya dikupas bersih.',
         biologicalExplanation:
             'Suhu tinggi mendenaturasi zat antigizi antitripsin dan menginaktivasi enzim lipoksigenase penyebab bau langu.',
+      ),
+      ProcessStepItem(
+        title: 'Perendaman 2 & Tiris',
+        subtitle: '(Fermentasi Asam Alami Semalaman)',
+        imageAsset: AppAssets.tempePerendaman,
+        iconType: StepIconType.perendaman,
+        description:
+            'Keping kedelai direndam kembali semalaman dalam air rendaman untuk fermentasi asam alami, lalu ditiriskan.',
+        biologicalExplanation:
+            'Bakteri asam laktat alami menurunkan pH ke 4.5–5.0, menghambat bakteri patogen pembusuk dan menciptakan kondisi selektif bagi kapang tempe.',
       ),
       ProcessStepItem(
         title: 'Pemberian Ragi',
@@ -65,13 +78,13 @@ class FoodProcessStepsProvider {
         imageAsset: AppAssets.tempeRagi,
         iconType: StepIconType.ragi,
         description:
-            'Kedelai ditiriskan hingga kering dan dingin (suhu ruang), lalu diinokulasi spora kapang tempe.',
+            'Kedelai ditiriskan hingga kering dan dingin (suhu ruang), lalu diinokulasi spora kapang tempe secara merata.',
         biologicalExplanation:
-            'Inokulasi harus pada suhu kamar (<32°C) agar spora tidak rusak akibat panas.',
+            'Inokulasi harus pada suhu kamar (<32°C) agar spora tidak rusak dan tidak mati akibat panas sisa.',
       ),
       ProcessStepItem(
         title: 'Pembungkusan',
-        subtitle: '(daun pisang/ plastik)',
+        subtitle: '(daun pisang/ plastik berlubang)',
         imageAsset: AppAssets.tempePembungkusan,
         iconType: StepIconType.pembungkusan,
         description:
@@ -81,6 +94,7 @@ class FoodProcessStepsProvider {
       ),
       ProcessStepItem(
         title: 'Fermentasi 36-48 jam',
+        subtitle: '(Pemeraman di Tempat Hangat)',
         imageAsset: AppAssets.tempeProsesFerm,
         iconType: StepIconType.fermentasi,
         description:
@@ -90,10 +104,11 @@ class FoodProcessStepsProvider {
       ),
       ProcessStepItem(
         title: 'Tempe Matang',
+        subtitle: '(Hasil Jadi Siap Konsumsi)',
         imageAsset: AppAssets.tempeJadi,
         iconType: StepIconType.tempe,
         description:
-            'Tempe matang dengan miselium putih padat beraroma khas siap dikonsumsi atau diolah.',
+            'Tempe matang sempurna dengan miselium putih padat beraroma khas segar jamur, siap dikonsumsi atau diolah.',
         biologicalExplanation:
             'Protein kedelai telah terhidrolisis menjadi asam amino bebas sehingga daya cerna meningkat hingga >85% dan kaya vitamin B12.',
       ),
