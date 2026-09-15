@@ -75,6 +75,12 @@ class OfflineSyncQueue {
     });
   }
 
+  static Future<void> clear() {
+    return _serialize(() async {
+      await _save([]);
+    });
+  }
+
   static Future<void> _save(List<Map<String, dynamic>> operations) async {
     final preferences = _preferences;
     if (preferences == null) return;

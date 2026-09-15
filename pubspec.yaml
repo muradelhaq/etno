@@ -42,7 +42,6 @@ dependencies:
   dio: ^5.11.0
   # Backend & Database
   supabase_flutter: ^2.8.0
-  open_filex: ^4.7.0
   url_launcher: ^6.3.2
   video_player: ^2.14.0
   cached_network_image: ^3.4.1

@@ -32,20 +32,25 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Build Release App Bundle (AAB for Google Play)
+        run: flutter build appbundle --release
+
       - name: Build Release APK
         run: flutter build apk --release
 
-      - name: Create GitHub Release & Upload APK
+      - name: Create GitHub Release & Upload Assets
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ github.ref_name }}
           body: |
             ## Pembaruan E-Modul Etnosains (${{ github.ref_name }})
             
-            Unduh file `app-release.apk` di bawah untuk menginstall versi terbaru aplikasi E-Modul Etnosains.
+            - **Google Play Bundle:** `app-release.aab` (siap diunggah ke Google Play Console)
+            - **Standalone APK:** `app-release.apk` (untuk pengujian langsung)
           draft: false
           prerelease: false
           files: |
+            build/app/outputs/bundle/release/app-release.aab
             build/app/outputs/flutter-apk/app-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

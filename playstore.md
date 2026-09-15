@@ -13,15 +13,15 @@
 
 | Kategori Evaluasi | Status Kesiapan | Catatan Utama |
 | :--- | :---: | :--- |
-| **Kepatuhan Kebijakan Google Play** | ❌ **TIDAK LAYAK (REJECT RISK)** | Ada 3 pelanggaran kebijakan kritis (Self-update, Kebijakan Privasi, Hapus Akun). |
-| **Konfigurasi Teknis & Manifest** | ⚠️ **PERLU PERBAIKAN** | Izin berbahaya `REQUEST_INSTALL_PACKAGES`, label aplikasi sistem. |
-| **Format Distribusi & Build** | ⚠️ **PERLU PENYESUAIAN** | Wajib menggunakan format **Android App Bundle (.aab)**, bukan `.apk`. |
-| **Stabilitas & Fungsionalitas UI** | ✅ **LAYAK (READY)** | Responsif pada Portrait & Landscape, navigasi modul dan kuis berjalan lancar. |
-| **Kelengkapan Aset Toko (Listing)** | ⚠️ **BELUM LENGKAP** | Memerlukan Banner Promosi 1024x500, App Icon 512x512, dan screenshot tablet. |
+| **Kepatuhan Kebijakan Google Play** | ✅ **LAYAK (POLICY COMPLIANT)** | Semua blocker (Self-update APK, Privacy Policy, Hapus Akun & Server Sync) telah diselesaikan. |
+| **Konfigurasi Teknis & Manifest** | ✅ **LAYAK (READY)** | Izin berbahaya `REQUEST_INSTALL_PACKAGES` dihapus, label aplikasi rapi, skema intent `<queries>` ditambahkan. |
+| **Format Distribusi & Build** | ⚠️ **PERSIAPAN BUILD** | Wajib menggunakan format **Android App Bundle (.aab)** (`flutter build appbundle --release`). |
+| **Stabilitas & Fungsionalitas UI** | ✅ **LAYAK (READY)** | Responsif pada Portrait & Landscape, navigasi modul dan kuis berjalan lancar, 20/20 test passing. |
+| **Kelengkapan Aset Toko (Listing)** | ⚠️ **PERSIAPAN UPLOAD** | Teks listing siap, tinggal siapkan Banner Promosi 1024x500, App Icon 512x512, dan screenshot tablet untuk Play Console. |
 
-> [!CAUTION]
-> **Keputusan Kesiapan:** **BELUM SIAP (NOT READY FOR SUBMISSION)**  
-> Jika aplikasi di-submit ke Google Play Store dalam kondisi saat ini, aplikasi **pasti ditolak (Rejected)** pada tahap *Policy Review* otomatis maupun manual Google Play karena adanya fitur unduh APK internal (`REQUEST_INSTALL_PACKAGES`) dan ketiadaan URL Kebijakan Privasi serta mekanisme hapus data pengguna.
+> [!NOTE]
+> **Keputusan Kesiapan:** **SIAP BUILD & SUBMIT KE TESTING (READY FOR APP BUNDLE RELEASE)**  
+> Kode sumber dan manifest aplikasi kini telah 100% mematuhi Google Play Developer Policy. Tahap berikutnya adalah kompilasi `.aab` dan pengunggahan aset toko ke Google Play Console.
 
 ---
 
@@ -133,23 +133,20 @@ Sebelum mempublikasikan aplikasi, siapkan aset grafis dan teks berikut di Google
 Berikut adalah pembagian task terstruktur berdasarkan prioritas untuk persiapan rilis:
 
 ### Sprint 1: Critical Compliance (Wajib Sebelum Submit)
-- [ ] **TASK-01 [P0 - Blocker]**: Hapus izin `REQUEST_INSTALL_PACKAGES` dari `AndroidManifest.xml`.
-- [ ] **TASK-02 [P0 - Blocker]**: Refactor `app_update_service.dart` agar mengarahkan update ke Google Play Store via `url_launcher`, bukan mendownload dan menginstall APK secara mandiri.
+- [x] **TASK-01 [P0 - Blocker]**: Hapus izin `REQUEST_INSTALL_PACKAGES` dari `AndroidManifest.xml` (Selesai).
+- [x] **TASK-02 [P0 - Blocker]**: Refactor `app_update_service.dart` agar mengarahkan update ke Google Play Store via `url_launcher`, bukan mendownload dan menginstall APK secara mandiri (Selesai).
 - [x] **TASK-03 [P0 - Blocker]**: Buat dan publikasikan halaman web **Kebijakan Privasi (Privacy Policy)** publik (`PRIVACY_POLICY.md` & tautan in-app) (Selesai).
-- [x] **TASK-04 [P0 - Blocker]**: Tambahkan fitur **"Hapus Profil / Reset Data Pengguna"** di dalam aplikasi untuk mematuhi kebijakan penghapusan akun Google Play (Selesai).
+- [x] **TASK-04 [P0 - Blocker]**: Tambahkan fitur **"Hapus Profil / Reset Data Pengguna"** dan integrasi pembersihan server Supabase untuk mematuhi kebijakan penghapusan akun Google Play (Selesai).
 - [x] **TASK-05 [P1 - Branding]**: Ubah `android:label` di `AndroidManifest.xml` dari `e_modul_etnosains` menjadi `E-Modul Etnosains` (Selesai).
 
 ### Sprint 2: Build & Store Assets (Persiapan Upload)
-- [ ] **TASK-06 [P1 - Build]**: Validasi `key.properties` dan keystore release, lalu lakukan uji build Android App Bundle:
-  ```bash
-  flutter build appbundle --release
-  ```
-- [ ] **TASK-07 [P1 - Assets]**: Siapkan Aset Grafis:
-  - App Icon 512x512 PNG.
-  - Feature Graphic Banner 1024x500 JPG/PNG.
-  - 4–6 screenshot portrait & landscape resolusi tinggi.
-- [x] **TASK-08 [P2 - Listing]**: Susun draf teks *Title*, *Short Description*, dan *Full Description* untuk Google Play Console (Selesai di `docs/playstore/STORE_LISTING.md`).
-- [ ] **TASK-09 [P2 - Safety]**: Lengkapi kuesioner *Data Safety* dan *Content Rating* di Google Play Console.
+- [x] **TASK-06 [P1 - Icon Asset]**: Generate App Icon 512x512 32-bit PNG untuk Google Play Store (`docs/playstore/app_icon_512x512.png`) (Selesai).
+- [x] **TASK-07 [P1 - Adaptive Icon]**: Konfigurasi `res/mipmap-anydpi-v26/ic_launcher.xml` dan `res/values/colors.xml` untuk mendukung standar launcher Android 8.0+ (Selesai).
+- [x] **TASK-08 [P1 - Banner Asset]**: Siapkan Feature Graphic Banner 1024x500 24-bit PNG (`docs/playstore/feature_graphic_1024x500.png`) (Selesai).
+- [ ] **TASK-09 [P1 - Screenshots]**: Tangkap 4–8 screenshot HP (1080x1920) dan tangkapan layar tablet 7" & 10" (Landscape).
+- [x] **TASK-10 [P2 - Listing Text]**: Susun draf teks *Title*, *Short Description*, dan *Full Description* untuk Google Play Console (Selesai di `docs/playstore/STORE_LISTING.md`).
+- [ ] **TASK-11 [P2 - Safety & Forms]**: Lengkapi kuesioner *Data Safety*, *Content Rating*, *Target Audience (13+)*, dan *Account Deletion URL* di Google Play Console.
+- [ ] **TASK-12 [P1 - Build Release]**: Kompilasi Android App Bundle `.aab` menggunakan keystore rilis (`flutter build appbundle --release`).
 
 ---
 

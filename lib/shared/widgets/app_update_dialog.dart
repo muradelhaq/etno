@@ -17,7 +17,7 @@ class AppUpdateDialog extends ConsumerStatefulWidget {
   static Future<void> show(BuildContext context, AppUpdateInfo updateInfo) {
     return showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (ctx) => AppUpdateDialog(updateInfo: updateInfo),
     );
   }
@@ -27,75 +27,41 @@ class AppUpdateDialog extends ConsumerStatefulWidget {
 }
 
 class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
-  bool _isDownloading = false;
-  double _progress = 0.0;
-  int _receivedBytes = 0;
-  int _totalBytes = 0;
-  String? _errorMessage;
-  bool _downloadFinished = false;
+  bool _isOpeningStore = false;
 
-  String _formatBytes(int bytes) {
-    if (bytes <= 0) return '0 B';
-    if (bytes < 1024 * 1024) {
-      return '${(bytes / 1024).toStringAsFixed(1)} KB';
+  Future<void> _openPlayStore() async {
+    setState(() => _isOpeningStore = true);
+    final service = ref.read(appUpdateServiceProvider);
+    final opened = await service.openPlayStore();
+
+    if (!mounted) return;
+    setState(() => _isOpeningStore = false);
+
+    if (!opened && widget.updateInfo.releaseUrl.isNotEmpty) {
+      final uri = Uri.parse(widget.updateInfo.releaseUrl);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Tidak dapat membuka tautan pembaruan.'),
+            backgroundColor: AppColors.errorRed,
+          ),
+        );
+      }
     }
-    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
-  }
-
-  String? _downloadedFilePath;
-
-  Future<void> _startUpdate() async {
-    setState(() {
-      _isDownloading = true;
-      _errorMessage = null;
-      _progress = 0.0;
-      _downloadFinished = false;
-      _downloadedFilePath = null;
-    });
-
-    final updateService = ref.read(appUpdateServiceProvider);
-
-    await updateService.downloadAndInstall(
-      apkUrl: widget.updateInfo.apkDownloadUrl,
-      fileName: widget.updateInfo.apkFileName,
-      onProgress: (received, total) {
-        if (!mounted) return;
-        setState(() {
-          _receivedBytes = received;
-          _totalBytes = total;
-          if (total > 0) {
-            _progress = received / total;
-          }
-        });
-      },
-      onComplete: (filePath) {
-        if (!mounted) return;
-        setState(() {
-          _isDownloading = false;
-          _downloadFinished = true;
-          _downloadedFilePath = filePath;
-        });
-      },
-      onError: (error) {
-        if (!mounted) return;
-        setState(() {
-          _isDownloading = false;
-          _errorMessage = error;
-        });
-      },
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     final info = widget.updateInfo;
 
-    return PopScope(
-      canPop: !_isDownloading,
-      child: Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        backgroundColor: Colors.white,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      backgroundColor: Colors.white,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 440),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -129,7 +95,8 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
                 const SizedBox(height: 6),
                 Center(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppColors.warmCream,
                       borderRadius: BorderRadius.circular(12),
@@ -149,7 +116,7 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
                 // Release notes section
                 Container(
                   padding: const EdgeInsets.all(12),
-                  constraints: const BoxConstraints(maxHeight: 140),
+                  constraints: const BoxConstraints(maxHeight: 160),
                   decoration: BoxDecoration(
                     color: AppColors.background,
                     borderRadius: BorderRadius.circular(12),
@@ -160,173 +127,83 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Catatan Rilis:',
+                          'Catatan Rilis (${info.releaseName}):',
                           style: AppTextStyles.bodyBold.copyWith(fontSize: 12),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           info.releaseNotes.isNotEmpty
                               ? info.releaseNotes
-                              : 'Pembaruan stabilitas dan penambahan fitur aplikasi E-Modul Etnosains.',
+                              : 'Pembaruan stabilitas dan peningkatan materi edukasi sains.',
                           style: AppTextStyles.bodySmall.copyWith(fontSize: 12),
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
 
-                // Downloading progress or error status
-                if (_isDownloading) ...[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: LinearProgressIndicator(
-                      value: _totalBytes > 0 ? _progress : null,
-                      minHeight: 10,
-                      backgroundColor: AppColors.sageLight,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        AppColors.primaryGreen,
-                      ),
+                // Action button: Open Play Store
+                ElevatedButton.icon(
+                  onPressed: _isOpeningStore ? null : _openPlayStore,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryGreen,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        _totalBytes > 0
-                            ? '${(_progress * 100).toStringAsFixed(0)}%'
-                            : 'Mengunduh...',
-                        style: AppTextStyles.bodyBold.copyWith(fontSize: 12),
-                      ),
-                      Text(
-                        _totalBytes > 0
-                            ? '${_formatBytes(_receivedBytes)} / ${_formatBytes(_totalBytes)}'
-                            : _formatBytes(_receivedBytes),
-                        style: AppTextStyles.bodySmall.copyWith(fontSize: 11),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                ] else if (_downloadFinished) ...[
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.successLight,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.check_circle_rounded,
-                            color: AppColors.successGreen, size: 20),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            'Unduhan selesai! Membuka installer...',
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.primaryDark,
-                              fontWeight: FontWeight.bold,
-                            ),
+                  icon: _isOpeningStore
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
                           ),
-                        ),
-                      ],
-                    ),
+                        )
+                      : const Icon(Icons.shop_two_rounded, size: 20),
+                  label: Text(
+                    _isOpeningStore
+                        ? 'Membuka Toko Aplikasi...'
+                        : 'Perbarui di Google Play',
+                    style: AppTextStyles.buttonText.copyWith(fontSize: 14),
                   ),
-                  const SizedBox(height: 16),
-                ] else if (_errorMessage != null) ...[
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.errorLight,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Icon(Icons.error_outline_rounded,
-                            color: AppColors.errorRed, size: 20),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            _errorMessage!,
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.errorRed,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                ],
+                ),
+                const SizedBox(height: 8),
 
-                // Action buttons
-                if (!_isDownloading) ...[
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      if (_downloadFinished && _downloadedFilePath != null) {
-                        ref
-                            .read(appUpdateServiceProvider)
-                            .openDownloadedApk(_downloadedFilePath!);
-                      } else {
-                        _startUpdate();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryGreen,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        'Nanti Saja',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                     ),
-                    icon: Icon(
-                      _downloadFinished
-                          ? Icons.install_mobile_rounded
-                          : Icons.download_rounded,
-                    ),
-                    label: Text(
-                      _downloadFinished
-                          ? 'Pasang Pembaruan (Buka Installer)'
-                          : (_errorMessage != null
-                              ? 'Coba Unduh Lagi'
-                              : 'Update Sekarang'),
-                      style: AppTextStyles.buttonText.copyWith(fontSize: 14),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(
-                          'Nanti Saja',
+                    if (info.releaseUrl.isNotEmpty)
+                      TextButton.icon(
+                        onPressed: () async {
+                          final uri = Uri.parse(info.releaseUrl);
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(uri,
+                                mode: LaunchMode.externalApplication);
+                          }
+                        },
+                        icon: const Icon(Icons.open_in_new_rounded, size: 14),
+                        label: Text(
+                          'Info Rilis',
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textSecondary,
+                            color: AppColors.primaryGreen,
                           ),
                         ),
                       ),
-                      if (info.releaseUrl.isNotEmpty)
-                        TextButton.icon(
-                          onPressed: () async {
-                            final uri = Uri.parse(info.releaseUrl);
-                            if (await canLaunchUrl(uri)) {
-                              await launchUrl(uri,
-                                  mode: LaunchMode.externalApplication);
-                            }
-                          },
-                          icon: const Icon(Icons.open_in_new_rounded, size: 14),
-                          label: Text(
-                            'Lihat di GitHub',
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.primaryGreen,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ],
             ),
           ),

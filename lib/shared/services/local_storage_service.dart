@@ -192,6 +192,10 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
   }
 
   Future<void> resetAll() async {
+    final userId = state.studentId;
+    await SupabaseService.deleteCurrentStudentData(
+      specificUserId: userId.isNotEmpty ? userId : null,
+    );
     await _storageService.resetProgress();
     state = UserProgressModel();
   }

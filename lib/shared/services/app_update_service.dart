@@ -1,10 +1,7 @@
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:open_filex/open_filex.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/app_update_info.dart';
 
@@ -17,6 +14,12 @@ class AppUpdateService {
   static const String repoName = 'etno';
   static const String githubApiLatestUrl =
       'https://api.github.com/repos/$repoOwner/$repoName/releases/latest';
+
+  static const String playStorePackageName = 'com.etnosains.e_modul_etnosains';
+  static const String playStoreMarketUrl =
+      'market://details?id=$playStorePackageName';
+  static const String playStoreWebUrl =
+      'https://play.google.com/store/apps/details?id=$playStorePackageName';
 
   final Dio _dio = Dio(
     BaseOptions(
@@ -44,7 +47,8 @@ class AppUpdateService {
       final data = response.data as Map<String, dynamic>;
       final tagName = (data['tag_name'] ?? '') as String;
       final releaseName = (data['name'] ?? tagName) as String;
-      final releaseNotes = (data['body'] ?? 'Pembaruan aplikasi terbaru.') as String;
+      final releaseNotes =
+          (data['body'] ?? 'Pembaruan aplikasi terbaru.') as String;
       final releaseUrl = (data['html_url'] ?? '') as String;
       final publishedAtStr = data['published_at'] as String?;
       final publishedAt =
@@ -53,37 +57,17 @@ class AppUpdateService {
       final cleanLatestVersion =
           tagName.replaceFirst(RegExp(r'^[vV]'), '').trim();
 
-      // Find APK asset
-      final assets = data['assets'] as List<dynamic>? ?? [];
-      String apkDownloadUrl = '';
-      String apkFileName = 'app-release.apk';
-      int apkSize = 0;
-
-      for (final asset in assets) {
-        final name = (asset['name'] ?? '') as String;
-        if (name.toLowerCase().endsWith('.apk')) {
-          apkDownloadUrl = (asset['browser_download_url'] ?? '') as String;
-          apkFileName = name;
-          apkSize = (asset['size'] as num?)?.toInt() ?? 0;
-          break;
-        }
-      }
-
-      // If no APK asset directly found, fallback to release url
-      if (apkDownloadUrl.isEmpty) {
-        apkDownloadUrl = releaseUrl;
-      }
-
       final hasUpdate = isNewerVersion(cleanLatestVersion, currentVersion);
 
       return AppUpdateInfo(
         currentVersion: fullCurrentVersion,
         latestVersion: cleanLatestVersion,
-        releaseName: releaseName.isNotEmpty ? releaseName : 'Versi $cleanLatestVersion',
+        releaseName:
+            releaseName.isNotEmpty ? releaseName : 'Versi $cleanLatestVersion',
         releaseNotes: releaseNotes,
-        apkDownloadUrl: apkDownloadUrl,
-        apkFileName: apkFileName,
-        apkSize: apkSize,
+        apkDownloadUrl: '',
+        apkFileName: '',
+        apkSize: 0,
         releaseUrl: releaseUrl,
         publishedAt: publishedAt,
         hasUpdate: hasUpdate,
@@ -136,90 +120,27 @@ class AppUpdateService {
     }
   }
 
-  /// Download the APK and trigger Android Package Installer
-  Future<void> downloadAndInstall({
-    required String apkUrl,
-    required String fileName,
-    required void Function(int received, int total) onProgress,
-    required void Function(String filePath) onComplete,
-    required void Function(String error) onError,
-  }) async {
+  /// Open Google Play Store listing (or fallback to web URL)
+  Future<bool> openPlayStore() async {
+    final marketUri = Uri.parse(playStoreMarketUrl);
+    final webUri = Uri.parse(playStoreWebUrl);
+
     try {
-      if (kIsWeb) {
-        // On web, open the download URL directly
-        final uri = Uri.parse(apkUrl);
-        if (await canLaunchUrl(uri)) {
-          await launchUrl(uri, mode: LaunchMode.externalApplication);
-          onComplete(apkUrl);
-        } else {
-          onError('Tidak dapat membuka tautan unduhan.');
-        }
-        return;
-      }
-
-      if (Platform.isAndroid) {
-        final tempDir = await getTemporaryDirectory();
-        final savePath = '${tempDir.path}/$fileName';
-
-        final file = File(savePath);
-        if (await file.exists()) {
-          await file.delete();
-        }
-
-        final dio = Dio();
-        await dio.download(
-          apkUrl,
-          savePath,
-          onReceiveProgress: onProgress,
-          options: Options(
-            responseType: ResponseType.bytes,
-            followRedirects: true,
-          ),
-        );
-
-        onComplete(savePath);
-
-        // Prompt system installer
-        final result = await OpenFilex.open(
-          savePath,
-          type: 'application/vnd.android.package-archive',
-        );
-
-        if (result.type != ResultType.done) {
-          debugPrint('OpenFilex error: ${result.message}');
-          if (result.type == ResultType.permissionDenied) {
-            onError('Izin instalasi diperlukan. Buka pengaturan aplikasi untuk mengizinkan "Instal aplikasi tidak dikenal".');
-            return;
-          }
-        }
-      } else {
-        // Fallback on desktop / iOS
-        final uri = Uri.parse(apkUrl);
-        if (await canLaunchUrl(uri)) {
-          await launchUrl(uri, mode: LaunchMode.externalApplication);
-          onComplete(apkUrl);
-        } else {
-          onError('Platform tidak mendukung instalasi APK langsung.');
-        }
+      if (await canLaunchUrl(marketUri)) {
+        return await launchUrl(marketUri, mode: LaunchMode.externalApplication);
       }
     } catch (e) {
-      debugPrint('Error downloading APK: $e');
-      onError('Gagal mengunduh file update: $e');
+      debugPrint('Error launching market uri: $e');
     }
-  }
 
-  /// Membuka kembali installer untuk file APK yang sudah diunduh
-  Future<void> openDownloadedApk(String filePath) async {
     try {
-      final file = File(filePath);
-      if (await file.exists()) {
-        await OpenFilex.open(
-          filePath,
-          type: 'application/vnd.android.package-archive',
-        );
+      if (await canLaunchUrl(webUri)) {
+        return await launchUrl(webUri, mode: LaunchMode.externalApplication);
       }
     } catch (e) {
-      debugPrint('Error opening APK installer: $e');
+      debugPrint('Error launching web uri: $e');
     }
+
+    return false;
   }
 }

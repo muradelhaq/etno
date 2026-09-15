@@ -44,17 +44,22 @@ Informasi yang dikumpulkan hanya digunakan untuk kepentingan pembelajaran:
 
 ---
 
-## 4. Hak Pengguna & Penghapusan Data (*Account & Data Deletion*)
+## 4. Hak Pengguna & Penghapusan Akun (*Account & Data Deletion*) {#account-deletion}
 
-Kami menjunjung tinggi hak pengguna atas data pribadinya:
-1. **Reset Mandiri di Aplikasi:**  
-   Pengguna dapat menghapus seluruh data profil dan riwayat belajar kapan saja secara langsung dari dalam aplikasi melalui menu **"Reset Data & Hapus Profil"** (tersedia di menu Drawer / Form Profil).
-2. **Penghapusan Data dari Server:**  
-   Jika siswa atau pihak sekolah menghendaki seluruh data riwayat siswa dihapus dari server backend, Anda dapat mengajukan permintaan penghapusan data dengan mencantumkan nama dan asal sekolah melalui:
-   - **Email:** `rafidiaulhaq360@gmail.com`
+Kami menjunjung tinggi hak pengguna atas privasi dan kepemilikan datanya:
+1. **Penghapusan Langsung dari Dalam Aplikasi (*In-App Deletion*):**  
+   Pengguna dapat menghapus seluruh akun profil dan data riwayat pembelajarannya kapan saja langsung dari dalam aplikasi melalui menu profil dengan menekan tombol **"Hapus Profil & Reset Riwayat Belajar"**. Tindakan ini akan menghapus data lokal di perangkat sekaligus menghapus record di server database Supabase seketika.
+2. **Permintaan Penghapusan Data via Web (*Web Deletion Request*):**  
+   Pengguna atau wali murid/sekolah yang ingin mengajukan penghapusan akun atau data tanpa membuka aplikasi dapat mengajukan permohonan dengan menyertakan nama dan sekolah melalui salah satu jalur berikut:
+   - **Email:** `rafidiaulhaq360@gmail.com` (Subjek: *Permintaan Hapus Akun E-Modul*)
    - **GitHub Issue:** [https://github.com/muradelhaq/etno/issues](https://github.com/muradelhaq/etno/issues)
-
-Permintaan penghapusan data server akan diproses dalam waktu maksimal 3x24 jam kerja.
+3. **Data yang Dihapus:**
+   - Profil siswa (nama lengkap, kelas, asal sekolah, ID pengguna).
+   - Seluruh riwayat jawaban kuis evaluasi PISA dan perolehan poin XP.
+   - Catatan opini/hipotesis studi kasus sains dan riwayat laboratorium virtual.
+4. **Retensi Data:**
+   - Tidak ada data pribadi yang disimpan (*zero retention*) setelah proses penghapusan selesai.
+   - Permintaan penghapusan melalui email/web diproses dalam waktu maksimal 3 x 24 jam kerja.
 
 ---
 

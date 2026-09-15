@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:e_modul_etnosains/core/constants/app_colors.dart';
 import 'package:e_modul_etnosains/core/services/supabase_service.dart';
 import 'package:e_modul_etnosains/shared/services/local_storage_service.dart';
-import 'package:e_modul_etnosains/shared/services/student_session_store.dart';
 
 class StudentLoginForm extends ConsumerStatefulWidget {
   final bool isLandscape;
@@ -133,11 +132,11 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
           children: [
             Icon(Icons.warning_amber_rounded, color: AppColors.errorRed),
             SizedBox(width: 8),
-            Text('Hapus Profil Belajar?'),
+            Text('Hapus Akun & Data?'),
           ],
         ),
         content: const Text(
-          'Tindakan ini akan menghapus data profil Anda (nama, kelas, sekolah) serta mereset seluruh skor kuis, poin XP, dan kemajuan modul yang tersimpan di perangkat ini.\n\nApakah Anda yakin ingin melanjutkan?',
+          'Tindakan ini akan menghapus permanen profil Anda (nama, kelas, sekolah) serta seluruh riwayat kuis, poin XP, dan catatan pembelajaran baik dari perangkat maupun dari database server.\n\nApakah Anda yakin ingin melanjutkan?',
         ),
         actions: [
           TextButton(
@@ -150,7 +149,7 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
               foregroundColor: Colors.white,
             ),
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Ya, Hapus Data'),
+            child: const Text('Ya, Hapus Permanen'),
           ),
         ],
       ),
@@ -160,7 +159,6 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
       setState(() => _isLoading = true);
       try {
         await ref.read(userProgressProvider.notifier).resetAll();
-        await StudentSessionStore.clear();
         _studentNameController.clear();
         _studentClassController.clear();
         _studentSchoolController.clear();
@@ -169,7 +167,7 @@ class _StudentLoginFormState extends ConsumerState<StudentLoginForm> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: const Text(
-                  'Profil dan seluruh riwayat belajar berhasil direset.'),
+                  'Profil dan seluruh riwayat belajar berhasil dihapus dari perangkat dan server.'),
               backgroundColor: AppColors.primaryGreen,
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(

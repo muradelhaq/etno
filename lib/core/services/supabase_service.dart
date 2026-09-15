@@ -233,6 +233,67 @@ class SupabaseService {
     }
   }
 
+  /// Menghapus akun dan seluruh riwayat data siswa dari server Supabase.
+  /// Memenuhi kepatuhan Google Play: Account and Data Deletion Policy.
+  static Future<bool> deleteCurrentStudentData({String? specificUserId}) async {
+    if (!_isInitialized) return false;
+
+    try {
+      final authUser = currentUser;
+      final userId = specificUserId ?? authUser?.id;
+
+      if (userId != null && !userId.startsWith('local-')) {
+        // 1. Hapus riwayat jawaban dan aktivitas belajar
+        try {
+          await client.from('quiz_results').delete().eq('user_id', userId);
+        } catch (e) {
+          debugPrint('Hapus quiz_results error: $e');
+        }
+
+        try {
+          await client.from('case_study_answers').delete().eq('user_id', userId);
+        } catch (e) {
+          debugPrint('Hapus case_study_answers error: $e');
+        }
+
+        try {
+          await client.from('lab_records').delete().eq('user_id', userId);
+        } catch (e) {
+          debugPrint('Hapus lab_records error: $e');
+        }
+
+        // 2. Hapus profil pengguna
+        try {
+          await client.from('users').delete().eq('id', userId);
+        } catch (e) {
+          debugPrint('Hapus user profile error: $e');
+        }
+      }
+
+      // 3. Bersihkan antrean offline sync yang tertunda
+      try {
+        await OfflineSyncQueue.clear();
+      } catch (e) {
+        debugPrint('Clear OfflineSyncQueue error: $e');
+      }
+
+      // 4. Hapus token sesi lokal
+      await StudentSessionStore.clear();
+
+      // 5. Sign out dari Supabase Auth
+      try {
+        await client.auth.signOut();
+      } catch (e) {
+        debugPrint('SignOut auth error: $e');
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('deleteCurrentStudentData failed: $e');
+      return false;
+    }
+  }
+
   // ===========================================================================
   // 2. CASE STUDY OPINIONS & REFLECTIONS (PBL)
   // ===========================================================================
