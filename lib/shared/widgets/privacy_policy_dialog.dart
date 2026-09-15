@@ -7,7 +7,7 @@ class PrivacyPolicyDialog extends StatelessWidget {
   const PrivacyPolicyDialog({super.key});
 
   static const String policyUrl =
-      'https://github.com/muradelhaq/etno/blob/main/PRIVACY_POLICY.md';
+      'https://muradelhaq.github.io/etno/';
 
   static Future<void> show(BuildContext context) {
     return showDialog(

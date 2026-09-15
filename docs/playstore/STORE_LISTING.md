@@ -60,7 +60,8 @@ Mari lestarikan kuliner tradisional nusantara melalui pemahaman sains modern!
 | **Iklan (Contains Ads)** | Tidak (No Ads) | Bebas dari SDK iklan pihak ketiga |
 | **Akses Aplikasi** | Semua fitur tersedia gratis | Tanpa pembelian dalam aplikasi (No IAP) |
 | **Email Kontak Dukungan** | `rafidiaulhaq360@gmail.com` | Email publik akun pengembang |
-| **URL Kebijakan Privasi** | `https://github.com/muradelhaq/etno/blob/main/PRIVACY_POLICY.md` | Tautan publik tanpa perlu login |
+| **URL Kebijakan Privasi** | `https://muradelhaq.github.io/etno/` | Halaman web publik via GitHub Pages |
+| **URL Hapus Akun / Data** | `https://muradelhaq.github.io/etno/#account-deletion` | Tautan formulir permohonan hapus data web |
 
 ---
 

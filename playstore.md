@@ -120,11 +120,11 @@ Sebelum mempublikasikan aplikasi, siapkan aset grafis dan teks berikut di Google
 | **App Title** | Maks. 30 karakter (`E-Modul Etnosains Fermentasi`) | Siap ditentukan |
 | **Short Description** | Maks. 80 karakter (Penjelasan singkat modul belajar interaktif) | Perlu ditulis |
 | **Full Description** | Maks. 4000 karakter (Fitur, materi tempe/oncom/tape, kuis, lab virtual) | Perlu disusun |
-| **App Icon** | 512 x 512 px, format PNG 32-bit, maks 1 MB | Perlu export aset |
-| **Feature Graphic (Banner)** | 1024 x 500 px, format JPG atau PNG, tanpa transparansi | Perlu dibuat |
+| **App Icon** | 512 x 512 px, format PNG 32-bit, maks 1 MB | ✅ Siap (`docs/playstore/app_icon_512x512.png`) |
+| **Feature Graphic (Banner)** | 1024 x 500 px, format JPG atau PNG, tanpa transparansi | ✅ Siap (`docs/playstore/feature_graphic_1024x500.png`) |
 | **Screenshot HP (Phone)** | Min. 2 screenshot (disarankan 4-8), rasio 16:9 atau 9:16 | Perlu capture UI |
 | **Screenshot Tablet 7" & 10"** | Diperlukan jika aplikasi mendukung mode landscape tablet | Perlu capture UI |
-| **URL Kebijakan Privasi** | Tautan web aktif protokol HTTPS | Belum ada |
+| **URL Kebijakan Privasi** | Tautan web aktif protokol HTTPS via GitHub Pages | ✅ Siap (`https://muradelhaq.github.io/etno/`) |
 
 ---
 

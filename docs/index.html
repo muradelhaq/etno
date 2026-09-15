@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kebijakan Privasi - E-Modul Etnosains</title>
+  <meta name="description" content="Kebijakan Privasi dan Perlindungan Data Pengguna Aplikasi E-Modul Etnosains Makanan Tradisional Berbasis Fermentasi.">
+  <link rel="icon" type="image/png" href="app_icon_512x512.png">
+  <style>
+    :root {
+      --primary-dark: #143021;
+      --primary-green: #1e5c32;
+      --primary-accent: #2e7d32;
+      --sage-light: #e8f5e9;
+      --sage-border: #c8e6c9;
+      --text-main: #1f2937;
+      --text-muted: #4b5563;
+      --text-light: #6b7280;
+      --bg-page: #f8faf8;
+      --bg-card: #ffffff;
+      --accent-amber: #d97706;
+      --accent-red: #dc2626;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.68;
+      color: var(--text-main);
+      background-color: var(--bg-page);
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary-green));
+      color: #ffffff;
+      padding: 40px 32px;
+      text-align: center;
+      position: relative;
+    }
+
+    header .app-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+      color: #e8f5e9;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    header p.subtitle {
+      font-size: 16px;
+      color: #c8e6c9;
+      margin-bottom: 16px;
+    }
+
+    header .meta-info {
+      font-size: 12.5px;
+      color: #a5d6a7;
+    }
+
+    .content {
+      padding: 36px 32px;
+    }
+
+    .lead-box {
+      background-color: #f4f8f4;
+      border-left: 4px solid var(--primary-accent);
+      padding: 16px 20px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 32px;
+      font-size: 14.5px;
+      color: var(--text-muted);
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin: 32px 0 14px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #f3f4f6;
+      padding-bottom: 8px;
+    }
+
+    h2 .icon {
+      font-size: 20px;
+    }
+
+    p {
+      margin-bottom: 14px;
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    ul, ol {
+      margin: 12px 0 18px 24px;
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    strong {
+      color: var(--text-main);
+    }
+
+    .card-highlight {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      margin: 18px 0;
+    }
+
+    .card-highlight h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #166534;
+      margin-bottom: 8px;
+    }
+
+    .card-danger {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin: 24px 0;
+    }
+
+    .card-danger h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #991b1b;
+      margin-bottom: 8px;
+    }
+
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .badge-item {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .badge-item .title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--primary-accent);
+      margin-bottom: 4px;
+    }
+
+    .badge-item .desc {
+      font-size: 12.5px;
+      color: var(--text-light);
+      line-height: 1.45;
+    }
+
+    .contact-box {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-top: 24px;
+    }
+
+    .contact-box a {
+      color: var(--primary-accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .contact-box a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+      padding: 24px 32px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding: 30px 20px;
+      }
+      header h1 {
+        font-size: 23px;
+      }
+      .content {
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="app-badge">🌱 Media Edukasi Sains Nusantara</div>
+      <h1>Kebijakan Privasi</h1>
+      <p class="subtitle">E-Modul Etnosains Makanan Tradisional Berbasis Fermentasi</p>
+      <div class="meta-info">
+        <span>Package ID: <code>com.etnosains.e_modul_etnosains</code></span> &bull; 
+        <span>Terakhir Diperbarui: September 2026</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="lead-box">
+        Selamat datang di aplikasi <strong>E-Modul Etnosains</strong>. Kami berkomitmen penuh untuk melindungi privasi siswa, pendidik, dan seluruh pengguna kami. Dokumen ini menguraikan bagaimana data dikumpulkan, digunakan, dilindungi, dan hak Anda untuk menghapus data tersebut sesuai standar perlindungan data dan Google Play Developer Policy.
+      </div>
+
+      <h2><span class="icon">📋</span> 1. Informasi yang Kami Kumpulkan</h2>
+      <p>Aplikasi ini adalah media edukasi sains interaktif untuk jenjang sekolah. Data yang kami kumpulkan bersifat minimal dan hanya digunakan untuk mendukung pengalaman pembelajaran:</p>
+      
+      <div class="badge-grid">
+        <div class="badge-item">
+          <div class="title">Identitas Belajar Siswa</div>
+          <div class="desc">Nama lengkap siswa, kelas / rombongan belajar, dan asal sekolah untuk personalisasi sertifikat serta rekapitulasi nilai guru.</div>
+        </div>
+        <div class="badge-item">
+          <div class="title">Progres & Evaluasi Belajar</div>
+          <div class="desc">Capaian poin pengalaman (XP), penyelesaian modul fermentasi, jawaban kuis literasi sains PISA, dan hasil observasi lab virtual.</div>
+        </div>
+      </div>
+
+      <div class="card-highlight">
+        <h3>🔒 Data yang TIDAK Kami Kumpulkan</h3>
+        <p style="margin-bottom: 0;">Kami <strong>TIDAK</strong> mengumpulkan data lokasi GPS presisi, kontak telepon, galeri foto pribadi, rekaman mikrofon/kamera, nomor identitas kependudukan, maupun informasi keuangan. Aplikasi ini <strong>100% Bebas Iklan komersial (Ad-Free)</strong> dan bebas dari pelacak iklan pihak ketiga.</p>
+      </div>
+
+      <h2><span class="icon">🎯</span> 2. Tujuan Penggunaan Data</h2>
+      <p>Data yang dikumpulkan semata-mata dimanfaatkan untuk keperluan akademik dan edukasi:</p>
+      <ul>
+        <li>Menyimpan progres pembelajaran mandiri siswa agar materi tidak tereset saat aplikasi ditutup.</li>
+        <li>Memberikan umpan balik instan (pembahasan) pada kuis evaluasi sains PISA dan simulasi laboratorium virtual.</li>
+        <li>Memfasilitasi guru/pendidik dalam memantau ketercapaian kompetensi sains siswa secara kontekstual.</li>
+      </ul>
+
+      <h2><span class="icon">🛡️</span> 3. Penyimpanan dan Keamanan Data</h2>
+      <ul>
+        <li><strong>Penyimpanan Lokal:</strong> Data progres disimpan secara lokal di memori perangkat melalui penyimpanan terisolasi (<em>SharedPreferences</em>).</li>
+        <li><strong>Enkripsi Transit (Cloud):</strong> Apabila perangkat terhubung internet, data disinkronkan ke backend database kami (Supabase PostgreSQL) menggunakan enkripsi tingkat tinggi <strong>HTTPS / TLS 1.3</strong>.</li>
+        <li><strong>Tanpa Penjualan Data:</strong> Kami tidak pernah menjual, menyewakan, atau membagikan data siswa kepada pihak ketiga untuk kepentingan komersial maupun periklanan.</li>
+      </ul>
+
+      <div class="card-danger" id="account-deletion">
+        <h3>🗑️ 4. Hak Pengguna & Penghapusan Akun (Account & Data Deletion)</h3>
+        <p>Sesuai kebijakan Google Play Store, kami memberikan hak penuh kepada pengguna untuk menghapus akun profil dan seluruh data pribadinya:</p>
+        
+        <ol>
+          <li><strong>Penghapusan Mandiri di Aplikasi (In-App):</strong><br>
+            Pengguna dapat menghapus profil dan seluruh data belajarnya kapan saja langsung dari dalam aplikasi. Buka menu profil di aplikasi dan klik tombol <strong>"Hapus Profil & Reset Riwayat Belajar"</strong>. Tindakan ini seketika menghapus data lokal dan menghapus seluruh catatan di database server.
+          </li>
+          <li><strong>Permintaan Penghapusan via Web / Email (Web Request):</strong><br>
+            Jika siswa, orang tua, atau pihak sekolah menghendaki penghapusan akun tanpa membuka aplikasi, Anda dapat mengajukan permohonan penghapusan dengan menyertakan nama dan asal sekolah ke:
+            <ul style="margin: 6px 0 6px 20px;">
+              <li><strong>Email:</strong> <a href="mailto:rafidiaulhaq360@gmail.com?subject=Permintaan%20Hapus%20Akun%20E-Modul%20Etnosains" style="color: #991b1b; font-weight: bold;">rafidiaulhaq360@gmail.com</a> (Subjek: <em>Permintaan Hapus Akun E-Modul</em>)</li>
+              <li><strong>GitHub Issues:</strong> <a href="https://github.com/muradelhaq/etno/issues" target="_blank" rel="noopener" style="color: #991b1b; font-weight: bold;">github.com/muradelhaq/etno/issues</a></li>
+            </ul>
+          </li>
+        </ol>
+
+        <p style="margin-top: 10px; font-size: 13.5px; color: #7f1d1d;">
+          <strong>Cakupan Data yang Dihapus:</strong> Nama, kelas, sekolah, ID akun, serta seluruh histori kuis, poin XP, dan catatan eksperimen sains. Permintaan via web akan diproses dan dihapus permanen dalam waktu maksimal <strong>3 x 24 jam kerja</strong> (<em>Zero Data Retention</em>).
+        </p>
+      </div>
+
+      <h2><span class="icon">👨‍🎓</span> 5. Privasi Siswa & Anak-Anak</h2>
+      <p>Aplikasi ini dirancang untuk jenjang pendidikan SMP dan SMA (rentang usia 13 tahun ke atas). Konten aplikasi murni materi bioteknologi tradisional nusantara (seperti tempe, oncom, tape ketan, terasi, dan brem) yang disusun untuk tujuan literasi sains tanpa memuat materi berbahaya atau tidak pantas.</p>
+
+      <h2><span class="icon">🔄</span> 6. Pembaruan Kebijakan Privasi</h2>
+      <p>Kebijakan Privasi ini dapat diperbarui sewaktu-waktu sesuai pengembangan fitur atau kepatuhan terhadap regulasi baru. Setiap perubahan akan diumumkan dan dicantumkan pada halaman ini.</p>
+
+      <div class="contact-box">
+        <h3 style="font-size: 16px; margin-bottom: 8px; color: var(--primary-dark);">📞 Kontak & Pertanyaan</h3>
+        <p style="font-size: 14px; margin-bottom: 6px;">Jika Anda memiliki pertanyaan mengenai Kebijakan Privasi ini atau pengelolaan data pengguna, silakan hubungi kami:</p>
+        <p style="font-size: 14px; margin-bottom: 0;">
+          <strong>Pengembang:</strong> Murad El Haq / E-Modul Etnosains Project<br>
+          <strong>Email:</strong> <a href="mailto:rafidiaulhaq360@gmail.com">rafidiaulhaq360@gmail.com</a><br>
+          <strong>Repositori Resmi:</strong> <a href="https://github.com/muradelhaq/etno" target="_blank" rel="noopener">https://github.com/muradelhaq/etno</a>
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      &copy; 2026 E-Modul Etnosains Makanan Tradisional Berbasis Fermentasi. Hak Cipta Dilindungi.
+    </footer>
+  </div>
+
+</body>
+</html>
