@@ -19,6 +19,11 @@ class AppImage extends StatelessWidget {
   static const _publicBaseUrl =
       'https://lumhlhxbmdtlqmlbcumc.supabase.co/storage/v1/object/public/media-assets';
 
+  // The current project returns FeatureNotEnabled for image transformations.
+  // Enable only after the project supports the render/image endpoint.
+  static const _imageTransformationsEnabled =
+      bool.fromEnvironment('SUPABASE_IMAGE_TRANSFORMATIONS');
+
   final String assetPath;
   final double? width;
   final double? height;
@@ -52,6 +57,7 @@ class AppImage extends StatelessWidget {
     int quality = 75,
   }) {
     final original = publicUrl(path);
+    if (!_imageTransformationsEnabled) return original;
     final uri = Uri.parse(original);
     if (uri.host != 'lumhlhxbmdtlqmlbcumc.supabase.co' ||
         !uri.path.contains('/storage/v1/object/public/')) {

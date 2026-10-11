@@ -15,16 +15,22 @@ void main() {
     expect(AppImage.publicUrl(url), url);
   });
 
-  test('Supabase object URL uses an optimized render endpoint', () {
+  test('Supabase image URL respects project transformation support', () {
     final url = AppImage.optimizedUrl(
       'assets/images/aset_sed/ferm-tauco-5.jpeg',
       width: 960,
       quality: 70,
     );
 
-    expect(url, contains('/storage/v1/render/image/public/media-assets/'));
-    expect(url, contains('width=1200'));
-    expect(url, contains('quality=70'));
-    expect(url, contains('resize=contain'));
+    const enabled = bool.fromEnvironment('SUPABASE_IMAGE_TRANSFORMATIONS');
+    if (enabled) {
+      expect(url, contains('/storage/v1/render/image/public/media-assets/'));
+      expect(url, contains('width=1200'));
+      expect(url, contains('quality=70'));
+      expect(url, contains('resize=contain'));
+    } else {
+      expect(url, AppImage.publicUrl('assets/images/aset_sed/ferm-tauco-5.jpeg'));
+      expect(url, isNot(contains('/render/image/')));
+    }
   });
 }

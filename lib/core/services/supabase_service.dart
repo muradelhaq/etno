@@ -213,7 +213,7 @@ class SupabaseService {
     if (isCompleted != null) data['is_completed'] = isCompleted;
 
     try {
-      if (userId.startsWith('local-')) {
+      if (!_isInitialized || userId.startsWith('local-')) {
         await OfflineSyncQueue.enqueue(
           queueId: 'progress-$userId',
           type: 'student_progress',
@@ -222,7 +222,15 @@ class SupabaseService {
         return;
       }
       final updateData = Map<String, dynamic>.from(data)..remove('user_id');
-      await client.from('users').update(updateData).eq('id', userId);
+      final updated = await client
+          .from('users')
+          .update(updateData)
+          .eq('id', userId)
+          .select('id')
+          .maybeSingle();
+      if (updated == null) {
+        throw StateError('Profil siswa belum tersedia untuk sinkronisasi.');
+      }
     } catch (e) {
       debugPrint('Error updateStudentProgress: $e');
       await OfflineSyncQueue.enqueue(
@@ -453,7 +461,15 @@ class SupabaseService {
             break;
           case 'student_progress':
             payload.remove('user_id');
-            await client.from('users').update(payload).eq('id', authUser.id);
+            final updated = await client
+                .from('users')
+                .update(payload)
+                .eq('id', authUser.id)
+                .select('id')
+                .maybeSingle();
+            if (updated == null) {
+              throw StateError('Profil siswa belum tersedia untuk sinkronisasi.');
+            }
             break;
           default:
             continue;

@@ -39,9 +39,8 @@ class UserProgressNotifier extends StateNotifier<UserProgressModel> {
 
   Future<void> _persistAndSync() async {
     await _storageService.saveUserProgress(state);
-    if (SupabaseService.isInitialized &&
-        state.studentId.isNotEmpty &&
-        !state.studentId.startsWith('local-')) {
+    // The service also persists pending writes for local/offline profiles.
+    if (state.studentId.isNotEmpty) {
       await SupabaseService.updateStudentProgress(
         userId: state.studentId,
         currentSlide: state.readSlides.isEmpty

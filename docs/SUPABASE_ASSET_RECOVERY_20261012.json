@@ -1,0 +1,1331 @@
+{
+  "project": "tmwoffovaljcfdsshgyf",
+  "date": "2026-10-12",
+  "method": "Recovery from Git history and local originals; not a complete export of the old project",
+  "files": 131,
+  "bytes": 233008464,
+  "metadata_rows": 32,
+  "missing_references": [
+    "media-assets/images/aspergillus_oryzae_after_zoom.png",
+    "media-assets/images/aspergillus_sp_after_zoom.png",
+    "media-assets/images/cover_etnosains_generated_v1.png",
+    "media-assets/images/neurospora_after_zoom.png",
+    "media-assets/images/saccharomyces_after_zoom.png",
+    "media-assets/images/tempe_microscope_after_zoom.png",
+    "media-assets/images/tempe_microscope_before_zoom.png",
+    "media-assets/images/tetragenococcus_after_zoom.png",
+    "media-assets/video-pengantar-etnosains-terbaru.mp4"
+  ],
+  "objects": [
+    {
+      "bucket": "aset-sed",
+      "key": "colenak.png",
+      "bytes": 287505,
+      "sha256": "6f4c24bb7b3938f92f419cfa5c49463fd037e5c0723cba3d0f4bb53c795ad9c1",
+      "source": "assets/images/colenak.png",
+      "revision": "9efc435334921e909c7baf91f38bd1353294a064",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "fase-2-singkong.jpeg",
+      "bytes": 2320170,
+      "sha256": "5ca4f6c0a7b14c319f62c12b283e9af27e76e5639e915cbd70fa7c56fdd52446",
+      "source": "aset-sed/fase-2-singkong.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "fase-3-singkong.jpeg",
+      "bytes": 2489213,
+      "sha256": "81f12ecb6efd56013a6ed8c8e2a566fab196110ac427826eaa9509db7300ee55",
+      "source": "aset-sed/fase-3-singkong.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "fase-4-singkong.jpeg",
+      "bytes": 2775965,
+      "sha256": "a4949cfd6322dc4b9ecdd0b0ed622327a58776eb77cc8abdc3bab9e17117a3b6",
+      "source": "aset-sed/fase-4-singkong.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "fase-5-singkong.jpeg",
+      "bytes": 2657157,
+      "sha256": "7f67119e22f2d6d7d7e2565049ad916a3545f7aa7c68c2063c58b4723f4f95f5",
+      "source": "aset-sed/fase-5-singkong.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "ferm-tauco--4.jpeg",
+      "bytes": 5674298,
+      "sha256": "25a84e3d509c668b6f9e99a64d1b1d7c33a08e44658cb06329f6ed04bb9966cf",
+      "source": "aset-sed/ferm-tauco--4.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "ferm-tauco-1.jpeg",
+      "bytes": 5589197,
+      "sha256": "f04d2e2c7a1ac1e1e1347ef70c1bd3b5bff1d38c98e94e017fa38cb05663e773",
+      "source": "aset-sed/ferm-tauco-1.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "ferm-tauco-2.jpeg",
+      "bytes": 5874393,
+      "sha256": "7e4b061f6377fbe196e2479de4405816e9a0f7541838c92696ca5b10a7f5e527",
+      "source": "aset-sed/ferm-tauco-2.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "ferm-tauco-3.jpeg",
+      "bytes": 7243287,
+      "sha256": "8882e69c813c1c50d3c379817622232ff5e85898d08eb74ecf88b28821761251",
+      "source": "aset-sed/ferm-tauco-3.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "ferm-tauco-4a.jpeg",
+      "bytes": 8219708,
+      "sha256": "ccf3521e0fd9d223fc5c42a9915379dc9853f78f7106109c71d3f4996ebb8e2e",
+      "source": "aset-sed/ferm-tauco-4a.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "ferm-tauco-5.jpeg",
+      "bytes": 8793458,
+      "sha256": "e5ab8f354b76eb6a08d55db96d5a748dbd25e59a928c322961cf694f8276e28b",
+      "source": "aset-sed/ferm-tauco-5.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "ferm-tauco-5a.jpeg",
+      "bytes": 2095100,
+      "sha256": "653fcf36dac180047da3cab78080bf2f8a55c4ad1ea518bd74b863c4a3e9b5c8",
+      "source": "aset-sed/ferm-tauco-5a.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "fermentasi-tapesing.jpeg",
+      "bytes": 2943698,
+      "sha256": "91b45f29c16704f2a6766328b83e5f3c655ad0381c3abc22c6610d25aa54cb3d",
+      "source": "aset-sed/fermentasi-tapesing.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "fermentasi-taucoikan.jpeg",
+      "bytes": 5617980,
+      "sha256": "3d92910c2aca3381c2dc8c7d6846f7a2202be74427d38960db4fcaaf698134c9",
+      "source": "aset-sed/fermentasi-taucoikan.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "jadi-tempe.jpeg",
+      "bytes": 1978608,
+      "sha256": "5cddc3355a07045b133958761049f496d2fb70f226139ee6eda6093269c818e3",
+      "source": "aset-sed/jadi-tempe.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "kedelai-tempe.jpeg",
+      "bytes": 2486123,
+      "sha256": "795ec4465668e143f311284a93d1d5250730b38b316908de149a127ea3680475",
+      "source": "aset-sed/kedelai-tempe.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "kimchi.png",
+      "bytes": 170275,
+      "sha256": "58fb23a8391da9a88d7688ff7c05a150bb3a100177958f281e7abbb675d0e273",
+      "source": "assets/images/kimchi.png",
+      "revision": "9efc435334921e909c7baf91f38bd1353294a064",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "orek-tempe.png",
+      "bytes": 264862,
+      "sha256": "9d364777af7d3424b6eddce47cf7328efcd4ca7ea243b1ec1d6bfe69a308c44f",
+      "source": "assets/images/orek_tempe.png",
+      "revision": "9efc435334921e909c7baf91f38bd1353294a064",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "pase-1-singkong.jpeg",
+      "bytes": 2179802,
+      "sha256": "d3ae5ae923e365338d617d44bcee49bd160cb8f1cb7c09d2f50c3dec95b12c43",
+      "source": "aset-sed/pase-1-singkong.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "pembungkusan-tempe.jpeg",
+      "bytes": 2239664,
+      "sha256": "3aeb0a5d60102bd17a7eb741e46b050d93942138533a7230b47f224d4e6b3616",
+      "source": "aset-sed/pembungkusan-tempe.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "perebusan-tempe.jpeg",
+      "bytes": 2159816,
+      "sha256": "b118747ad6c8f0b98cdaff877ffb2cc9b955af818879521173e6befd2082b531",
+      "source": "aset-sed/perebusan-tempe.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "perendaman-tempe.jpeg",
+      "bytes": 596058,
+      "sha256": "0be80a3bc762a5f092f191363fd85e89e1724ac0925a226658bb5579f3d830d3",
+      "source": "aset-sed/perendaman-tempe.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "proses-ferm-tempe.jpeg",
+      "bytes": 2538989,
+      "sha256": "df986e70a45db9f7803275d3da175a03ee83303b471c7503f20fb8a71c93ceb0",
+      "source": "aset-sed/proses-ferm-tempe.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "ragi-tempe.jpeg",
+      "bytes": 2515437,
+      "sha256": "2a172712449445a371f5d1023d3c0d7d7d1e464684b3f5bc516362265ddd533b",
+      "source": "aset-sed/ragi-tempe.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "sayur-ikan-tauco.jpeg",
+      "bytes": 2176319,
+      "sha256": "a1f657a6ee860b8956b6a0f1beb1924f853686bb1b4e9c3e53cd0120b34df06c",
+      "source": "aset-sed/sayur-ikan-tauco.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tape-ketan.png",
+      "bytes": 307805,
+      "sha256": "be1e7f840bf48459e231c9820c29a67bc5942683582f8ec87aa52dad0549714f",
+      "source": "assets/images/tape_ketan.png",
+      "revision": "9efc435334921e909c7baf91f38bd1353294a064",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tape-singkong-fermentasi.jpeg",
+      "bytes": 2503029,
+      "sha256": "188398d19f93d85148df1029964a1c714cc4c96d73b29da67f2ff4b12b6064d7",
+      "source": "aset-sed/tape-singkong-fermentasi.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tape-singkong.png",
+      "bytes": 258500,
+      "sha256": "fe22c069fd098dd9fa01d8f9b55874fcada72bd651889cac4e55d39d29bb71c0",
+      "source": "assets/images/tape_singkong.png",
+      "revision": "9efc435334921e909c7baf91f38bd1353294a064",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tape_ketan_fase1.jpg",
+      "bytes": 479139,
+      "sha256": "f3c9671de54eec032bfde271502deb6b53d60eb4f2c235a1ae9c9d6c48014b8c",
+      "source": "aset-sed/tape_ketan_fase1.jpg",
+      "revision": "743eb5ae5035fc4a30736e0d476dff87c9742510",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tape_ketan_fase2.jpg",
+      "bytes": 565561,
+      "sha256": "19375ccca138b5b7a9f9fb391c5fd2d61893ff1d0c8e873ddef128f7e9410eea",
+      "source": "aset-sed/tape_ketan_fase2.jpg",
+      "revision": "743eb5ae5035fc4a30736e0d476dff87c9742510",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tape_ketan_fase3.jpg",
+      "bytes": 451211,
+      "sha256": "347d4e060439c94ec788dad512d04b1b548ee41e6b6f7957f0e545e42844f9a8",
+      "source": "aset-sed/tape_ketan_fase3.jpg",
+      "revision": "743eb5ae5035fc4a30736e0d476dff87c9742510",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tape_ketan_fase4.jpg",
+      "bytes": 592924,
+      "sha256": "d4d9e617e23a690b328ad1015c8423e6d24dd8fb4ec1d7c708181c4b8b8b9c29",
+      "source": "aset-sed/tape_ketan_fase4.jpg",
+      "revision": "743eb5ae5035fc4a30736e0d476dff87c9742510",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tapesing-fase-2.jpeg",
+      "bytes": 3961130,
+      "sha256": "adfc22fe32e3b9d70a6f90a26f54da0739e40f713e144c30fe639a0a229d9051",
+      "source": "aset-sed/tapesing-fase-2.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tapesing-fase-3.jpeg",
+      "bytes": 3888596,
+      "sha256": "106f3e67e38e82cd356b9503cba7eb5d4612ddbb587bab8b717396d19873a491",
+      "source": "aset-sed/tapesing-fase-3.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tapesing-fase-4.jpeg",
+      "bytes": 3634392,
+      "sha256": "96a399c8dbf0c9c67b4461ef85e71077587d816ada74a9114b1fa71a59a9c419",
+      "source": "aset-sed/tapesing-fase-4.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tapesing-fase-5.jpeg",
+      "bytes": 2889805,
+      "sha256": "e957dcf37670be675462923c220e6195b500994454eb4b5691c4b2e5fb55fe4c",
+      "source": "aset-sed/tapesing-fase-5.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "aset-sed",
+      "key": "tapesing-fase1.jpeg",
+      "bytes": 3526171,
+      "sha256": "cca5e932d2fcabf45e28ae46a50d068d8ce557412e252f12b778991f078bad13",
+      "source": "aset-sed/tapesing-fase1.jpeg",
+      "revision": "09776db0c8df14871813bd69a2768e39f5c66bea",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/app_icon.png",
+      "bytes": 190251,
+      "sha256": "765a83c4fcbef53943c92394c632ee22b75534962d653093dc81ef876572e4cb",
+      "source": "assets/images/app_icon.png",
+      "revision": "25ed24bfd8da9d035de18e4d75969e0ed4c7c1ad",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/fase-2-singkong.jpeg",
+      "bytes": 2320170,
+      "sha256": "5ca4f6c0a7b14c319f62c12b283e9af27e76e5639e915cbd70fa7c56fdd52446",
+      "source": "assets/images/aset_sed/fase-2-singkong.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/fase-3-singkong.jpeg",
+      "bytes": 2489213,
+      "sha256": "81f12ecb6efd56013a6ed8c8e2a566fab196110ac427826eaa9509db7300ee55",
+      "source": "assets/images/aset_sed/fase-3-singkong.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/fase-4-singkong.jpeg",
+      "bytes": 2775965,
+      "sha256": "a4949cfd6322dc4b9ecdd0b0ed622327a58776eb77cc8abdc3bab9e17117a3b6",
+      "source": "assets/images/aset_sed/fase-4-singkong.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/fase-5-singkong.jpeg",
+      "bytes": 2657157,
+      "sha256": "7f67119e22f2d6d7d7e2565049ad916a3545f7aa7c68c2063c58b4723f4f95f5",
+      "source": "assets/images/aset_sed/fase-5-singkong.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/ferm-tauco--4.jpeg",
+      "bytes": 5674298,
+      "sha256": "25a84e3d509c668b6f9e99a64d1b1d7c33a08e44658cb06329f6ed04bb9966cf",
+      "source": "assets/images/aset_sed/ferm-tauco--4.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/ferm-tauco-1.jpeg",
+      "bytes": 5589197,
+      "sha256": "f04d2e2c7a1ac1e1e1347ef70c1bd3b5bff1d38c98e94e017fa38cb05663e773",
+      "source": "assets/images/aset_sed/ferm-tauco-1.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/ferm-tauco-2.jpeg",
+      "bytes": 5874393,
+      "sha256": "7e4b061f6377fbe196e2479de4405816e9a0f7541838c92696ca5b10a7f5e527",
+      "source": "assets/images/aset_sed/ferm-tauco-2.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/ferm-tauco-3.jpeg",
+      "bytes": 7243287,
+      "sha256": "8882e69c813c1c50d3c379817622232ff5e85898d08eb74ecf88b28821761251",
+      "source": "assets/images/aset_sed/ferm-tauco-3.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/ferm-tauco-4a.jpeg",
+      "bytes": 8219708,
+      "sha256": "ccf3521e0fd9d223fc5c42a9915379dc9853f78f7106109c71d3f4996ebb8e2e",
+      "source": "assets/images/aset_sed/ferm-tauco-4a.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/ferm-tauco-5.jpeg",
+      "bytes": 8793458,
+      "sha256": "e5ab8f354b76eb6a08d55db96d5a748dbd25e59a928c322961cf694f8276e28b",
+      "source": "assets/images/aset_sed/ferm-tauco-5.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/ferm-tauco-5a.jpeg",
+      "bytes": 2095100,
+      "sha256": "653fcf36dac180047da3cab78080bf2f8a55c4ad1ea518bd74b863c4a3e9b5c8",
+      "source": "assets/images/aset_sed/ferm-tauco-5a.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/fermentasi-tapesing.jpeg",
+      "bytes": 2943698,
+      "sha256": "91b45f29c16704f2a6766328b83e5f3c655ad0381c3abc22c6610d25aa54cb3d",
+      "source": "assets/images/aset_sed/fermentasi-tapesing.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/fermentasi-taucoikan.jpeg",
+      "bytes": 5617980,
+      "sha256": "3d92910c2aca3381c2dc8c7d6846f7a2202be74427d38960db4fcaaf698134c9",
+      "source": "assets/images/aset_sed/fermentasi-taucoikan.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/jadi-tempe.jpeg",
+      "bytes": 1978608,
+      "sha256": "5cddc3355a07045b133958761049f496d2fb70f226139ee6eda6093269c818e3",
+      "source": "assets/images/aset_sed/jadi-tempe.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/kedelai-tempe.jpeg",
+      "bytes": 2486123,
+      "sha256": "795ec4465668e143f311284a93d1d5250730b38b316908de149a127ea3680475",
+      "source": "assets/images/aset_sed/kedelai-tempe.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/pase-1-singkong.jpeg",
+      "bytes": 2179802,
+      "sha256": "d3ae5ae923e365338d617d44bcee49bd160cb8f1cb7c09d2f50c3dec95b12c43",
+      "source": "assets/images/aset_sed/pase-1-singkong.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/pembungkusan-tempe.jpeg",
+      "bytes": 2239664,
+      "sha256": "3aeb0a5d60102bd17a7eb741e46b050d93942138533a7230b47f224d4e6b3616",
+      "source": "assets/images/aset_sed/pembungkusan-tempe.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/perebusan-tempe.jpeg",
+      "bytes": 2159816,
+      "sha256": "b118747ad6c8f0b98cdaff877ffb2cc9b955af818879521173e6befd2082b531",
+      "source": "assets/images/aset_sed/perebusan-tempe.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/perendaman-tempe.jpeg",
+      "bytes": 596058,
+      "sha256": "0be80a3bc762a5f092f191363fd85e89e1724ac0925a226658bb5579f3d830d3",
+      "source": "assets/images/aset_sed/perendaman-tempe.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/proses-ferm-tempe.jpeg",
+      "bytes": 2538989,
+      "sha256": "df986e70a45db9f7803275d3da175a03ee83303b471c7503f20fb8a71c93ceb0",
+      "source": "assets/images/aset_sed/proses-ferm-tempe.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/ragi-tempe.jpeg",
+      "bytes": 2515437,
+      "sha256": "2a172712449445a371f5d1023d3c0d7d7d1e464684b3f5bc516362265ddd533b",
+      "source": "assets/images/aset_sed/ragi-tempe.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/sayur-ikan-tauco.jpeg",
+      "bytes": 2176319,
+      "sha256": "a1f657a6ee860b8956b6a0f1beb1924f853686bb1b4e9c3e53cd0120b34df06c",
+      "source": "assets/images/aset_sed/sayur-ikan-tauco.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/tape-singkong-fermentasi.jpeg",
+      "bytes": 2503029,
+      "sha256": "188398d19f93d85148df1029964a1c714cc4c96d73b29da67f2ff4b12b6064d7",
+      "source": "assets/images/aset_sed/tape-singkong-fermentasi.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/tapesing-fase-2.jpeg",
+      "bytes": 3961130,
+      "sha256": "adfc22fe32e3b9d70a6f90a26f54da0739e40f713e144c30fe639a0a229d9051",
+      "source": "assets/images/aset_sed/tapesing-fase-2.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/tapesing-fase-3.jpeg",
+      "bytes": 3888596,
+      "sha256": "106f3e67e38e82cd356b9503cba7eb5d4612ddbb587bab8b717396d19873a491",
+      "source": "assets/images/aset_sed/tapesing-fase-3.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/tapesing-fase-4.jpeg",
+      "bytes": 3634392,
+      "sha256": "96a399c8dbf0c9c67b4461ef85e71077587d816ada74a9114b1fa71a59a9c419",
+      "source": "assets/images/aset_sed/tapesing-fase-4.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/tapesing-fase-5.jpeg",
+      "bytes": 2889805,
+      "sha256": "e957dcf37670be675462923c220e6195b500994454eb4b5691c4b2e5fb55fe4c",
+      "source": "assets/images/aset_sed/tapesing-fase-5.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/aset_sed/tapesing-fase1.jpeg",
+      "bytes": 3526171,
+      "sha256": "cca5e932d2fcabf45e28ae46a50d068d8ce557412e252f12b778991f078bad13",
+      "source": "assets/images/aset_sed/tapesing-fase1.jpeg",
+      "revision": "b7c0eb66aeff05a7d2ba60a4d3665eaeb0f85323",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/chart_glucose_research_data.png",
+      "bytes": 394554,
+      "sha256": "b7ab841438a02b5140b5050549d7907346d486e75973a4e033c00289640df2c3",
+      "source": "assets/images/chart_glucose_research_data.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/colenak.png",
+      "bytes": 287505,
+      "sha256": "6f4c24bb7b3938f92f419cfa5c49463fd037e5c0723cba3d0f4bb53c795ad9c1",
+      "source": "assets/images/colenak.png",
+      "revision": "9efc435334921e909c7baf91f38bd1353294a064",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/fermentasi_tempe.jpeg",
+      "bytes": 81691,
+      "sha256": "86c53c939132854272a83ccabd3db2566772cf05efc58116e47205500c057079",
+      "source": "assets/images/fermentasi_tempe.jpeg",
+      "revision": "5db7670570c545240e386819762b734b259248ed",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/flowchart_fermentation_processes.jpeg",
+      "bytes": 216829,
+      "sha256": "66ca372b34594784734dd267230e0e400aebcda896d4f6eec48cba840329379b",
+      "source": "assets/images/flowchart_fermentation_processes.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_burger.jpg",
+      "bytes": 45955,
+      "sha256": "6a8f6e2fda190a09e205c546dd371514d58a9c123e5cc7c15b0cbfa0bd070317",
+      "source": "assets/images/food_burger.jpg",
+      "revision": "38239c873e169e2422fff62e13e84dc925c5fb1c",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_kecap.jpg",
+      "bytes": 500136,
+      "sha256": "b32b68347a360b6517dca05610be3cb5d52abffa8bc6893a9c08a1362b9cb694",
+      "source": "assets/images/food_kecap.jpg",
+      "revision": "808deba8311b81a2fc2b85d05a61a4f9ae94e776",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_kimchi.jpg",
+      "bytes": 67450,
+      "sha256": "200eae94828e3a07514638cfb5ee25cf8c91140b116862f39d1268f36bd6ca1e",
+      "source": "assets/images/food_kimchi.jpg",
+      "revision": "38239c873e169e2422fff62e13e84dc925c5fb1c",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_mendoan_slide.png",
+      "bytes": 17918,
+      "sha256": "7f7f7b60c9ad094c315a787d4bf9117989e4810009fe06f441ff9f43cf109921",
+      "source": "assets/images/food_mendoan_slide.png",
+      "revision": "39af25e37fa2cb36f4691812002aa0168ecd1840",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_oncom.jpg",
+      "bytes": 138779,
+      "sha256": "156a4c0598932cf3ead5f4b7a641d708a52183da43fff8c6755759aad4310b7a",
+      "source": "assets/images/food_oncom.jpg",
+      "revision": "38239c873e169e2422fff62e13e84dc925c5fb1c",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_orek_tempe_slide.png",
+      "bytes": 19983,
+      "sha256": "abc6c18ba39ea534996c6425834924180dfcbc83e669bc5c42d29cf2d135c274",
+      "source": "assets/images/food_orek_tempe_slide.png",
+      "revision": "39af25e37fa2cb36f4691812002aa0168ecd1840",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_pizza.jpg",
+      "bytes": 79822,
+      "sha256": "1fddfba1f06e690f6bf1a192b4055b15dfb0eec8f8bafc966a4703300153bad8",
+      "source": "assets/images/food_pizza.jpg",
+      "revision": "38239c873e169e2422fff62e13e84dc925c5fb1c",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_tape_ketan.jpg",
+      "bytes": 181683,
+      "sha256": "014bc1e382f0c09de7be435fbc03612b50e9fdaed654d87f50fb4d52ca48670e",
+      "source": "assets/images/food_tape_ketan.jpg",
+      "revision": "38239c873e169e2422fff62e13e84dc925c5fb1c",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_tape_singkong.jpg",
+      "bytes": 67450,
+      "sha256": "200eae94828e3a07514638cfb5ee25cf8c91140b116862f39d1268f36bd6ca1e",
+      "source": "assets/images/food_tape_singkong.jpg",
+      "revision": "38239c873e169e2422fff62e13e84dc925c5fb1c",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_tauco.jpg",
+      "bytes": 64244,
+      "sha256": "2417e093f7acd4a28bc69b563e9ac99c6c8c0ab02aacfa8c462381c546afe8e3",
+      "source": "assets/images/food_tauco.jpg",
+      "revision": "38239c873e169e2422fff62e13e84dc925c5fb1c",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_tempe.jpg",
+      "bytes": 308588,
+      "sha256": "704533a8ced928a1881307d5c92eb7de67c6538de47c90d9ced3279f6e5420af",
+      "source": "assets/images/food_tempe.jpg",
+      "revision": "808deba8311b81a2fc2b85d05a61a4f9ae94e776",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/food_yogurt.jpg",
+      "bytes": 72609,
+      "sha256": "652b64d7e1ae5ae30bf7285d76a296df901393438eea863b1f7219184886377f",
+      "source": "assets/images/food_yogurt.jpg",
+      "revision": "38239c873e169e2422fff62e13e84dc925c5fb1c",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image1.jpeg",
+      "bytes": 1696,
+      "sha256": "05e86648ec0bc55511c66b03bcb16e4ad8d476474b61c10420c768f122655552",
+      "source": "assets/images/image1.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image10.jpeg",
+      "bytes": 430851,
+      "sha256": "d567e27719ac466d2724524077faea08338f8c3758ebc9e9c8a8b509b06236fb",
+      "source": "assets/images/image10.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image11.jpeg",
+      "bytes": 465690,
+      "sha256": "761b2c6abee83922c0d057997b669e07f06fb5b193647142113408905f2c6c20",
+      "source": "assets/images/image11.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image12.jpeg",
+      "bytes": 108936,
+      "sha256": "bd6976a75d2b053e61a22be32ee2de672b16e874c17cb529bd81c0e44b4fa7e0",
+      "source": "assets/images/image12.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image13.png",
+      "bytes": 394554,
+      "sha256": "b7ab841438a02b5140b5050549d7907346d486e75973a4e033c00289640df2c3",
+      "source": "assets/images/image13.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image14.png",
+      "bytes": 667874,
+      "sha256": "898cfa81c2dee73b41acb171f8e173d14a8b5b042f98126323cb72dd04744df5",
+      "source": "assets/images/image14.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image15.png",
+      "bytes": 189911,
+      "sha256": "2b01bdc3784128732710065e9d6b265ce66ac48a405d7fe3c7bb635bdb7bc379",
+      "source": "assets/images/image15.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image16.png",
+      "bytes": 144918,
+      "sha256": "46e70e2889391d3da606cef1525ded84dda131b5539ade8b5dd5396bc6da2df0",
+      "source": "assets/images/image16.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image2.jpeg",
+      "bytes": 1844,
+      "sha256": "295293f64245d0e70333ad4c7f03e085e48af8aa98d126f6b7858da597de79df",
+      "source": "assets/images/image2.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image3.jpeg",
+      "bytes": 1823,
+      "sha256": "8bbea543c859d9aebdf62824fbe8b61f9705f956d1b289d349deaccc9c949b52",
+      "source": "assets/images/image3.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image4.png",
+      "bytes": 2011503,
+      "sha256": "c37bb21f8caadecf57c1e9402e2b76da61f46f7c34f3fd0ec3e6cf5c52d3eba5",
+      "source": "assets/images/image4.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image5.png",
+      "bytes": 2229966,
+      "sha256": "aef58ec84500387cb89e2b152aab3538a88fb8c9e3d93cb64e043777211f0e7c",
+      "source": "assets/images/image5.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image6.jpeg",
+      "bytes": 216829,
+      "sha256": "66ca372b34594784734dd267230e0e400aebcda896d4f6eec48cba840329379b",
+      "source": "assets/images/image6.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image7.jpeg",
+      "bytes": 497235,
+      "sha256": "9f2e816096a84f12f39883f63c5b58f7370b046544056d9069801a6cdcae2d15",
+      "source": "assets/images/image7.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image8.jpeg",
+      "bytes": 656809,
+      "sha256": "864d2b3dfab898fdbf5684b23254b10fb519b7f9723a165efd6c071a4762c288",
+      "source": "assets/images/image8.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/image9.png",
+      "bytes": 2496294,
+      "sha256": "a09f137183cc1b796652eaebd9fbfaac6ccee05bd2b6346774f9a9322d89b3c5",
+      "source": "assets/images/image9.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/kimchi.png",
+      "bytes": 170275,
+      "sha256": "58fb23a8391da9a88d7688ff7c05a150bb3a100177958f281e7abbb675d0e273",
+      "source": "assets/images/kimchi.png",
+      "revision": "9efc435334921e909c7baf91f38bd1353294a064",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/lab_tape_glucose_procedure.jpeg",
+      "bytes": 108936,
+      "sha256": "bd6976a75d2b053e61a22be32ee2de672b16e874c17cb529bd81c0e44b4fa7e0",
+      "source": "assets/images/lab_tape_glucose_procedure.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/orek_tempe.png",
+      "bytes": 264862,
+      "sha256": "9d364777af7d3424b6eddce47cf7328efcd4ca7ea243b1ec1d6bfe69a308c44f",
+      "source": "assets/images/orek_tempe.png",
+      "revision": "9efc435334921e909c7baf91f38bd1353294a064",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/panel_oncom_kecap.jpeg",
+      "bytes": 430851,
+      "sha256": "d567e27719ac466d2724524077faea08338f8c3758ebc9e9c8a8b509b06236fb",
+      "source": "assets/images/panel_oncom_kecap.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/panel_oncom_kecap_hd.jpeg",
+      "bytes": 465690,
+      "sha256": "761b2c6abee83922c0d057997b669e07f06fb5b193647142113408905f2c6c20",
+      "source": "assets/images/panel_oncom_kecap_hd.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/panel_tempe_tauco_tape.jpeg",
+      "bytes": 497235,
+      "sha256": "9f2e816096a84f12f39883f63c5b58f7370b046544056d9069801a6cdcae2d15",
+      "source": "assets/images/panel_tempe_tauco_tape.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/panel_tempe_tauco_tape_full.png",
+      "bytes": 2496294,
+      "sha256": "a09f137183cc1b796652eaebd9fbfaac6ccee05bd2b6346774f9a9322d89b3c5",
+      "source": "assets/images/panel_tempe_tauco_tape_full.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/panel_tempe_tauco_tape_hd.jpeg",
+      "bytes": 656809,
+      "sha256": "864d2b3dfab898fdbf5684b23254b10fb519b7f9723a165efd6c071a4762c288",
+      "source": "assets/images/panel_tempe_tauco_tape_hd.jpeg",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/pisa_literacy_questions_worksheet.png",
+      "bytes": 667874,
+      "sha256": "898cfa81c2dee73b41acb171f8e173d14a8b5b042f98126323cb72dd04744df5",
+      "source": "assets/images/pisa_literacy_questions_worksheet.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/pisa_question_10_ref.png",
+      "bytes": 144918,
+      "sha256": "46e70e2889391d3da606cef1525ded84dda131b5539ade8b5dd5396bc6da2df0",
+      "source": "assets/images/pisa_question_10_ref.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/pisa_question_6_ref.png",
+      "bytes": 189911,
+      "sha256": "2b01bdc3784128732710065e9d6b265ce66ac48a405d7fe3c7bb635bdb7bc379",
+      "source": "assets/images/pisa_question_6_ref.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/poster_learning_modules.png",
+      "bytes": 2229966,
+      "sha256": "aef58ec84500387cb89e2b152aab3538a88fb8c9e3d93cb64e043777211f0e7c",
+      "source": "assets/images/poster_learning_modules.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tape_ketan.png",
+      "bytes": 307805,
+      "sha256": "be1e7f840bf48459e231c9820c29a67bc5942683582f8ec87aa52dad0549714f",
+      "source": "assets/images/tape_ketan.png",
+      "revision": "9efc435334921e909c7baf91f38bd1353294a064",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tape_ketan_fase1.jpg",
+      "bytes": 479139,
+      "sha256": "f3c9671de54eec032bfde271502deb6b53d60eb4f2c235a1ae9c9d6c48014b8c",
+      "source": "assets/images/tape_ketan_fase1.jpg",
+      "revision": "743eb5ae5035fc4a30736e0d476dff87c9742510",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tape_ketan_fase2.jpg",
+      "bytes": 565561,
+      "sha256": "19375ccca138b5b7a9f9fb391c5fd2d61893ff1d0c8e873ddef128f7e9410eea",
+      "source": "assets/images/tape_ketan_fase2.jpg",
+      "revision": "743eb5ae5035fc4a30736e0d476dff87c9742510",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tape_ketan_fase3.jpg",
+      "bytes": 451211,
+      "sha256": "347d4e060439c94ec788dad512d04b1b548ee41e6b6f7957f0e545e42844f9a8",
+      "source": "assets/images/tape_ketan_fase3.jpg",
+      "revision": "743eb5ae5035fc4a30736e0d476dff87c9742510",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tape_ketan_fase4.jpg",
+      "bytes": 592924,
+      "sha256": "d4d9e617e23a690b328ad1015c8423e6d24dd8fb4ec1d7c708181c4b8b8b9c29",
+      "source": "assets/images/tape_ketan_fase4.jpg",
+      "revision": "743eb5ae5035fc4a30736e0d476dff87c9742510",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tape_singkong.png",
+      "bytes": 258500,
+      "sha256": "fe22c069fd098dd9fa01d8f9b55874fcada72bd651889cac4e55d39d29bb71c0",
+      "source": "assets/images/tape_singkong.png",
+      "revision": "9efc435334921e909c7baf91f38bd1353294a064",
+      "origin": "working_tree",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tempe_rhizopus_diagram.png",
+      "bytes": 11278,
+      "sha256": "39ee87ac4ec3ee319068a8cb00c2fcb34ddd38651d9c1190b0b76038fa1dafdd",
+      "source": "assets/images/tempe_rhizopus_diagram.png",
+      "revision": "39af25e37fa2cb36f4691812002aa0168ecd1840",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tempe_step1_kedelai.png",
+      "bytes": 6693,
+      "sha256": "47920820808a8c39612e601b518dbbab783d1bc2e38ff4387ff5071601eb9959",
+      "source": "assets/images/tempe_step1_kedelai.png",
+      "revision": "39af25e37fa2cb36f4691812002aa0168ecd1840",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tempe_step2_perendaman.png",
+      "bytes": 5220,
+      "sha256": "6dc51fa46f6abde31c31ea641175edc5c2e55517e94c76ae6f96168ab301e241",
+      "source": "assets/images/tempe_step2_perendaman.png",
+      "revision": "39af25e37fa2cb36f4691812002aa0168ecd1840",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tempe_step3_perebusan.png",
+      "bytes": 5709,
+      "sha256": "faf73cd4617cf919cb604c841db3b7d5bb5600a7e801daed60eab83252a3c15e",
+      "source": "assets/images/tempe_step3_perebusan.png",
+      "revision": "39af25e37fa2cb36f4691812002aa0168ecd1840",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tempe_step4_ragi.png",
+      "bytes": 7398,
+      "sha256": "ec3a9c302d1abec485f2795c2edf8187b8f64a6bbbe44351cb6132377fd78137",
+      "source": "assets/images/tempe_step4_ragi.png",
+      "revision": "39af25e37fa2cb36f4691812002aa0168ecd1840",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tempe_step5_bungkus.png",
+      "bytes": 5595,
+      "sha256": "417522d71e734920b092d04927c3989e1796ca26b488fe1f89aafa3f29be1304",
+      "source": "assets/images/tempe_step5_bungkus.png",
+      "revision": "39af25e37fa2cb36f4691812002aa0168ecd1840",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tempe_step6_fermentasi.png",
+      "bytes": 7310,
+      "sha256": "941fea17403d0ab51b1a5f9fd80607d0df47b68585e6093f9bc1644945c874d5",
+      "source": "assets/images/tempe_step6_fermentasi.png",
+      "revision": "39af25e37fa2cb36f4691812002aa0168ecd1840",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tempe_step7_tempe.png",
+      "bytes": 7261,
+      "sha256": "dc284c81b3f9de6a35a176c032468b15be6d36720715db009bce30ee8dd7bf48",
+      "source": "assets/images/tempe_step7_tempe.png",
+      "revision": "39af25e37fa2cb36f4691812002aa0168ecd1840",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/ui_mockup_12_slides.png",
+      "bytes": 2011503,
+      "sha256": "c37bb21f8caadecf57c1e9402e2b76da61f46f7c34f3fd0ec3e6cf5c52d3eba5",
+      "source": "assets/images/ui_mockup_12_slides.png",
+      "revision": "808c93b6ba7f60ec116edcffd7ab406ad4583be5",
+      "origin": "git",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/combro_oncom.webp",
+      "bytes": 26744,
+      "sha256": "3378faf45f4b194ebb6fb7fafe86d7297ffe9837490641968169f3b0f77d8aec",
+      "source": "Downloads/combro_oncom.webp",
+      "revision": null,
+      "origin": "local_backup",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/sayur_tauco.jpg",
+      "bytes": 44468,
+      "sha256": "91f6d0d38978307986887a63594ea21f097fd0936c08d9effab33ea4c482ed6e",
+      "source": "Downloads/sayur_tauco.jpg",
+      "revision": null,
+      "origin": "local_backup",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/es-goyobod.jpg",
+      "bytes": 26994,
+      "sha256": "cb547ece82985629bb9ef4e7c7fa1b5e9722f34f53c85fddcd0cf38da05ff922",
+      "source": "Downloads/es-goyobod.jpg",
+      "revision": null,
+      "origin": "local_backup",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tutug_oncom.jpg",
+      "bytes": 34590,
+      "sha256": "b1f908a46fd836de3fd849f17971cb56f7de4fd863a6567e437251ea1614359a",
+      "source": "Downloads/tutug_oncom.jpg",
+      "revision": null,
+      "origin": "local_backup",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/martabak_ketan.jpg",
+      "bytes": 41180,
+      "sha256": "a6ee4d1d8bb738ce24203f5219d68899379585340c01851fd855428c2a8a1d15",
+      "source": "Downloads/martabak_ketan.jpg",
+      "revision": null,
+      "origin": "local_backup",
+      "verified": true
+    },
+    {
+      "bucket": "media-assets",
+      "key": "images/tempe-mendoan.jpg",
+      "bytes": 22672,
+      "sha256": "970044c3ed449277ac2e04936874d9761d4b445427f25687a703b5a76ca14265",
+      "source": "Downloads/tempe-mendoan.jpg",
+      "revision": null,
+      "origin": "local_backup",
+      "verified": true
+    }
+  ]
+}

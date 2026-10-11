@@ -68,9 +68,23 @@ void main() async {
           school: progress.studentSchool,
         );
         final studentId = student?['id']?.toString();
-        if (studentId != null && studentId != progress.studentId) {
-          await storage.saveUserProgress(
-            progress.copyWith(studentId: studentId),
+        if (student?['sync_status'] != 'offline' &&
+            studentId != null &&
+            !studentId.startsWith('local-')) {
+          if (studentId != progress.studentId) {
+            await storage.saveUserProgress(
+              progress.copyWith(studentId: studentId),
+            );
+          }
+          // Include progress collected by older APKs that never queued offline
+          // profile updates, even when the authenticated ID has not changed.
+          await SupabaseService.updateStudentProgress(
+            userId: studentId,
+            currentSlide: progress.readSlides.isEmpty
+                ? 1
+                : progress.readSlides.reduce((a, b) => a > b ? a : b),
+            totalXp: progress.earnedXP,
+            isCompleted: progress.completedModules.contains('pisa_quiz'),
           );
         }
       }
