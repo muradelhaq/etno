@@ -94,7 +94,7 @@ class JelajahBudayaData {
           'Daging Sate Maranggi direndam (dimarinasi) terlebih dahulu dengan racikan bumbu rempah, ketumbar, gula kelapa, dan jahe sebelum dibakar.',
       ethnoscienceStory:
           'Enzim protease dan bumbu rempah meresap ke serat daging sapi/kambing, menghasilkan rasa umami alami dan tekstur daging yang empuk.',
-      imageAsset: 'assets/images/food_burger.jpg',
+      imageAsset: 'assets/images/sate_maranggi.webp',
       audioNarrationText:
           'Sate Maranggi Purwakarta dimarinasi dengan rempah alami sebelum dipanggang di atas arang.',
     ),

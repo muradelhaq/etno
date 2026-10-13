@@ -115,7 +115,7 @@ class MicroorganismData {
       microscopicFeature:
           'Miselium cepat tumbuh berwarna jingga/oranye dengan rantai makrokonidia bersel satu oval.',
       imageUrl: 'assets/images/neurospora_after_zoom.png',
-      beforeZoomImage: AppAssets.panelOncomKecapHd,
+      beforeZoomImage: 'assets/images/oncom_merah.webp',
       afterZoomImage: 'assets/images/neurospora_after_zoom.png',
     ),
   ];
