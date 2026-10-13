@@ -1,5 +1,7 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'local_storage_service.dart';
@@ -28,132 +30,136 @@ class BackgroundAudioState {
   }
 }
 
-class BackgroundAudioNotifier extends StateNotifier<BackgroundAudioState> {
+class BackgroundAudioNotifier extends StateNotifier<BackgroundAudioState>
+    with WidgetsBindingObserver {
   final SharedPreferences? _prefs;
-  final AudioPlayer _player = AudioPlayer();
+  final AudioPlayer _player;
+  StreamSubscription<PlayerState>? _playerSubscription;
+  Future<void> _pending = Future.value();
   bool _isAudioLoaded = false;
+  bool _wantsPlayback = true;
+  bool _mediaActive = false;
+  bool _isForeground = false;
+  bool _disposed = false;
 
-  BackgroundAudioNotifier(this._prefs) : super(const BackgroundAudioState()) {
-    _initAudio();
-  }
-
-  Future<void> _initAudio() async {
-    try {
-      final savedMuted = _prefs?.getBool('bg_audio_muted') ?? false;
-      final savedVolume = _prefs?.getDouble('bg_audio_volume') ?? 0.35;
-      state = state.copyWith(isMuted: savedMuted, volume: savedVolume);
-
-      await _player.setReleaseMode(ReleaseMode.loop);
-      await _player.setVolume(savedMuted ? 0.0 : savedVolume);
-
-      // Listen to player state changes
-      _player.onPlayerStateChanged.listen((pState) {
-        state = state.copyWith(isPlaying: pState == PlayerState.playing);
-      });
-
-      if (!savedMuted) {
-        await startMusic();
+  BackgroundAudioNotifier(this._prefs, {AudioPlayer? player})
+      : _player = player ?? AudioPlayer(),
+        super(BackgroundAudioState(
+          isPlaying: false,
+          isMuted: _prefs?.getBool('bg_audio_muted') ?? false,
+          volume: _prefs?.getDouble('bg_audio_volume') ?? 0.35,
+        )) {
+    final binding = WidgetsBinding.instance;
+    _isForeground = binding.lifecycleState == AppLifecycleState.resumed;
+    binding.addObserver(this);
+    _playerSubscription = _player.onPlayerStateChanged.listen((playerState) {
+      if (!_disposed) {
+        state = state.copyWith(
+          isPlaying: playerState == PlayerState.playing && _shouldPlay,
+        );
       }
-    } catch (e) {
-      debugPrint('Background audio init error: $e');
-    }
+    });
+    unawaited(_syncPlayback());
   }
 
-  Future<void> startMusic() async {
-    try {
-      await _player.setReleaseMode(ReleaseMode.loop);
-      await _player.setVolume(state.isMuted ? 0.0 : state.volume);
-      await _player.play(AssetSource('audio/ssstik.io_1787630984112.mp3'));
-      _isAudioLoaded = true;
-      state = state.copyWith(isPlaying: true);
-    } catch (e) {
-      debugPrint('Error playing background audio: $e');
-    }
+  bool get _shouldPlay =>
+      !_disposed &&
+      _isForeground &&
+      _wantsPlayback &&
+      !_mediaActive &&
+      !state.isMuted;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _isForeground = state == AppLifecycleState.resumed;
+    unawaited(_syncPlayback());
   }
 
-  Future<void> togglePlay() async {
-    if (state.isPlaying) {
-      await pause();
-    } else {
-      await resume();
-    }
-  }
-
-  Future<void> pause() async {
-    try {
-      await _player.pause();
-      state = state.copyWith(isPlaying: false);
-    } catch (e) {
-      debugPrint('Audio pause error: $e');
-    }
-  }
-
-  bool _wasPlayingBeforeMedia = false;
-
-  /// Temporarily pauses background audio for video playback without resetting user preferences
-  Future<void> pauseForMedia() async {
-    if (state.isPlaying && !state.isMuted) {
-      _wasPlayingBeforeMedia = true;
-      await pause();
-    }
-  }
-
-  /// Resumes background audio when video finishes or stops playing
-  Future<void> resumeFromMedia() async {
-    if (_wasPlayingBeforeMedia && !state.isMuted) {
-      _wasPlayingBeforeMedia = false;
-      await resume();
-    }
-  }
-
-  Future<void> resume() async {
-    try {
-      if (state.isMuted) {
-        await setMuted(false);
-      }
-      if (!_isAudioLoaded) {
-        await startMusic();
-      } else {
+  // Serialize commands and re-check lifecycle after asynchronous asset loading.
+  Future<void> _syncPlayback() {
+    _pending = _pending.then((_) async {
+      if (_disposed) return;
+      try {
+        if (!_shouldPlay) {
+          await _player.pause();
+          if (!_disposed) state = state.copyWith(isPlaying: false);
+          return;
+        }
+        await _player.setReleaseMode(ReleaseMode.loop);
+        if (!_shouldPlay) return;
+        await _player.setVolume(state.volume);
+        if (!_shouldPlay) return;
+        if (!_isAudioLoaded) {
+          await _player.setSource(
+            AssetSource('audio/ssstik.io_1787630984112.mp3'),
+          );
+          _isAudioLoaded = true;
+        }
+        if (!_shouldPlay) return;
         await _player.resume();
-        state = state.copyWith(isPlaying: true);
+        if (!_shouldPlay) {
+          await _player.pause();
+        }
+        if (!_disposed) state = state.copyWith(isPlaying: _shouldPlay);
+      } catch (e) {
+        if (!_disposed) state = state.copyWith(isPlaying: false);
+        debugPrint('Background audio error: $e');
       }
-    } catch (e) {
-      await startMusic();
-    }
+    });
+    return _pending;
   }
 
-  Future<void> setMuted(bool muted) async {
+  Future<void> startMusic() => resume();
+
+  Future<void> togglePlay() => state.isPlaying ? pause() : resume();
+
+  Future<void> pause() {
+    _wantsPlayback = false;
+    return _syncPlayback();
+  }
+
+  Future<void> resume() {
+    _wantsPlayback = true;
+    if (state.isMuted) {
+      state = state.copyWith(isMuted: false);
+      _prefs?.setBool('bg_audio_muted', false);
+    }
+    return _syncPlayback();
+  }
+
+  /// Video and lifecycle pauses preserve the user's playback preference.
+  Future<void> pauseForMedia() {
+    _mediaActive = true;
+    return _syncPlayback();
+  }
+
+  Future<void> resumeFromMedia() {
+    _mediaActive = false;
+    return _syncPlayback();
+  }
+
+  Future<void> setMuted(bool muted) {
     state = state.copyWith(isMuted: muted);
     _prefs?.setBool('bg_audio_muted', muted);
-    try {
-      await _player.setVolume(muted ? 0.0 : state.volume);
-      if (muted) {
-        await _player.pause();
-        state = state.copyWith(isPlaying: false);
-      } else {
-        await resume();
-      }
-    } catch (e) {
-      debugPrint('Audio mute error: $e');
-    }
+    if (!muted) _wantsPlayback = true;
+    return _syncPlayback();
   }
 
-  Future<void> setVolume(double volume) async {
+  Future<void> setVolume(double volume) {
     final clamped = volume.clamp(0.0, 1.0);
     state = state.copyWith(volume: clamped);
     _prefs?.setDouble('bg_audio_volume', clamped);
-    try {
-      if (!state.isMuted) {
-        await _player.setVolume(clamped);
-      }
-    } catch (e) {
-      debugPrint('Audio setVolume error: $e');
-    }
+    return _syncPlayback();
   }
 
   @override
   void dispose() {
-    _player.dispose();
+    _disposed = true;
+    WidgetsBinding.instance.removeObserver(this);
+    unawaited(_playerSubscription?.cancel());
+    unawaited(_pending.then((_) => _player.dispose()).catchError((Object e) {
+      debugPrint('Background audio dispose error: $e');
+    }));
     super.dispose();
   }
 }

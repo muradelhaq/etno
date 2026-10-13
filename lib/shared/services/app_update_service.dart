@@ -15,11 +15,8 @@ class AppUpdateService {
   static const String githubApiLatestUrl =
       'https://api.github.com/repos/$repoOwner/$repoName/releases/latest';
 
-  static const String playStorePackageName = 'com.etnosains.e_modul_etnosains';
-  static const String playStoreMarketUrl =
-      'market://details?id=$playStorePackageName';
-  static const String playStoreWebUrl =
-      'https://play.google.com/store/apps/details?id=$playStorePackageName';
+  static const String githubLatestReleaseUrl =
+      'https://github.com/$repoOwner/$repoName/releases/latest';
 
   final Dio _dio = Dio(
     BaseOptions(
@@ -87,14 +84,10 @@ class AppUpdateService {
       final latestParts = cleanLatest.split('+');
       final currentParts = cleanCurrent.split('+');
 
-      final latestNums = latestParts[0]
-          .split('.')
-          .map((e) => int.tryParse(e) ?? 0)
-          .toList();
-      final currentNums = currentParts[0]
-          .split('.')
-          .map((e) => int.tryParse(e) ?? 0)
-          .toList();
+      final latestNums =
+          latestParts[0].split('.').map((e) => int.tryParse(e) ?? 0).toList();
+      final currentNums =
+          currentParts[0].split('.').map((e) => int.tryParse(e) ?? 0).toList();
 
       while (latestNums.length < 3) {
         latestNums.add(0);
@@ -120,27 +113,21 @@ class AppUpdateService {
     }
   }
 
-  /// Open Google Play Store listing (or fallback to web URL)
-  Future<bool> openPlayStore() async {
-    final marketUri = Uri.parse(playStoreMarketUrl);
-    final webUri = Uri.parse(playStoreWebUrl);
-
+  /// Open the GitHub release page, falling back to the latest release.
+  Future<bool> openGitHubRelease(String releaseUrl) async {
+    final url = releaseUrl.trim();
+    final uri = Uri.tryParse(url);
+    final isRepositoryRelease = uri != null &&
+        uri.scheme == 'https' &&
+        uri.host == 'github.com' &&
+        uri.path.startsWith('/$repoOwner/$repoName/releases/');
+    final target =
+        isRepositoryRelease ? uri : Uri.parse(githubLatestReleaseUrl);
     try {
-      if (await canLaunchUrl(marketUri)) {
-        return await launchUrl(marketUri, mode: LaunchMode.externalApplication);
-      }
+      return await launchUrl(target, mode: LaunchMode.externalApplication);
     } catch (e) {
-      debugPrint('Error launching market uri: $e');
+      debugPrint('Error launching GitHub release: $e');
+      return false;
     }
-
-    try {
-      if (await canLaunchUrl(webUri)) {
-        return await launchUrl(webUri, mode: LaunchMode.externalApplication);
-      }
-    } catch (e) {
-      debugPrint('Error launching web uri: $e');
-    }
-
-    return false;
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/theme/text_styles.dart';
 import '../models/app_update_info.dart';
@@ -27,28 +26,24 @@ class AppUpdateDialog extends ConsumerStatefulWidget {
 }
 
 class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
-  bool _isOpeningStore = false;
+  bool _isOpeningRelease = false;
 
-  Future<void> _openPlayStore() async {
-    setState(() => _isOpeningStore = true);
+  Future<void> _openGitHubRelease() async {
+    setState(() => _isOpeningRelease = true);
     final service = ref.read(appUpdateServiceProvider);
-    final opened = await service.openPlayStore();
+    final opened =
+        await service.openGitHubRelease(widget.updateInfo.releaseUrl);
 
     if (!mounted) return;
-    setState(() => _isOpeningStore = false);
+    setState(() => _isOpeningRelease = false);
 
-    if (!opened && widget.updateInfo.releaseUrl.isNotEmpty) {
-      final uri = Uri.parse(widget.updateInfo.releaseUrl);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Tidak dapat membuka tautan pembaruan.'),
-            backgroundColor: AppColors.errorRed,
-          ),
-        );
-      }
+    if (!opened) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Tidak dapat membuka tautan pembaruan GitHub.'),
+          backgroundColor: AppColors.errorRed,
+        ),
+      );
     }
   }
 
@@ -95,8 +90,8 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
                 const SizedBox(height: 6),
                 Center(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppColors.warmCream,
                       borderRadius: BorderRadius.circular(12),
@@ -143,9 +138,9 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
                 ),
                 const SizedBox(height: 20),
 
-                // Action button: Open Play Store
+                // Action button: Open GitHub release
                 ElevatedButton.icon(
-                  onPressed: _isOpeningStore ? null : _openPlayStore,
+                  onPressed: _isOpeningRelease ? null : _openGitHubRelease,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryGreen,
                     foregroundColor: Colors.white,
@@ -154,7 +149,7 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  icon: _isOpeningStore
+                  icon: _isOpeningRelease
                       ? const SizedBox(
                           width: 18,
                           height: 18,
@@ -163,11 +158,11 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
                             color: Colors.white,
                           ),
                         )
-                      : const Icon(Icons.shop_two_rounded, size: 20),
+                      : const Icon(Icons.open_in_new_rounded, size: 20),
                   label: Text(
-                    _isOpeningStore
-                        ? 'Membuka Toko Aplikasi...'
-                        : 'Perbarui di Google Play',
+                    _isOpeningRelease
+                        ? 'Membuka GitHub...'
+                        : 'Perbarui di GitHub',
                     style: AppTextStyles.buttonText.copyWith(fontSize: 14),
                   ),
                 ),
@@ -187,13 +182,8 @@ class _AppUpdateDialogState extends ConsumerState<AppUpdateDialog> {
                     ),
                     if (info.releaseUrl.isNotEmpty)
                       TextButton.icon(
-                        onPressed: () async {
-                          final uri = Uri.parse(info.releaseUrl);
-                          if (await canLaunchUrl(uri)) {
-                            await launchUrl(uri,
-                                mode: LaunchMode.externalApplication);
-                          }
-                        },
+                        onPressed:
+                            _isOpeningRelease ? null : _openGitHubRelease,
                         icon: const Icon(Icons.open_in_new_rounded, size: 14),
                         label: Text(
                           'Info Rilis',
